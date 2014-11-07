@@ -1,0 +1,66 @@
+.\" Manpage for gfal-save
+.\"
+.TH GFAL-LEGACY-REPLICAS 1 "July 2014" "v1.1.0"
+.SH NAME
+gfal-legacy-replicas \- list replicas
+.SH SYNOPSIS
+.B gfal-legacy-replicas
+[
+.B "-h"
+] [
+.B -V
+] [
+.B -v
+] [
+.B -D 
+.I DEFINITION
+] [
+.B -t 
+.I TIMEOUT
+] \fI lfc
+
+.SH DESCRIPTION
+.B gfal-legacy-replicas
+List the replicas of an entry in a catalog.
+
+.SH OPTIONS
+.TP 
+.B "-h, --help"
+show help about the command.
+.TP
+.B "-V, --version"
+output version information and exit.
+.TP
+.B "-v, --verbose"
+verbose mode. Repeat up to 3 times for the most verbose mode.
+.TP
+.B "-d, --definition"
+define properties for gfal2.
+.TP 
+.B "-t, --timeout"
+global timeout for the execution of the command. Command is interrupted if time expires before it finishes.
+.TP
+.B lfc
+LFC entry (lfc:// or guid:)
+
+.SH EXAMPLES
+.B gfal-legacy-replicas
+guid:12345-678-abcdef
+.TP
+srm://endpoint.cern.ch/path/group
+
+.SH FILES
+.I /etc/gfal2.d/*
+.RS 
+All configuration files in this directory affect the behavior of the underlying gfal2.
+
+.SH AUTHORS
+Duarte Meneses <duarte.meneses@cern.ch>
+.br
+Adrien Devresse <adrien.devresse@cern.ch>
+.br
+Alejandro Alvarez Ayllon <alejandro.alvarez.ayllon@cern.ch>
+
+.SH "SEE ALSO"
+.BR gfal-legacy-register (1),
+.BR gfal-legacy-unregister (1)

@@ -1,0 +1,64 @@
+.\" Manpage for gfal-sum
+.\"
+.TH GFAL-SUM 1 "October 2013" "v1.0.0"
+.SH NAME
+gfal-sum \- Calculate checksum of a file
+.SH SYNOPSIS
+.B gfal-sum
+[
+.I OPTIONS
+]
+.I "FILE CHECKSUM_TYPE"
+
+.SH DESCRIPTION
+.B gfal-sum
+Calculates the checksum of the specified file, using a specified checksum algoritm. The supported algorithm depend on the protocol and endpoint. Some examples are 
+.I ADLER32
+, 
+.I CRC32
+ and 
+.I MD5
+.
+
+.SH OPTIONS
+.TP 
+.B "-h, --help"
+show help about the command.
+.TP
+.B "-V, --version"
+output version information and exit.
+.TP
+.B "-v, --verbose"
+verbose mode. Repeat up to 3 times for the most verbose mode.
+.TP
+.B "-dD, --definition"
+define properties for gfal2.
+.TP 
+.B "-t, --timeout"
+global timeout for the execution of the command. Command is interrupted if time expires before it finishes.
+
+.SH EXAMPLES
+.TP
+.B gfal-sum
+srm://endpoint.cern.ch/path/file ADLER32
+
+.SH FILES
+.I /etc/gfal2.d/*
+.RS 
+All configuration files in this directory affect the behavior of the underlying gfal2.
+
+.SH AUTHORS
+Duarte Meneses <duarte.meneses@cern.ch>
+.br
+Adrien Devresse <adrien.devresse@cern.ch>
+.br
+Alejandro Alvarez Ayllon <alejandro.alvarez.ayllon@cern.ch>
+
+.SH "SEE ALSO"
+.BR gfal-copy (1),
+.BR gfal-rm (1),
+.BR gfal-cat (1),
+.BR gfal-save (1),
+.BR gfal-mkdir (1),
+.BR gfal-ls (1),
+.BR gfal-xattr (1)
