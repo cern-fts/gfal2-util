@@ -9,6 +9,7 @@ import commands # @UnusedImport
 import ls # @UnusedImport
 import legacy # @UnusedImport
 import copy # @UnusedImport
+import rm # @UnusedImport
 
 
 class CommandFactory(object):

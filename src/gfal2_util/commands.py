@@ -98,60 +98,6 @@ class GfalCommands(CommandBase):
         checksum = self.context.checksum(self.params.file, self.params.checksum_type)
         sys.stdout.write(self.params.file + ' ' + checksum + '\n')
 
-    @base.arg("-r", "-R", "--recursive", action='store_true',
-              help="remove directories and their contents recursively")
-    @base.arg("--from-file", type=str, default=None,
-              help="read surls from a file")
-    @base.arg("file", action='store', nargs='*', type=str,
-              help="uri(s) of the file(s) to be deleted")
-    def execute_rm(self):
-        """
-        Removes files or directories
-        """
-        if self.params.from_file and self.params.file:
-            print >>sys.stderr, "--from-file and positional arguments can not be used at the same time"
-            return 1
-
-        if self.params.file:
-            files = self.params.file
-        else:
-            files = [line.strip() for line in open(self.params.from_file, 'r').readlines()]
-            files = filter(lambda f: len(f) > 0, files)
-
-        for f in files:
-            try:
-                print f,
-                self.context.unlink(f)
-                print '\tDELETED'
-            except gfal2.GError, e:
-                if e.code == errno.ENOENT:
-                    print '\tMISSING'
-                elif (e.code == errno.EISDIR or e.code == errno.ENOTEMPTY) and self.params.recursive:
-                    self.__rm_dir(f)
-                    self.context.rmdir(f)
-                    print '\tRMDIR'
-                else:
-                    print '\tFAILED'
-                    raise
-
-    def __rm_dir(self, directory):
-        exclude = ['.', '..']
-        contents = self.context.listdir(directory)
-        if directory[-1] != '/':
-            directory += '/'
-
-        for c in contents:
-            if c in exclude:
-                continue
-            try:
-                self.context.unlink(directory + c)
-            except gfal2.GError, e:
-                if e.code == errno.EISDIR or e.code == errno.ENOTEMPTY:
-                    self.__rm_dir(directory + c)
-                    self.context.rmdir(directory + c)
-                else:
-                    raise
-
     @base.arg("file", action="store", type=str, help="uri of the file to be stat")
     def execute_stat(self):
         st = self.context.stat(self.params.file)
