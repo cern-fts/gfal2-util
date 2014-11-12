@@ -197,16 +197,18 @@ class CommandCopy(CommandBase):
         else:
             print "Copying %d bytes %s => %s" % (source_size, source, destination)
 
-        ret = -1
         try:
             if not self.params.dry_run:
                 ret = self.context.filecopy(t, source, destination)
+            if progress_bar:
+                progress_bar.stop(True)
+                print
         except gfal2.GError, e:
+            if progress_bar:
+                progress_bar.stop(False)
+                print
             if e.code == errno.EEXIST and self.params.force:
                 self.context.unlink(destination)
                 return self._do_file_copy(source, destination, source_size)
             return self._failure(e.message, e.code)
-        finally:
-            if progress_bar:
-                progress_bar.stop(ret == 0)
-                print
+
