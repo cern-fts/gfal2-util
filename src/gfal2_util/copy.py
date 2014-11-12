@@ -57,8 +57,20 @@ class CommandCopy(CommandBase):
                     copy_jobs.append((src, dst))
             src_file.close()
         elif self.params.src:
+            s = self.params.src
             for dst in self.params.dst:
-                copy_jobs.append((self.params.src, dst))
+                copy_jobs.append((s, dst))
+                # Next hop
+                # If dst happens to be a dir, append the file name
+                is_dst_dir = False
+                try:
+                    is_dst_dir = stat.S_ISDIR(self.context.stat(dst).st_mode)
+                except:
+                    pass
+                if is_dst_dir:
+                    s = dst + '/' + os.path.basename(s)
+                else:
+                    s = dst
         else:
             print >>sys.stderr, "Missing source"
             return 1
