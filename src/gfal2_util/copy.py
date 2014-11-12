@@ -11,36 +11,131 @@ from progress import Progress
 
 class CommandCopy(CommandBase):
 
-    def _copy(self, s, d, n):
+    @base.arg('-f', "--force", action='store_true',
+              help="if destination file(s) cannot be overwritten, delete it and try again")
+    @base.arg('-p', "--parent", action='store_true',
+              help="if the destination directory does not exist, create it")
+    @base.arg('-n', "--nbstreams", type=int, default=None,
+              help="specify the maximum number of parallel streams to use for the copy")
+    @base.arg("--tcp-buffersize", type=int, default=None,
+              help="specify the TCP buffersize")
+    @base.arg('-s', "--src-spacetoken", type=str, default="",
+              help="source spacetoken to use for the transfer")
+    @base.arg('-S', "--dst-spacetoken", type=str, default="",
+              help="destination spacetoken to use for the transfer")
+    @base.arg('-T', "--transfer-timeout", type=int, default=None,
+              help="global timeout for the transfer operation")
+    @base.arg('-K', "--checksum", type=str, default=None,
+              help='checksum algorithm to use, or algorithm:value')
+    @base.arg('--from-file', type=str, default=None,
+              help="read sources from a file")
+    @base.arg('--just-copy', action='store_true',
+              help="just do the copy and skip any preparation (i.e. checksum, overwrite, etc.)")
+    @base.arg('-r', '--recursive', action='store_true',
+              help="copy directories recursively")
+    @base.arg('--abort-on-failure', action='store_true',
+              help="abort the whole copy as soon as one failure is encountered")
+    @base.arg('--dry-run', action='store_true',
+              help="do not perform any action, just print what would be done")
+    @base.arg('src', type=str, nargs='?', help="source file")
+    @base.arg('dst', action='store', nargs='+', type=str,
+              help="destination file(s). If more than one is given, they will be chained copy: src -> dst1, dst1->dst2, ...")
+    def execute_copy(self):
+        """
+        Copy a file or set of files
+        """
+        if self.params.from_file and self.params.src:
+            print >>sys.stderr, "Could not combine --from-file with a source in the positional arguments"
+            return 1
+
+        copy_jobs = list()
+        if self.params.from_file:
+            src_file = open(self.params.from_file)
+            dst = self.params.dst[0]
+            for src in map(str.strip, src_file.readlines()):
+                if src:
+                    copy_jobs.append((src, dst))
+            src_file.close()
+        elif self.params.src:
+            for dst in self.params.dst:
+                copy_jobs.append((self.params.src, dst))
+        else:
+            print >>sys.stderr, "Missing source"
+            return 1
+
+        # Do the actual work
+        for (source, destination) in copy_jobs:
+            self._do_copy(source, destination)
+        return 0
+
+    def _failure(self, msg, errno):
+        if self.params.abort_on_failure or not self.params.recursive:
+            raise gfal2.GError(msg, errno)
+        print "ERROR (%d): %s" % (errno, msg)
+        return False
+
+    def _do_copy(self, source, destination):
+        # Check what are we dealing with
         try:
-            file_size = self.context.stat(s).st_size
-        except Exception:
-            file_size = None
+            source_stat = self.context.stat(source)
+            source_isdir = stat.S_ISDIR(source_stat.st_mode)
+        except gfal2.GError, e:
+            return self._failure("Could not stat the source: %s" % e.message, e.code)
 
-        if not self.params.verbose and sys.stdout.isatty():
-            if n > 1:
-                print ''  # just do a new line
-            self.progress_bar = Progress('Copying %s' % str(n))
-            self.progress_bar.update(total_size=file_size)
+        dest_isdir = False
+        dest_exists = False
+        try:
+            dest_stat = self.context.stat(destination)
+            dest_isdir = stat.S_ISDIR(dest_stat.st_mode)
+            dest_exists = True
+        except:
+            pass
 
-        def event_callback(event):
-            if self.params.verbose:
-                print "event: %s" % str(event)
+        # Perform some checks before continuing
+        if dest_exists and not dest_isdir and not self.params.force:
+            return self._failure("Destination %s exists and overwrite is not set" % destination, errno.EEXIST)
+        if dest_exists and not dest_isdir and source_isdir:
+                return self._failure("Can not copy a directory over a file", errno.EISDIR)
 
-        def monitor_callback(src, dst, avg, inst, trans, elapsed):
-            if self.params.verbose:
-                print "monitor: %s %s %s %s %s %s" % (
-                    str(src), str(dst),
-                    str(avg), str(inst), str(trans), str(elapsed)
-                )
+        if source_isdir and not dest_exists:
+            try:
+                self._mkdir(destination)
+            except gfal2.GError, e:
+                return self._failure("Could not create the directory: %s" % e.message, e.code)
+            return self._recursive_copy(source, destination)
+        elif dest_isdir and source_isdir:
+            if self.params.recursive:
+                return self._recursive_copy(source, destination)
+            else:
+                print "Skipping %s" % source
+                return True
+        elif dest_isdir:
+            if destination[-1] != '/':
+                destination += '/'
+            destination += os.path.basename(source)
 
-            if self.progress_bar:
-                self.progress_bar.update(trans, file_size, avg, elapsed)
+        return self._do_file_copy(source, destination, source_stat.st_size)
 
-        #set up transfer parameters. Leave defaults unless specified
-        t = self.context.transfer_parameters()
-        t.event_callback = event_callback
-        t.monitor_callback = monitor_callback
+    def _mkdir(self, surl):
+        print "Mkdir %s" % surl
+        if not self.params.dry_run:
+            self.context.mkdir_rec(surl, 0755)
+
+    def _recursive_copy(self, source, destination):
+        all_sources = self.context.listdir(source)
+        src_base_dir = source
+        dst_base_dir = destination
+        if src_base_dir[-1] != '/':
+            src_base_dir += '/'
+        if dst_base_dir[-1] != '/':
+            dst_base_dir += '/'
+        for entry in all_sources:
+            if entry not in ['.', '..']:
+                new_source = src_base_dir + entry
+                new_destination = dst_base_dir + entry
+                self._do_copy(new_source, new_destination)
+
+    def _setup_transfer_params(self, t, event_callback, monitor_callback):
         if self.params.nbstreams:
             t.nbstreams = self.params.nbstreams
         if self.params.transfer_timeout:
@@ -64,91 +159,42 @@ class CommandCopy(CommandBase):
         if self.params.just_copy:
             t.strict_copy = True
 
-        #deduce destination name
-        try:
-            if stat.S_ISDIR(self.context.stat(d).st_mode):
-                d += '/' + os.path.basename(s)
-        except:
-            pass
+    def _do_file_copy(self, source, destination, source_size):
+        def event_callback(event):
+            if self.params.verbose:
+                print "event: %s" % str(event)
+
+        def monitor_callback(src, dst, avg, inst, trans, elapsed):
+            if self.params.verbose:
+                print "monitor: %s %s %s %s %s %s" % (
+                    str(src), str(dst),
+                    str(avg), str(inst), str(trans), str(elapsed)
+                )
+
+            if self.progress_bar:
+                self.progress_bar.update(trans, source_size, avg, elapsed)
+
+        t = self.context.transfer_parameters()
+        self._setup_transfer_params(t, event_callback, monitor_callback)
+
+        progress_bar = None
+        if not self.params.dry_run and not self.params.verbose and sys.stdout.isatty():
+            progress_bar = Progress("Copying %s" % source)
+            progress_bar.update(total_size=source_size)
+            progress_bar.start()
+        else:
+            print "Copying %d bytes %s => %s" % (source_size, source, destination)
 
         ret = -1
-        if self.progress_bar:
-            self.progress_bar.start()
         try:
-            try:
-                ret = self.context.filecopy(t, s, d)
-            except gfal2.GError, e:
-                if e.code == errno.EISDIR:
-                    if d[-1] != '/':
-                        d += '/'
-                    d += os.path.basename(s)
-                    ret = self.context.filecopy(t, s, d)
-                elif e.code == errno.EEXIST and self.params.force:
-                    ret = self.context.unlink(d)
-                    ret = self.context.filecopy(t, s, d)
-                else:
-                    raise
+            if not self.params.dry_run:
+                ret = self.context.filecopy(t, source, destination)
+        except gfal2.GError, e:
+            if e.code == errno.EEXIST and self.params.force:
+                self.context.unlink(destination)
+                return self._do_file_copy(source, destination, source_size)
+            return self._failure(e.message, e.code)
         finally:
-            if self.progress_bar:
-                self.progress_bar.stop(ret == 0)
-
-        return d
-
-    @base.arg('-f', "--force", action='store_true',
-              help="if destination file(s) cannot be overwritten, delete it and try again")
-    @base.arg('-p', "--parent", action='store_true',
-              help="if the destination directory does not exist, create it")
-    @base.arg('-n', "--nbstreams", type=int, default=None,
-              help="specify the maximum number of parallel streams to use for the copy")
-    @base.arg("--tcp-buffersize", type=int, default=None,
-              help="specify the TCP buffersize")
-    @base.arg('-s', "--src-spacetoken", type=str, default="",
-              help="source spacetoken to use for the transfer")
-    @base.arg('-S', "--dst-spacetoken", type=str, default="",
-              help="destination spacetoken to use for the transfer")
-    @base.arg('-T', "--transfer-timeout", type=int, default=None,
-              help="global timeout for the transfer operation")
-    @base.arg('-K', "--checksum", type=str, default=None,
-              help='checksum algorithm to use, or algorithm:value')
-    @base.arg('--from-file', type=str, default=None,
-              help="read sources from a file")
-    @base.arg('--just-copy', action='store_true',
-              help='just do the copy and skip any preparation (i.e. checksum, overwrite, etc.)')
-    @base.arg('src', type=str, nargs='?', help="source file")
-    @base.arg('dst', action='store', nargs='+', type=str,
-              help="destination file(s). If more than one is given, they will be chained copy: src -> dst1, dst1->dst2, ...")
-    def execute_copy(self):
-        """
-        Copy a file
-        """
-
-        if not self.params.src and self.params.from_file:
-            src_file = open(self.params.from_file, 'r')
-            dst = self.params.dst[0]
-            i = 1
-            for src in [line.strip() for line in src_file.readlines()]:
-                try:
-                    if src:
-                        self._copy(src, dst, src)
-                except gfal2.GError, e:
-                    pass
-                i += 1
-            src_file.close()
-        elif self.params.from_file and self.params.src:
-            print >>sys.stderr, "Could not combine --from-file with a source in the positional arguments"
-            return 1
-        elif self.params.src:
-            s = self.params.src
-            i = 1
-            for d in self.params.dst:
-                try:
-                    d = self._copy(s, d, i)
-                    s = d
-                    i += 1
-                except:
-                    if len(self.params.dst) > 1:
-                        print "%s to %s" % (s, d)
-                    raise
-        else:
-            print >>sys.stderr, "Missing source"
-            return 1
+            if progress_bar:
+                progress_bar.stop(ret == 0)
+                print
