@@ -1,0 +1,86 @@
+.\" Manpage for gfal-xattr
+.\"
+.TH GFAL-XATTR 1 "October 2013" "v1.0.0"
+.SH NAME
+gfal-xattr \- show or set attributes of a file
+.SH SYNOPSIS
+.B gfal-xattr
+[
+.I "OPTION"
+]...
+.I FILE
+[
+.I ATTRIBUTE
+[=
+.I VALUE
+]]
+
+.SH DESCRIPTION
+.B gfal-xattr
+Display attributes of a file or set them to a new value. This command comes in three forms, making it possible, for a specified file,  to list all attribute and corresponding values, display the value of a particular attribute or assign a new value to a particular attribute - see examples.
+.SH OPTIONS
+.TP 
+.B "-h, --help"
+show help about the command.
+.TP
+.B "-V, --version"
+output version information and exit.
+.TP
+.B "-v, --verbose"
+verbose mode. Repeat up to 3 times for the most verbose mode.
+.TP
+.B "-d, --definition"
+define properties for gfal2.
+.TP 
+.B "-t, --timeout"
+global timeout for the execution of the command. Command is interrupted if time expires before it finishes.
+.TP
+.B FILE
+file URI
+.TP
+.B ATTRIBUTE
+optional argument, specifying a attribute to get or set. If no attribute is given, all attributes and corresponding values are displayed.
+.TP
+.B VALUE
+if a attribute is given, a new value can optionally be assigned to it.
+
+.SH EXAMPLES
+.TP 
+Show all attributes and values of a file:
+.B gfal-xattr
+srm://endpoint.cern.ch/path/file
+.PP
+.TP
+Show the value of a particular attribute:
+.B gfal-xattr
+srm://endpoint.cern.ch/path/file user.status
+.PP
+.TP
+Set a new value to an attribute:
+.B gfal-xattr
+srm://endpoint.cern.ch/path/file user.status=new_value
+.PP
+.TP
+Typically, you can get the transport urls (turls) with the user.replicas attribute:
+srm://endpoint.cern.ch/path/file user.replicas
+
+.SH FILES
+.I /etc/gfal2.d/*
+.RS 
+All configuration files in this directory affect the behavior of the underlying gfal2.
+
+.SH AUTHORS
+Duarte Meneses <duarte.meneses@cern.ch>
+.br
+Adrien Devresse <adrien.devresse@cern.ch>
+.br
+Alejandro Alvarez Ayllon <alejandro.alvarez.ayllon@cern.ch>
+
+.SH "SEE ALSO"
+.BR gfal-copy (1),
+.BR gfal-rm (1),
+.BR gfal-cat (1),
+.BR gfal-save (1),
+.BR gfal-mkdir (1),
+.BR gfal-ls (1),
+.BR gfal-cat (1)

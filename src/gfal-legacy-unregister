@@ -1,0 +1,8 @@
+#!/usr/bin/python
+## @license GPLv3
+
+from gfal2_util.shell import Gfal2Shell
+import sys
+
+if __name__ == "__main__":
+        sys.exit(Gfal2Shell().main(sys.argv))

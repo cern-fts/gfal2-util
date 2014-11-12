@@ -1,0 +1,24 @@
+<testsuite errors="0" failures="0" name="unittest.TestSuite" tests="20" time="1.358">
+  <testcase classname="test_copy.UtilCopyTest" name="test_chain_copy" time="0.0625"></testcase>
+  <testcase classname="test_copy.UtilCopyTest" name="test_copy" time="0.0655"></testcase>
+  <testcase classname="test_copy.UtilCopyTest" name="test_copy_dir" time="0.0623"></testcase>
+  <testcase classname="test_copy.UtilCopyTest" name="test_copy_dst_dir" time="0.0623"></testcase>
+  <testcase classname="test_copy.UtilCopyTest" name="test_copy_no_basename" time="0.0626"></testcase>
+  <testcase classname="test_general.UtilGeneralTest" name="test_protocol_not_supported" time="0.0619"></testcase>
+  <testcase classname="test_ls.UtilLsTest" name="test_basic" time="0.0623"></testcase>
+  <testcase classname="test_ls.UtilLsTest" name="test_directory" time="0.0627"></testcase>
+  <testcase classname="test_ls.UtilLsTest" name="test_invalid" time="0.0632"></testcase>
+  <testcase classname="test_ls.UtilLsTest" name="test_name" time="0.1240"></testcase>
+  <testcase classname="test_ls.UtilLsTest" name="test_size" time="0.1251"></testcase>
+  <testcase classname="test_mkdir.UtilMkdirTest" name="test_already_exists" time="0.0625"></testcase>
+  <testcase classname="test_mkdir.UtilMkdirTest" name="test_already_exists_p" time="0.0622"></testcase>
+  <testcase classname="test_mkdir.UtilMkdirTest" name="test_invalid_mode" time="0.0447"></testcase>
+  <testcase classname="test_mkdir.UtilMkdirTest" name="test_mkdir" time="0.0617"></testcase>
+  <testcase classname="test_mkdir.UtilMkdirTest" name="test_mkdir_mode" time="0.0623"></testcase>
+  <testcase classname="test_mkdir.UtilMkdirTest" name="test_mkdir_recursive" time="0.0628"></testcase>
+  <testcase classname="test_rm.UtilRmTest" name="test_dir_non_rec" time="0.0624"></testcase>
+  <testcase classname="test_rm.UtilRmTest" name="test_multiple" time="0.0623"></testcase>
+  <testcase classname="test_rm.UtilRmTest" name="test_recursive" time="0.0619"></testcase>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
