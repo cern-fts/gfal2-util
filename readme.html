@@ -48,32 +48,32 @@
 		
 		<h3>Standard commands</h3>
 		<dl>
-			<dt>gfal-cat</dt>
+			<dt><a href="html/gfal-cat.1.html">gfal-cat</a></dt>
 			<dd>Equivalent to cat. Print into the standard output the content of the requested file</dd>
-			<dt>gfal-copy</dt>
+			<dt><a href="html/gfal-copy.1.html">gfal-copy</a></dt>
 			<dd>
 				Equivalent to cp but more powerful. Copy a file, or set of files, between different
 				storages and/or local. Recursive mode is supported. Try --dry-run to validate what will happen
 			</dd>
-			<dt>gfal-ls</dt>
+			<dt><a href="html/gfal-ls.1.html">gfal-ls</a></dt>
 			<dd>Equivalent to ls. List the content of a directory. Use -l to generate a detailed list</dd>
-			<dt>gfal-mkdir</dt>
+			<dt><a href="html/gfal-mkdir.1.html">gfal-mkdir</a></dt>
 			<dd>Equivalent to mkdir. Create a directory</dd>
-			<dt>gfal-rm</dt>
+			<dt><a href="html/gfal-rm.1.html">gfal-rm</a></dt>
 			<dd>
 				Equivalent to rm. Remove a file, or a directory if -r is specified.
 				Try --dry-run if you want to validate what will happen without doing anything
 			</dd>
-			<dt>gfal-save</dt>
+			<dt><a href="html/gfal-save.1.html">gfal-save</a></dt>
 			<dd>Reads from stdin and writes into a local or remote file</dd>
-			<dt>gfal-stat</dt>
+			<dt><a href="html/gfal-stat.1.html">gfal-stat</a></dt>
 			<dd>Equivalent to stat. Print information about the file or directory</dd>
-			<dt>gfal-sum</dt>
+			<dt><a href="html/gfal-sum.1.html">gfal-sum</a></dt>
 			<dd>
 				Query or calculate the checksum of the given file.
 				Normally recognised checksums are adler32, md5 and sha1, but it depends on the protocol and/or storage software
 			</dd>
-			<dt>gfal-xattr</dt>
+			<dt><a href="html/gfal-xattr.1.html">gfal-xattr</a></dt>
 			<dd>
 				Equivalent to attr. Query or set an extended attribute from a file or directory.
 				Which extended attributes are supported depend on the protocol. For instance user.replicas or user.comment can be used for SRM or LFC.
@@ -87,13 +87,13 @@
 			We recommend avoiding the usage of these tools if possible.
 		</p>
 		<dl>
-			<dt>gfal-legacy-bringonline</dt>
+			<dt><a href="html/gfal-legacy-bringonline.1.html">gfal-legacy-bringonline</a></dt>
 			<dd>Perform a staging operation on the given SURL</dd>
-			<dt>gfal-legacy-register</dt>
+			<dt><a href="html/gfal-legacy-register.1.html">gfal-legacy-register</a></dt>
 			<dd>Register a new replica in a catalog. We recommend using instead gfal-xattr [surl] user.replicas=+new_replica</dd>
-			<dt>gfal-legacy-replicas</dt>
+			<dt><a href="html/gfal-legacy-replicas.1.html">gfal-legacy-replicas</a></dt>
 			<dd>List replicas from a catalog or SRM. We recommend using instead gfal-xattr [surl] user.replicas</dd>
-			<dt>gfal-legacy-unregister</dt>
+			<dt><a href="html/gfal-legacy-unregister.1.html">gfal-legacy-unregister</a></dt>
 			<dd>Remove an existing replica from a catalog. We recommend using instead gfal-xattr [surl] user.replicas=-replica</dd>
 		</dl>
 		
