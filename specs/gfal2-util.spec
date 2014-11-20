@@ -57,7 +57,7 @@ python test/functional/test_all.py
 %{python_sitelib}/*
 %{_bindir}/gfal-*
 %{_mandir}/man1/*
-%doc RELEASE-NOTES VERSION LICENSE
+%doc RELEASE-NOTES VERSION LICENSE readme.html
 
 
 %changelog
