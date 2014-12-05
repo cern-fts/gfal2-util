@@ -17,9 +17,9 @@ from utils import file_type_str, file_mode_str
 
 
 class GfalCommands(CommandBase):
-    @base.arg('-m', '--mode', action="store", type=int, default=755, help="display hidden files")
-    @base.arg('-p', '--parents', action='store_true', help='no error if existing, make parent directories as needed')
-    @base.arg('directory', action='store', nargs='+', type=str, help="Directory's uri.")
+    @base.arg('-m', '--mode', action='store', type=int, default=755, help="display hidden files")
+    @base.arg('-p', '--parents', action='store_true', help="no error if existing, make parent directories as needed")
+    @base.arg('directory', action='store', nargs='+', type=str, help="Directory's uri")
     def execute_mkdir(self):
         """
         Makes directories. By default, it sets file mode 0755.
@@ -37,7 +37,7 @@ class GfalCommands(CommandBase):
             else:
                 self.context.mkdir(d, mode)
 
-    @base.arg("file", action='store', type=str, help='uri of the file to be written')
+    @base.arg('file', action='store', type=str, help="uri of the file to be written")
     def execute_save(self):
         """
         Reads from stdin and writes to a file. If the file exists, it will be overwritten
@@ -51,7 +51,7 @@ class GfalCommands(CommandBase):
             else:
                 break
 
-    @base.arg("file", action='store', nargs='+', type=str, help='uri of the file to be displayed')
+    @base.arg('file', action='store', nargs='+', type=str, help="uri of the file to be displayed")
     def execute_cat(self):
         """
         Sends to stdout the contents of files
@@ -69,6 +69,9 @@ class GfalCommands(CommandBase):
     @base.arg('file', action='store', type=str, help="file uri")
     @base.arg('attribute', nargs='?', type=str, help="attribute to retrieve or set. To set, use key=value")
     def execute_xattr(self):
+        """
+        Gets or set the extended attributes of files and directories
+        """
         if self.params.attribute is not None:
             if '=' in self.params.attribute:
                 i = self.params.attribute.find("=")
@@ -90,7 +93,7 @@ class GfalCommands(CommandBase):
     @base.arg('file', action='store', type=str,
               help="file uri to use for checksum calculation")
     @base.arg('checksum_type', action='store', type=str,
-              help="checksum algorithm to use. For example: ADLER32, CRC32, MD5.")
+              help="checksum algorithm to use. For example: ADLER32, CRC32, MD5")
     def execute_sum(self):
         """
         Calculates the checksum of a file
@@ -98,8 +101,11 @@ class GfalCommands(CommandBase):
         checksum = self.context.checksum(self.params.file, self.params.checksum_type)
         sys.stdout.write(self.params.file + ' ' + checksum + '\n')
 
-    @base.arg("file", action="store", type=str, help="uri of the file to be stat")
+    @base.arg('file', action='store', type=str, help="uri of the file to be stat")
     def execute_stat(self):
+        """
+        Stats a file
+        """
         st = self.context.stat(self.params.file)
         print "  File: '%s'" % self.params.file
         print "  Size: %d\t%s" % (st.st_size, file_type_str(stat.S_IFMT(st.st_mode)))
@@ -107,3 +113,11 @@ class GfalCommands(CommandBase):
         print "Access: %s" % datetime.fromtimestamp(st.st_atime).strftime("%Y-%m-%d %H:%M:%S.%f")
         print "Modify: %s" % datetime.fromtimestamp(st.st_mtime).strftime("%Y-%m-%d %H:%M:%S.%f")
         print "Change: %s" % datetime.fromtimestamp(st.st_ctime).strftime("%Y-%m-%d %H:%M:%S.%f")
+
+    @base.arg('source', action='store', type=str, help="original file name")
+    @base.arg('destination', action='store', type=str, help="new file name")
+    def execute_rename(self):
+        """
+        Renames files or directories
+        """
+        self.context.rename(self.params.source, self.params.destination)

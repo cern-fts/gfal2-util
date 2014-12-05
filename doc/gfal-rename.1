@@ -1,0 +1,83 @@
+.\" Manpage for gfal-rename
+.\"
+.TH GFAL-RENAME 1 "December 2014" "v1.2.0"
+.SH NAME
+gfal-rename \- Renames files or directories
+.SH SYNOPSIS
+.B gfal-rename
+[
+.B "-h"
+] [
+.B -V
+] [
+.B -v
+] [
+.B -D
+.I DEFINITION
+] [
+.B -t
+.I TIMEOUT
+]
+.I SOURCE
+.I DESTINATION
+
+.SH DESCRIPTION
+.B gfal-rename
+Renames SOURCE to DESTINATION.
+
+.SH OPTIONS
+.TP
+.B "-h, --help"
+show help about the command.
+.TP
+.B "-V, --version"
+output version information and exit.
+.TP
+.B "-v, --verbose"
+verbose mode. Repeat up to 3 times for the most verbose mode.
+.TP
+.B "-D, --definition"
+define properties for gfal2.
+.TP
+.B "-t, --timeout"
+global timeout for the execution of the command. Command is interrupted if time expires before it finishes.
+.TP
+.B "-E, --cert"
+user certificate
+.TP
+.B "--key"
+user private key
+.TP
+.B "-4"
+Forces gfal2-util to use IPv4 addresses only (if the plugin supports this)
+.TP
+.B "-6"
+Forces gfal2-util to use IPv6 addresses only (if the plugin supports this)
+
+.SH EXAMPLES
+.TP
+.B gfal-rename
+file:///tmp/original file:///tmp/newname
+
+.SH FILES
+.I /etc/gfal2.d/*
+.RS
+All configuration files in this directory affect the behavior of the underlying gfal2.
+
+.SH AUTHORS
+Duarte Meneses <duarte.meneses@cern.ch>
+.br
+Adrien Devresse <adrien.devresse@cern.ch>
+.br
+Alejandro Alvarez Ayllon <alejandro.alvarez.ayllon@cern.ch>
+
+.SH "SEE ALSO"
+.BR gfal-cat (1),
+.BR gfal-copy (1),
+.BR gfal-ls (1),
+.BR gfal-mkdir (1),
+.BR gfal-rm (1),
+.BR gfal-save (1),
+.BR gfal-stat (1),
+.BR gfal-sum (1),
+.BR gfal-xattr (1)
