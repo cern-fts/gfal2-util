@@ -1,6 +1,6 @@
 .\" Manpage for gfal-save
 .\"
-.TH GFAL-LEGACY-REGISTER 1 "July 2014" "v1.1.0"
+.TH GFAL-LEGACY-REGISTER 1 "December 2014" "v1.2.0"
 .SH NAME
 gfal-legacy-register \- register a replica
 .SH SYNOPSIS
@@ -12,10 +12,10 @@ gfal-legacy-register \- register a replica
 ] [
 .B -v
 ] [
-.B -D 
+.B -D
 .I DEFINITION
 ] [
-.B -t 
+.B -t
 .I TIMEOUT
 ] \fI lfc surl\fR
 
@@ -24,7 +24,7 @@ gfal-legacy-register \- register a replica
 Register a new replica into a catalog
 
 .SH OPTIONS
-.TP 
+.TP
 .B "-h, --help"
 show help about the command.
 .TP
@@ -36,7 +36,7 @@ verbose mode. Repeat up to 3 times for the most verbose mode.
 .TP
 .B "-d, --definition"
 define properties for gfal2.
-.TP 
+.TP
 .B "-t, --timeout"
 global timeout for the execution of the command. Command is interrupted if time expires before it finishes.
 .TP
@@ -54,7 +54,7 @@ srm://endpoint.cern.ch/path/group
 
 .SH FILES
 .I /etc/gfal2.d/*
-.RS 
+.RS
 All configuration files in this directory affect the behavior of the underlying gfal2.
 
 .SH AUTHORS

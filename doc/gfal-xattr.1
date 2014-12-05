@@ -1,6 +1,6 @@
 .\" Manpage for gfal-xattr
 .\"
-.TH GFAL-XATTR 1 "October 2013" "v1.0.0"
+.TH GFAL-XATTR 1 "December 2014" "v1.2.0"
 .SH NAME
 gfal-xattr \- show or set attributes of a file
 .SH SYNOPSIS
@@ -19,7 +19,7 @@ gfal-xattr \- show or set attributes of a file
 .B gfal-xattr
 Display attributes of a file or set them to a new value. This command comes in three forms, making it possible, for a specified file,  to list all attribute and corresponding values, display the value of a particular attribute or assign a new value to a particular attribute - see examples.
 .SH OPTIONS
-.TP 
+.TP
 .B "-h, --help"
 show help about the command.
 .TP
@@ -31,7 +31,7 @@ verbose mode. Repeat up to 3 times for the most verbose mode.
 .TP
 .B "-d, --definition"
 define properties for gfal2.
-.TP 
+.TP
 .B "-t, --timeout"
 global timeout for the execution of the command. Command is interrupted if time expires before it finishes.
 .TP
@@ -45,7 +45,7 @@ optional argument, specifying a attribute to get or set. If no attribute is give
 if a attribute is given, a new value can optionally be assigned to it.
 
 .SH EXAMPLES
-.TP 
+.TP
 Show all attributes and values of a file:
 .B gfal-xattr
 srm://endpoint.cern.ch/path/file
@@ -66,7 +66,7 @@ srm://endpoint.cern.ch/path/file user.replicas
 
 .SH FILES
 .I /etc/gfal2.d/*
-.RS 
+.RS
 All configuration files in this directory affect the behavior of the underlying gfal2.
 
 .SH AUTHORS
@@ -77,10 +77,12 @@ Adrien Devresse <adrien.devresse@cern.ch>
 Alejandro Alvarez Ayllon <alejandro.alvarez.ayllon@cern.ch>
 
 .SH "SEE ALSO"
-.BR gfal-copy (1),
-.BR gfal-rm (1),
 .BR gfal-cat (1),
-.BR gfal-save (1),
-.BR gfal-mkdir (1),
+.BR gfal-copy (1),
 .BR gfal-ls (1),
-.BR gfal-cat (1)
+.BR gfal-mkdir (1),
+.BR gfal-rename (1),
+.BR gfal-rm (1),
+.BR gfal-save (1),
+.BR gfal-stat (1),
+.BR gfal-sum (1)
