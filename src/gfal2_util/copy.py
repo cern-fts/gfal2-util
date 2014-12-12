@@ -151,7 +151,7 @@ class CommandCopy(CommandBase):
         if self.params.nbstreams:
             t.nbstreams = self.params.nbstreams
         if self.params.transfer_timeout:
-            t.transfer_timeout = self.params.timeout
+            t.timeout = self.params.transfer_timeout
         if self.params.src_spacetoken:
             t.src_spacetoken = self.params.src_spacetoken
         if self.params.dst_spacetoken:
