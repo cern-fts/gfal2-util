@@ -40,19 +40,20 @@ class CommandRm(CommandBase):
         """
         Perform the action, either removing or just informing
         """
-        if self.params.dry_run:
-            try:
-                st = self.context.stat(surl)
-                if stat.S_ISDIR(st.st_mode):
-                    self._do_rmdir(surl)
-                else:
-                    print "%s\tSKIP" % surl
-            except gfal2.GError, e:
-                if e.code == errno.ENOENT:
-                    print "%s\tMISSING" % surl
-                else:
-                    print "%s\tFAILED" % surl
-                    raise
+        try:
+            st = self.context.stat(surl)
+        except gfal2.GError, e:
+            if e.code == errno.ENOENT:
+                print "%s\tMISSING" % surl
+                return
+            else:
+                print "%s\tFAILED" % surl
+                raise
+
+        if stat.S_ISDIR(st.st_mode):
+            self._do_rmdir(surl)
+        elif self.params.dry_run:
+            print "%s\tSKIP" % surl
         else:
             try:
                 self.context.unlink(surl)
@@ -60,8 +61,7 @@ class CommandRm(CommandBase):
             except gfal2.GError, e:
                 if e.code == errno.ENOENT:
                     print "%s\tMISSING" % surl
-                elif e.code in [errno.EISDIR, errno.ENOTEMPTY, errno.EPERM] and self.params.recursive:
-                    self._do_rmdir(surl)
+                    return
                 else:
                     print "%s\tFAILED" % surl
                     raise
