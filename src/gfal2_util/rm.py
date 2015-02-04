@@ -60,7 +60,7 @@ class CommandRm(CommandBase):
             except gfal2.GError, e:
                 if e.code == errno.ENOENT:
                     print "%s\tMISSING" % surl
-                elif e.code in [errno.EISDIR, errno.ENOTEMPTY] and self.params.recursive:
+                elif e.code in [errno.EISDIR, errno.ENOTEMPTY, errno.EPERM] and self.params.recursive:
                     self._do_rmdir(surl)
                 else:
                     print "%s\tFAILED" % surl
