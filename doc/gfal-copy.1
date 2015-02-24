@@ -2,9 +2,9 @@
 .\"
 .TH GFAL-COPY 1 "January 2014" "v1.0.0"
 .SH NAME
-gfal-copy \- Copy files 
+gfal-copy \- Copy files
 .SH SYNOPSIS
-.B gfal-copy 
+.B gfal-copy
 [
 .I OPTION
 ]...
@@ -16,7 +16,7 @@ gfal-copy \- Copy files
 Copies files from source to destination(s). If several destinations are specified, the file will be copy in a chain: src -> dst1, dst1 -> dst2, ... If used in an interactive console, transfer information will be giving during the copy, which varies depending on the available information. This command can be used to upload local files to remote file systems and to register files in the file catalog (see examples).
 
 .SH OPTIONS
-.TP 
+.TP
 .B "-h, --help"
 show help about the command.
 .TP
@@ -26,35 +26,54 @@ output version information and exit.
 .B "-v, --verbose"
 verbose mode. Repeat up to 3 times for the most verbose mode.
 .TP
-.B "-d, --definition"
-.I DEFINITION
-define properties for gfal2.
-.TP 
-.B "-t, --timeout"
-.I TIMEOUT
-global timeout for the execution of the command. Command is interrupted if time expires before it finishes.
+.BI "-D, --definition "  DEFINITION
+override a gfal parameter
 .TP
-.B "-m, --mode"
-.I MODE
-set file mode (as in chmod). If not specified, 0755 is used.
-.TP 
+.BI "-t, --timeout " TIMEOUT
+maximum time for the operation to terminate - default is 1800 seconds
+.TP
+.BI "-E, --cert " CERT
+user certificate
+.TP
+.BI "--key " KEY
+user private key
+.TP
+.B "-4"
+Forces gfal2-util to use IPv4 addresses only
+.TP
+.B "-6"
+Forces gfal2-util to use IPv6 addresses only
+.TP
 .B "-f, --force"
-if destination file(s) cannot be overwritten, delete it and try again.
+if destination file(s) cannot be overwritten, delete it and try again
 .TP
-.B "-n, --nbstreams"
-specify the maximum number of parallel streams to use for the copy.
+.B "-p, --parent"
+if the destination directory does not exist, create it
 .TP
-.B "-s, --src-spacetoken"
-.I SRC_SPACETOKEN
-source spacetoken to use for the transfer.
+.BI "-n, --nbstreams " NBSTREAMS
+specify the maximum number of parallel streams to use for the copy
 .TP
-.B "-S, --dst-spacetoken"
-.I DST_SPACETOKEN
-destination spacetoken to use for the transfer.
+.BI "--tcp-buffersize " TCP_BUFFERSIZE
+specify the TCP buffersize
 .TP
-.B "-T, --transfer-timeout"
-.I TRANSFER_TIMEOUT
-timeout for the transfer operation.
+.BI "-s, --src-spacetoken " SRC_SPACETOKEN
+source spacetoken to use for the transfer
+.TP
+.BI "-S, --dst-spacetoken " DST_SPACETOKEN
+destination spacetoken to use for the transfer
+.TP
+.BI "-T, --transfer-timeout " TRANSFER_TIMEOUT
+global timeout for the transfer operation
+.TP
+.BI "-K, --checksum " CHECKSUM
+checksum algorithm to use, or algorithm:value
+.TP
+.BI "--from-file " FROM_FILE
+read sources from a file
+.TP
+.B "--just-copy"
+just do the copy and skip any preparation (i.e. checksum, overwrite, etc.)
+
 
 .SH EXAMPLES
 .TP
@@ -72,14 +91,13 @@ Do a chained copy:
 .PP
 .TP
 Registration of a file in the LFC:
-.B 
-
+.B
 
 
 .SH FILES
 .I /etc/gfal2.d/*
-.RS 
-All configuration files in this directory affect the behavior of the underlying gfal2, in particular, the default choice of transfer protocols. 
+.RS
+All configuration files in this directory affect the behavior of the underlying gfal2, in particular, the default choice of transfer protocols.
 
 .SH AUTHORS
 Duarte Meneses <duarte.meneses@cern.ch>

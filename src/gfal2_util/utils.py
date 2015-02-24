@@ -4,6 +4,7 @@ Created on Oct 4, 2013
 @author: "Duarte Meneses <duarte.meneses@cern.ch>"
 """
 import signal
+import stat
 
 
 class Timeout:
@@ -23,3 +24,46 @@ class Timeout:
 
     def raise_timeout(self, *args):
         raise Timeout.Timeout()
+
+
+def file_type_str(type):
+    ftype_str = {
+        stat.S_IFBLK: 'block device',
+        stat.S_IFCHR: 'character device',
+        stat.S_IFDIR: 'directory',
+        stat.S_IFIFO: 'fifo',
+        stat.S_IFLNK: 'symbolic link',
+        stat.S_IFREG: 'regular file',
+        stat.S_IFSOCK: 'socket'
+    }
+    repr = ftype_str.get(type, 'unknown')
+    return repr
+
+
+def _mode_str_triplet(mode):
+    mode_str = ['-'] * 3
+    if mode & stat.S_IROTH:
+        mode_str[0] = 'r'
+    if mode & stat.S_IWOTH:
+        mode_str[1] = 'w'
+    if mode & stat.S_IXOTH:
+        mode_str[2] = 'x'
+    return ''.join(mode_str)
+
+
+def file_mode_str(mode):
+    mode_str = ''
+    if stat.S_ISDIR(mode):
+        mode_str += 'd'
+    elif stat.S_ISBLK(mode):
+        mode_str +='b'
+    elif stat.S_ISCHR(mode):
+        mode_str += 'c'
+    elif stat.S_ISFIFO(mode):
+        mode_str += 'f'
+    elif stat.S_ISSOCK(mode):
+        mode_str += 's'
+    else:
+        mode_str += '-'
+    mode_str += _mode_str_triplet(mode >> 6) + _mode_str_triplet(mode >> 3) + _mode_str_triplet(mode)
+    return mode_str

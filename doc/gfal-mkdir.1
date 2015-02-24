@@ -1,10 +1,10 @@
 .\" Manpage for gfal-mkdir
 .\"
-.TH GFAL-MKDIR 1 "October 2013" "v1.0.0"
+.TH GFAL-MKDIR 1 "December 2014" "v1.2.0"
 .SH NAME
 gfal-mkdir \- make directories
 .SH SYNOPSIS
-.B gfal-mkdir 
+.B gfal-mkdir
 [
 .B "-h"
 ] [
@@ -12,10 +12,10 @@ gfal-mkdir \- make directories
 ] [
 .B -v
 ] [
-.B -D 
+.B -D
 .I DEFINITION
 ] [
-.B -t 
+.B -t
 .I TIMEOUT
 ] [
 .B -p
@@ -27,7 +27,7 @@ gfal-mkdir \- make directories
 Create the DIRECTORY(ies), if they do not already exist. By default, it creates them with mode 0755.
 
 .SH OPTIONS
-.TP 
+.TP
 .B "-h, --help"
 show help about the command.
 .TP
@@ -39,13 +39,13 @@ verbose mode. Repeat up to 3 times for the most verbose mode.
 .TP
 .B "-d, --definition"
 define properties for gfal2.
-.TP 
+.TP
 .B "-t, --timeout"
 global timeout for the execution of the command. Command is interrupted if time expires before it finishes.
 .TP
 .B "-m, --mode"
 set file mode (as in chmod). If not specified, 0755 is used. Depending on the storage implementation, it might not be used.
-.TP 
+.TP
 .B "-p, --parents"
 no error if existing, make parent directories as needed.
 
@@ -60,7 +60,7 @@ srm://endpoint.cern.ch/path/directory1 srm://endpoint.cern.ch/path/directory2
 
 .SH FILES
 .I /etc/gfal2.d/*
-.RS 
+.RS
 All configuration files in this directory affect the behavior of the underlying gfal2.
 
 .SH AUTHORS
@@ -71,11 +71,12 @@ Adrien Devresse <adrien.devresse@cern.ch>
 Alejandro Alvarez Ayllon <alejandro.alvarez.ayllon@cern.ch>
 
 .SH "SEE ALSO"
-.BR gfal-copy (1),
-.BR gfal-rm (1),
 .BR gfal-cat (1),
-.BR gfal-save (1),
-.BR gfal-mkdir (1),
+.BR gfal-copy (1),
 .BR gfal-ls (1),
+.BR gfal-rename (1),
+.BR gfal-rm (1),
+.BR gfal-save (1),
+.BR gfal-stat (1),
+.BR gfal-sum (1),
 .BR gfal-xattr (1)
-

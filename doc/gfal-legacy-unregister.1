@@ -1,10 +1,10 @@
 .\" Manpage for gfal-save
 .\"
-.TH GFAL-SAVE 1 "December 2014" "v1.2.0"
+.TH GFAL-LEGACY-UNREGISTER 1 "December 2014" "v1.2.0"
 .SH NAME
-gfal-mkdir \- make directories
+gfal-legacy-unregister \- register a replica
 .SH SYNOPSIS
-.B gfal-save
+.B gfal-legacy-unregister
 [
 .B "-h"
 ] [
@@ -17,11 +17,11 @@ gfal-mkdir \- make directories
 ] [
 .B -t
 .I TIMEOUT
-] \fI file\fR ...
+] \fI lfc surl\fR
 
 .SH DESCRIPTION
-.B gfal-save
-Reads from stdin and writes to a file until it finds EOF. If the file exists, it will be overwritten.
+.B gfal-legacy-unregister
+Removes a replica from a catalog
 
 .SH OPTIONS
 .TP
@@ -40,14 +40,16 @@ define properties for gfal2.
 .B "-t, --timeout"
 global timeout for the execution of the command. Command is interrupted if time expires before it finishes.
 .TP
-.B file
-destination file where the contents read from stdin will be written to.
+.B lfc
+LFC entry (lfc:// or guid:)
+.TP
+.B surl
+Site URL
 
 .SH EXAMPLES
 .TP
-.B cat
-/etc/group |
-.B gfal-save
+.B gfal-legacy-unregister
+guid:12345-678-abcdef
 srm://endpoint.cern.ch/path/group
 
 .SH FILES
@@ -63,12 +65,5 @@ Adrien Devresse <adrien.devresse@cern.ch>
 Alejandro Alvarez Ayllon <alejandro.alvarez.ayllon@cern.ch>
 
 .SH "SEE ALSO"
-.BR gfal-cat (1),
-.BR gfal-copy (1),
-.BR gfal-ls (1),
-.BR gfal-mkdir (1),
-.BR gfal-rename (1),
-.BR gfal-rm (1),
-.BR gfal-stat (1),
-.BR gfal-sum (1),
-.BR gfal-xattr (1)
+.BR gfal-legacy-replicas (1),
+.BR gfal-legacy-register (1)

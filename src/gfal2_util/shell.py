@@ -7,6 +7,9 @@ Created on Oct 2, 2013
 from base import CommandBase
 import commands # @UnusedImport
 import ls # @UnusedImport
+import legacy # @UnusedImport
+import copy # @UnusedImport
+import rm # @UnusedImport
 
 
 class CommandFactory(object):
@@ -19,7 +22,6 @@ class CommandFactory(object):
     def __find_command(clasz, cmd):
         for name in (a for a in dir(clasz) if a == ('execute_' + cmd)):
             return getattr(clasz, name)
-
         return None
 
     @staticmethod

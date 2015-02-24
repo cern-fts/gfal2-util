@@ -3,7 +3,7 @@ Created on Oct 10, 2013
 
 @author: Duarte Meneses <duarte.meneses@cern.ch>
 """
-import os
+import subprocess
 import sys
 import datetime
 import math
@@ -47,8 +47,10 @@ class Progress(object):
             if self.stopped or not self.started:
                 break
 
-            self._update()
-            self.lock.release()
+            try:
+                self._update()
+            finally:
+                self.lock.release()
             time.sleep(0.5)
 
         self.lock.release()
@@ -163,7 +165,7 @@ class Progress(object):
         if not self.started:
             return
 
-        if self.t_main.is_alive():
+        if self.t_main.isAlive():
             self.lock.acquire()
             if self.stopped:
                 self.lock.release()
@@ -194,7 +196,11 @@ class Progress(object):
 
     @staticmethod
     def _get_width():
-        return int(os.popen('stty size', 'r').read().split()[1])
+        p = subprocess.Popen(['stty', 'size'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        out, err = p.communicate()
+        if p.returncode != 0:
+            return 80  # Asume default
+        return int(out.split()[1])
 
     @staticmethod
     def _clean():

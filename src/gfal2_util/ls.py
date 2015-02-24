@@ -11,6 +11,7 @@ import stat
 
 import base
 from base import CommandBase
+from utils import file_mode_str
 
 
 class CommandLs(CommandBase):
@@ -56,26 +57,6 @@ class CommandLs(CommandBase):
 
         return 0
 
-    @staticmethod
-    def _mode_str_triplet(mode):
-        mode_str = ['-'] * 3
-        if mode & stat.S_IROTH:
-            mode_str[0] = 'r'
-        if mode & stat.S_IWOTH:
-            mode_str[1] = 'w'
-        if mode & stat.S_IXOTH:
-            mode_str[2] = 'x'
-        return ''.join(mode_str)
-
-    def _mode_str(self, mode):
-        mode_str = ''
-        if stat.S_ISDIR(mode):
-            mode_str += 'd'
-        else:
-            mode_str += '-'
-        mode_str += self._mode_str_triplet(mode >> 6) + self._mode_str_triplet(mode >> 3) + self._mode_str_triplet(mode)
-        return mode_str
-
     def _print_ls_entry(self, name, stat, extra=None):
         space = {
             'st_mode': 5, 'st_nlink': 3, 'st_gid': 4, 'st_uid': 4,
@@ -93,13 +74,13 @@ class CommandLs(CommandBase):
 
             date = self._date_to_human(stat.st_mtime)
 
-            extra_str = None
+            extra_str = ''
             if extra:
                 extra_str = '\t'.join(extra)
 
             sys.stdout.write(
                 "%s %s %s %s %s %s %s\t%s\n" % (
-                    self._mode_str(stat.st_mode),
+                    file_mode_str(stat.st_mode),
                     str(stat.st_nlink).ljust(space['st_nlink']),
                     str(stat.st_gid).ljust(space['st_gid']),
                     str(stat.st_uid).ljust(space['st_uid']),

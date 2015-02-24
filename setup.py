@@ -4,7 +4,7 @@ from distutils.core import setup
 from glob import glob
 
 man_files=glob('doc/gfal*.1')
-doc_files=['RELEASE-NOTES', 'VERSION', 'LICENSE']
+doc_files=['RELEASE-NOTES', 'VERSION', 'LICENSE', 'readme.html']
 bin_files=glob('src/gfal-*')
 module_name='gfal2_util'
 

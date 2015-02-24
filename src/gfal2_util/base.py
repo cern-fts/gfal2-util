@@ -93,6 +93,9 @@ class CommandBase(object):
             if 'X509_USER_PROXY' in os.environ:
                 del os.environ['X509_USER_PROXY']
 
+        #Set verbose
+        self.__set_verbose_mode(self.params.verbose)
+
         self.context = gfal2.creat_context()
         apply_option(self.context, self.params)
 
@@ -100,9 +103,6 @@ class CommandBase(object):
         t_main.daemon = True
 
         try:
-            #Set verbose
-            self.__set_verbose_mode(self.params.verbose)
-
             #run in another thread to be able to catch signals while C functions don't return
             # See rule #3 in http://docs.python.org/2/library/signal.html
             t_main.start()
@@ -160,6 +160,8 @@ class CommandBase(object):
                             help="maximum time for the operation to terminate - default is 1800 seconds")
         parser.add_argument('-E', '--cert', type=str, default=None, help="user certificate")
         parser.add_argument('--key', type=str, default=None, help="user private key")
+        parser.add_argument('-4', action='store_true', help='Forces gfal2-util to use IPv4 addresses only')
+        parser.add_argument('-6', action='store_true', help='Forces gfal2-util to use IPv6 addresses only')
 
         for (args, kwargs) in arguments:
             parser.add_argument(*args, **kwargs)
