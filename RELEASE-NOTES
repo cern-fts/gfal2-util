@@ -1,3 +1,10 @@
+Tue Feb 24 2015 Alejandro Alvarez <aalvarez at cern.ch> - 1.2.0
+* [DMC-599] - Transfer timeout not respected
+* [DMC-628] - Stat surl before deciding if doing unlink or rmdir
+* [DMC-532] - gfal-copy -r (recursive)
+* [DMC-545] - Provide --dry-run for gfal-rm
+* [DMC-585] - Add a gfal-rename command
+
 Fri Nov 07 2014 Alejandro Alvarez <aalvarez at cern.ch> - 1.1.0
 * [DMC-517] - Update gfal-copy manpage
 * [DMC-522] - is_alive is not available in Python 2.4 (EL5)
