@@ -1,0 +1,68 @@
+.\" Manpage for gfal-cat
+.\"
+.TH GFAL-CAT 1 "October 2013" "v1.0.0"
+.SH NAME
+gfal-cat \- concatenate a file and print on the standard output
+.SH SYNOPSIS
+.B gfal-cat 
+[
+.B "-h"
+] [
+.B -V
+] [
+.B -v
+] [
+.B -D 
+.I DEFINITION
+] [
+.B -t 
+.I TIMEOUT
+] [
+.B -p
+] 
+.I FILE
+
+.SH DESCRIPTION
+.B gfal-cat
+Concatenate file to standard output. It simply opens the specified file and prints all its contents to stdout.
+.SH OPTIONS
+.TP 
+.B "-h, --help"
+show help about the command.
+.TP
+.B "-V, --version"
+output version information and exit.
+.TP
+.B "-v, --verbose"
+verbose mode. Repeat up to 3 times for the most verbose mode.
+.TP
+.B "-d, --definition"
+define properties for gfal2.
+.TP 
+.B "-t, --timeout"
+global timeout for the execution of the command. Command is interrupted if time expires before it finishes.
+
+.SH EXAMPLES
+.TP
+.B gfal-cat
+srm://endpoint.cern.ch/path/file
+
+.SH FILES
+.I /etc/gfal2.d/*
+.RS 
+All configuration files in this directory affect the behavior of the underlying gfal2.
+
+.SH AUTHORS
+Duarte Meneses <duarte.meneses@cern.ch>
+.br
+Adrien Devresse <adrien.devresse@cern.ch>
+.br
+Alejandro Alvarez Ayllon <alejandro.alvarez.ayllon@cern.ch>
+
+.SH "SEE ALSO"
+.BR gfal-copy (1),
+.BR gfal-rm (1),
+.BR gfal-cat (1),
+.BR gfal-save (1),
+.BR gfal-mkdir (1),
+.BR gfal-ls (1)

@@ -1,0 +1,77 @@
+.\" Manpage for gfal-rm
+.\"
+.TH GFAL-RM 1 "October 2013" "v1.0.0"
+.SH NAME
+gfal-rm \- Remove files or directories
+.SH SYNOPSIS
+.B gfal-rm
+[
+.B "-h"
+] [
+.B -V
+] [
+.B -v
+] [
+.B -D 
+.I DEFINITION
+] [
+.B -t 
+.I TIMEOUT
+] [
+.B -r
+] \fIFILE\fR...
+
+.SH DESCRIPTION
+.B gfal-rm
+Removes each specified file or directory. By default, it does not remove directories. To delete a directory, --recursive needs to be given, in which case all given directories are removed too along with all their contents.
+
+.SH OPTIONS
+.TP 
+.B "-h, --help"
+show help about the command.
+.TP
+.B "-V, --version"
+output version information and exit.
+.TP
+.B "-v, --verbose"
+verbose mode. Repeat up to 3 times for the most verbose mode.
+.TP
+.B "-d, --definition"
+define properties for gfal2.
+.TP 
+.B "-t, --timeout"
+global timeout for the execution of the command. Command is interrupted if time expires before it finishes.
+.TP
+.B "-r, --recursive"
+also remove directories and their contents recursively.
+
+.SH EXAMPLES
+.TP
+.B gfal-rm
+file:///tmp/test
+.PP
+.TP
+.B gfal-rm
+-r srm://endpoint.cern.ch/path/directory
+
+.SH FILES
+.I /etc/gfal2.d/*
+.RS 
+All configuration files in this directory affect the behavior of the underlying gfal2.
+
+.SH AUTHORS
+Duarte Meneses <duarte.meneses@cern.ch>
+.br
+Adrien Devresse <adrien.devresse@cern.ch>
+.br
+Alejandro Alvarez Ayllon <alejandro.alvarez.ayllon@cern.ch>
+
+.SH "SEE ALSO"
+.BR gfal-copy (1),
+.BR gfal-rm (1),
+.BR gfal-cat (1),
+.BR gfal-save (1),
+.BR gfal-mkdir (1),
+.BR gfal-ls (1),
+.BR gfal-xattr (1)
+

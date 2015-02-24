@@ -1,0 +1,98 @@
+.\" Manpage for gfal-copy
+.\"
+.TH GFAL-COPY 1 "January 2014" "v1.0.0"
+.SH NAME
+gfal-copy \- Copy files 
+.SH SYNOPSIS
+.B gfal-copy 
+[
+.I OPTION
+]...
+.I SOURCE
+.I DEST1 [ DEST2 ... ]
+
+.SH DESCRIPTION
+.B gfal-copy
+Copies files from source to destination(s). If several destinations are specified, the file will be copy in a chain: src -> dst1, dst1 -> dst2, ... If used in an interactive console, transfer information will be giving during the copy, which varies depending on the available information. This command can be used to upload local files to remote file systems and to register files in the file catalog (see examples).
+
+.SH OPTIONS
+.TP 
+.B "-h, --help"
+show help about the command.
+.TP
+.B "-V, --version"
+output version information and exit.
+.TP
+.B "-v, --verbose"
+verbose mode. Repeat up to 3 times for the most verbose mode.
+.TP
+.B "-d, --definition"
+.I DEFINITION
+define properties for gfal2.
+.TP 
+.B "-t, --timeout"
+.I TIMEOUT
+global timeout for the execution of the command. Command is interrupted if time expires before it finishes.
+.TP
+.B "-m, --mode"
+.I MODE
+set file mode (as in chmod). If not specified, 0755 is used.
+.TP 
+.B "-f, --force"
+if destination file(s) cannot be overwritten, delete it and try again.
+.TP
+.B "-n, --nbstreams"
+specify the maximum number of parallel streams to use for the copy.
+.TP
+.B "-s, --src-spacetoken"
+.I SRC_SPACETOKEN
+source spacetoken to use for the transfer.
+.TP
+.B "-S, --dst-spacetoken"
+.I DST_SPACETOKEN
+destination spacetoken to use for the transfer.
+.TP
+.B "-T, --transfer-timeout"
+.I TRANSFER_TIMEOUT
+timeout for the transfer operation.
+
+.SH EXAMPLES
+.TP
+Copy a file to srm://endpoint.cern.ch/path/group, preferring a protocol as specified in the configuration file:
+.B gfal-copy file:///etc/group srm://endpoint.cern.ch/path/
+.PP
+.TP
+You can specify directly a protocol, if you know that it is supported by the end point:
+.B gfal-copy file:///tmp/test gsiftp://endpoint.cern.ch/path/test
+.PP
+.TP
+.TP
+Do a chained copy:
+.B gfal-copy file:///tmp/test gsiftp://endpoint.cern.ch/path/test file:///tmp/test2
+.PP
+.TP
+Registration of a file in the LFC:
+.B 
+
+
+
+.SH FILES
+.I /etc/gfal2.d/*
+.RS 
+All configuration files in this directory affect the behavior of the underlying gfal2, in particular, the default choice of transfer protocols. 
+
+.SH AUTHORS
+Duarte Meneses <duarte.meneses@cern.ch>
+.br
+Adrien Devresse <adrien.devresse@cern.ch>
+.br
+Alejandro Alvarez Ayllon <alejandro.alvarez.ayllon@cern.ch>
+
+.SH "SEE ALSO"
+.BR gfal-copy (1),
+.BR gfal-rm (1),
+.BR gfal-cat (1),
+.BR gfal-save (1),
+.BR gfal-mkdir (1),
+.BR gfal-ls (1),
+.BR gfal-xattr (1)
