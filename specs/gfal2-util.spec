@@ -28,7 +28,7 @@ BuildRequires:      gfal2-plugin-file
 BuildRequires:      python-argparse
 BuildRequires:      groff
 
-Requires:           gfal2-python >= 1.5.0
+Requires:           gfal2-python >= 1.8.0
 Requires:           gfal2-plugin-file
 %if "0%{?python_version}" <= "2.7"
 Requires:           python-argparse
