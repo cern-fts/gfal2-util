@@ -17,7 +17,7 @@ from gfal2 import GError
 from gfal2_utils_parameters import apply_option
 
 
-VERSION = '1.2.0'
+VERSION = '1.2.1'
 
 
 def arg(*args, **kwargs):

@@ -7,7 +7,7 @@
 
 
 Name:				gfal2-util
-Version:			1.2.0
+Version:			1.2.1
 Release:			1%{?dist}
 Summary:			GFAL2 utility tools
 Group:				Applications/Internet
