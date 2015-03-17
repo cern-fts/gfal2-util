@@ -107,6 +107,7 @@ class CommandBase(object):
 
         self.context = gfal2.creat_context()
         apply_option(self.context, self.params)
+        self.context.set_user_agent("gfal2-util", VERSION)
 
         t_main = Thread(target=self.executor, args=[func])
         t_main.daemon = True

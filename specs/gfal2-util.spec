@@ -23,7 +23,7 @@ BuildArch:			noarch
 
 # For the tests
 BuildRequires:      gfal2-core
-BuildRequires:      gfal2-python
+BuildRequires:      gfal2-python >= 1.8.0
 BuildRequires:      gfal2-plugin-file
 BuildRequires:      python-argparse
 BuildRequires:      groff
