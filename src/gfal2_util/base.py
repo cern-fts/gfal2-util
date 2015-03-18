@@ -63,7 +63,7 @@ class CommandBase(object):
         handler.setLevel(log_level_value)
 
         handler.setFormatter(logging.Formatter('%(levelname)s %(message)s'))
-        if sys.stdout.isatty():
+        if sys.stderr.isatty():
             logging.addLevelName(logging.DEBUG, "\033[1;2m%-8s\033[1;m" % logging.getLevelName(logging.DEBUG))
             logging.addLevelName(logging.INFO, "\033[1;34m%-8s\033[1;m" % logging.getLevelName(logging.INFO))
             logging.addLevelName(logging.ERROR, "\033[1;31m%-8s\033[1;m" % logging.getLevelName(logging.ERROR))
