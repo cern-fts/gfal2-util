@@ -56,3 +56,10 @@ def apply_option(context, params):
     if params.definition:
         p_list = [parse_parameter(str_param[0]) for str_param in params.definition]
         [set_gfal_tool_parameter(context, tuple_param) for tuple_param in p_list]
+    if params.client_info:
+        for cinfo in params.client_info:
+            try:
+                key, val = cinfo.split('=', 2)
+                context.add_client_info(key, val)
+            except:
+                context.add_client_info(cinfo, '')

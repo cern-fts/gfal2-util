@@ -172,6 +172,8 @@ class CommandBase(object):
         parser.add_argument('--key', type=str, default=None, help="user private key")
         parser.add_argument('-4', action='store_true', help='Forces gfal2-util to use IPv4 addresses only')
         parser.add_argument('-6', action='store_true', help='Forces gfal2-util to use IPv6 addresses only')
+        parser.add_argument('-C', '--client-info', type=str, help="provide custom client-side information",
+                            action='append')
 
         for (args, kwargs) in arguments:
             parser.add_argument(*args, **kwargs)
