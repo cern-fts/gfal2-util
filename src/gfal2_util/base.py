@@ -56,6 +56,10 @@ class CommandBase(object):
         level = min(3, level)
 
         log_level_value = logging.ERROR - (level * 10)
+        if level < 3:
+            gfal2.set_verbose(gfal2.verbose_level.verbose)
+        else:
+            gfal2.set_verbose(gfal2.verbose_level.debug)
 
         gfal2_log = logging.getLogger('gfal2')
         gfal2_log.setLevel(log_level_value)
@@ -80,12 +84,7 @@ class CommandBase(object):
             if e.errno != errno.EPIPE:
                 raise
         except GError, e:
-            #get output back!
-            #self._enable_output()
-            if self.params.verbose:
-                sys.stderr.write("gfal-util error: %d (%s) - %s\n" % (e.code, os.strerror(e.code), e.message))
-            else:
-                sys.stderr.write("%s: error: %s\n" % (self.progr, os.strerror(e.code)))
+            sys.stderr.write("%s error: %d (%s) - %s\n" % (self.progr, e.code, os.strerror(e.code), e.message))
 
             self.return_code = e.code
 
