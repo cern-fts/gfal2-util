@@ -4,15 +4,11 @@ Created on Oct 2, 2013
 @author: "Duarte Meneses <duarte.meneses@cern.ch>"
 """
 import sys
-import os
 import stat
-import errno
 from datetime import datetime
 
-import gfal2
 import base
 from base import CommandBase
-from progress import Progress
 from utils import file_type_str, file_mode_str
 
 

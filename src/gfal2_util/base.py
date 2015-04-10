@@ -39,6 +39,25 @@ def __add_arg(f, *args, **kwargs):
         f.arguments.insert(0, (args, kwargs))
 
 
+class Gfal2VersionAction(argparse.Action):
+    """
+    Custom Version action, so we can insert new lines and so on
+    """
+    def __init__(self, *args, **kwargs):
+        kwargs['nargs'] = 0
+        super(Gfal2VersionAction, self).__init__(*args, **kwargs)
+
+    def __call__(self, *args, **kwargs):
+        """
+        Pretty print of gfal2-util version
+        """
+        version_str = "gfal2-util version %s (gfal2 %s)" % (VERSION, gfal2.get_version())
+        for plugin in sorted(gfal2.creat_context().get_plugin_names()):
+            version_str += '\n\t' + plugin
+        print version_str
+        sys.exit(0)
+
+
 class CommandBase(object):
     def __init__(self):
         self.context = None
@@ -74,7 +93,6 @@ class CommandBase(object):
             logging.addLevelName(logging.WARNING, "\033[1;33m%-8s\033[1;m" % logging.getLevelName(logging.WARNING))
 
         gfal2_log.addHandler(handler)
-
 
     #wrap method to catch exceptions in thread's stack
     def executor(self, func):
@@ -160,8 +178,8 @@ class CommandBase(object):
 
         #Create parser and parse arguments
         parser = argparse.ArgumentParser(prog=os.path.basename(a[0]), description=description, add_help=True)
-        parser.add_argument('-V', '--version', action='version',
-                            help="output version information and exit.", version=VERSION)
+        parser.add_argument('-V', '--version', action=Gfal2VersionAction,
+                            help="output version information and exit")
         parser.add_argument('-v', '--verbose', action='count', default=0,
                             help="enable the verbose mode, -v for warning, -vv for info, -vvv for debug")
         parser.add_argument('-D', '--definition', nargs=1, type=str, help="override a gfal parameter", action='append')
