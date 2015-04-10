@@ -4,7 +4,7 @@
 .SH NAME
 gfal-ls \- list directory contents or file information
 .SH SYNOPSIS
-.B gfal-ls [-h] [-V] [-v] [-D DEFINITION] [-t TIMEOUT] [-a] [-l] [-d] [-H] file
+.B gfal-ls [-h] [-V] [-v] [-D DEFINITION] [-C CLIENT-INFO] [-t TIMEOUT] [-a] [-l] [-d] [-H] file
 
 .SH DESCRIPTION
 .B gfal-ls
@@ -23,6 +23,9 @@ verbose mode. Repeat up to 3 times for the most verbose mode.
 .TP
 .B "-D, --definition"
 define properties for gfal2.
+.TP
+.B "-C, --client-info"
+provide custom client-side information
 .TP
 .B "-t, --timeout"
 global timeout for the execution of the command. Command is interrupted if time expires before it finishes.

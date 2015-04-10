@@ -15,6 +15,9 @@ gfal-legacy-unregister \- register a replica
 .B -D
 .I DEFINITION
 ] [
+.B -C
+.I CLIENT-INFO
+] [
 .B -t
 .I TIMEOUT
 ] \fI lfc surl\fR
@@ -34,8 +37,11 @@ output version information and exit.
 .B "-v, --verbose"
 verbose mode. Repeat up to 3 times for the most verbose mode.
 .TP
-.B "-d, --definition"
+.B "-D, --definition"
 define properties for gfal2.
+.TP
+.B "-C, --client-info"
+provide custom client-side information
 .TP
 .B "-t, --timeout"
 global timeout for the execution of the command. Command is interrupted if time expires before it finishes.

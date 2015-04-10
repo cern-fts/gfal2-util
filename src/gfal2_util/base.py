@@ -5,6 +5,7 @@ Created on Oct 2, 2013
 """
 
 import argparse
+import logging
 import signal
 from threading import Thread
 import sys
@@ -16,7 +17,7 @@ from gfal2 import GError
 from gfal2_utils_parameters import apply_option
 
 
-VERSION = '1.2.0'
+VERSION = '1.2.1'
 
 
 def arg(*args, **kwargs):
@@ -38,6 +39,25 @@ def __add_arg(f, *args, **kwargs):
         f.arguments.insert(0, (args, kwargs))
 
 
+class Gfal2VersionAction(argparse.Action):
+    """
+    Custom Version action, so we can insert new lines and so on
+    """
+    def __init__(self, *args, **kwargs):
+        kwargs['nargs'] = 0
+        super(Gfal2VersionAction, self).__init__(*args, **kwargs)
+
+    def __call__(self, *args, **kwargs):
+        """
+        Pretty print of gfal2-util version
+        """
+        version_str = "gfal2-util version %s (gfal2 %s)" % (VERSION, gfal2.get_version())
+        for plugin in sorted(gfal2.creat_context().get_plugin_names()):
+            version_str += '\n\t' + plugin
+        print version_str
+        sys.exit(0)
+
+
 class CommandBase(object):
     def __init__(self):
         self.context = None
@@ -50,18 +70,29 @@ class CommandBase(object):
         return CommandBase.__subclasses__()
 
     @staticmethod
-    def __set_verbose_mode(verbosity):
-        if verbosity < 0:
-            raise ValueError('negative verbose!')  # this should never happen
+    def __set_log_level(level):
+        level = max(0, level)
+        level = min(3, level)
 
-        if verbosity > 3:
-            verbosity = 3
+        log_level_value = logging.ERROR - (level * 10)
+        if level < 3:
+            gfal2.set_verbose(gfal2.verbose_level.verbose)
+        else:
+            gfal2.set_verbose(gfal2.verbose_level.debug)
 
-        modes = [
-            gfal2.verbose_level.normal, gfal2.verbose_level.verbose,
-            gfal2.verbose_level.debug, gfal2.verbose_level.trace
-        ]
-        gfal2.set_verbose(modes[verbosity])
+        gfal2_log = logging.getLogger('gfal2')
+        gfal2_log.setLevel(log_level_value)
+        handler = logging.StreamHandler(sys.stderr)
+        handler.setLevel(log_level_value)
+
+        handler.setFormatter(logging.Formatter('%(levelname)s %(message)s'))
+        if sys.stderr.isatty():
+            logging.addLevelName(logging.DEBUG, "\033[1;2m%-8s\033[1;m" % logging.getLevelName(logging.DEBUG))
+            logging.addLevelName(logging.INFO, "\033[1;34m%-8s\033[1;m" % logging.getLevelName(logging.INFO))
+            logging.addLevelName(logging.ERROR, "\033[1;31m%-8s\033[1;m" % logging.getLevelName(logging.ERROR))
+            logging.addLevelName(logging.WARNING, "\033[1;33m%-8s\033[1;m" % logging.getLevelName(logging.WARNING))
+
+        gfal2_log.addHandler(handler)
 
     #wrap method to catch exceptions in thread's stack
     def executor(self, func):
@@ -71,12 +102,7 @@ class CommandBase(object):
             if e.errno != errno.EPIPE:
                 raise
         except GError, e:
-            #get output back!
-            #self._enable_output()
-            if self.params.verbose:
-                sys.stderr.write("gfal-util error: %d (%s) - %s\n" % (e.code, os.strerror(e.code), e.message))
-            else:
-                sys.stderr.write("%s: error: %s\n" % (self.progr, os.strerror(e.code)))
+            sys.stderr.write("%s error: %d (%s) - %s\n" % (self.progr, e.code, os.strerror(e.code), e.message))
 
             self.return_code = e.code
 
@@ -94,10 +120,11 @@ class CommandBase(object):
                 del os.environ['X509_USER_PROXY']
 
         #Set verbose
-        self.__set_verbose_mode(self.params.verbose)
+        self.__set_log_level(self.params.verbose)
 
         self.context = gfal2.creat_context()
         apply_option(self.context, self.params)
+        self.context.set_user_agent("gfal2-util", VERSION)
 
         t_main = Thread(target=self.executor, args=[func])
         t_main.daemon = True
@@ -151,10 +178,10 @@ class CommandBase(object):
 
         #Create parser and parse arguments
         parser = argparse.ArgumentParser(prog=os.path.basename(a[0]), description=description, add_help=True)
-        parser.add_argument('-V', '--version', action='version',
-                            help="output version information and exit.", version=VERSION)
+        parser.add_argument('-V', '--version', action=Gfal2VersionAction,
+                            help="output version information and exit")
         parser.add_argument('-v', '--verbose', action='count', default=0,
-                            help="enable the verbose mode, -vvv enables debug mode")
+                            help="enable the verbose mode, -v for warning, -vv for info, -vvv for debug")
         parser.add_argument('-D', '--definition', nargs=1, type=str, help="override a gfal parameter", action='append')
         parser.add_argument('-t', '--timeout', type=int, default=1800,
                             help="maximum time for the operation to terminate - default is 1800 seconds")
@@ -162,6 +189,8 @@ class CommandBase(object):
         parser.add_argument('--key', type=str, default=None, help="user private key")
         parser.add_argument('-4', action='store_true', help='Forces gfal2-util to use IPv4 addresses only')
         parser.add_argument('-6', action='store_true', help='Forces gfal2-util to use IPv6 addresses only')
+        parser.add_argument('-C', '--client-info', type=str, help="provide custom client-side information",
+                            action='append')
 
         for (args, kwargs) in arguments:
             parser.add_argument(*args, **kwargs)

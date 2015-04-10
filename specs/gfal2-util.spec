@@ -7,7 +7,7 @@
 
 
 Name:				gfal2-util
-Version:			1.2.0
+Version:			1.2.1
 Release:			1%{?dist}
 Summary:			GFAL2 utility tools
 Group:				Applications/Internet
@@ -23,12 +23,12 @@ BuildArch:			noarch
 
 # For the tests
 BuildRequires:      gfal2-core
-BuildRequires:      gfal2-python
+BuildRequires:      gfal2-python >= 1.8.0
 BuildRequires:      gfal2-plugin-file
 BuildRequires:      python-argparse
 BuildRequires:      groff
 
-Requires:           gfal2-python >= 1.5.0
+Requires:           gfal2-python >= 1.8.0
 Requires:           gfal2-plugin-file
 %if "0%{?python_version}" <= "2.7"
 Requires:           python-argparse
