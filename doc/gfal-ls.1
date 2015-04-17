@@ -1,17 +1,17 @@
 .\" Manpage for gfal-ls
-.\" 
-.TH GFAL-LS 1 "October 2013" "v1.0.0"
+.\"
+.TH GFAL-LS 1 "December 2014" "v1.2.0"
 .SH NAME
 gfal-ls \- list directory contents or file information
 .SH SYNOPSIS
-.B gfal-ls [-h] [-V] [-v] [-D DEFINITION] [-t TIMEOUT] [-a] [-l] [-d] [-H] file 
+.B gfal-ls [-h] [-V] [-v] [-D DEFINITION] [-C CLIENT-INFO] [-t TIMEOUT] [-a] [-l] [-d] [-H] file
 
 .SH DESCRIPTION
 .B gfal-ls
 List information about the file. Depending on the implementation, some information from the long listing, such as group and user ids, might not be available and will be displayed as 0. When listing several files or directories, if one returns an error, the execution is canceled.
 
 .SH OPTIONS
-.TP 
+.TP
 .B "-h, --help"
 show help about the command
 .TP
@@ -23,6 +23,9 @@ verbose mode. Repeat up to 3 times for the most verbose mode.
 .TP
 .B "-D, --definition"
 define properties for gfal2.
+.TP
+.B "-C, --client-info"
+provide custom client-side information
 .TP
 .B "-t, --timeout"
 global timeout for the execution of the command. Command is interrupted if time expires before it finishes.
@@ -42,7 +45,7 @@ with -l, print sizes in human readable format (e.g., 1K 234M 2G).
 .SH EXAMPLES
 .TP
 Long listing of all files:
-.B gfal-ls 
+.B gfal-ls
 -laH srm://endpoint.cern.ch/path/file
 .PP
 .TP
@@ -52,7 +55,7 @@ List a directory instead of its contents:
 
 .SH FILES
 .I /etc/gfal2.d/*
-.RS 
+.RS
 All configuration files in this directory affect the behavior of the underlying gfal2.
 
 .SH AUTHORS
@@ -63,10 +66,12 @@ Adrien Devresse <adrien.devresse@cern.ch>
 Alejandro Alvarez Ayllon <alejandro.alvarez.ayllon@cern.ch>
 
 .SH "SEE ALSO"
-.BR gfal-copy (1),
-.BR gfal-rm (1),
 .BR gfal-cat (1),
-.BR gfal-save (1),
+.BR gfal-copy (1),
 .BR gfal-mkdir (1),
+.BR gfal-rename (1),
+.BR gfal-rm (1),
+.BR gfal-save (1),
+.BR gfal-stat (1),
 .BR gfal-sum (1),
 .BR gfal-xattr (1)

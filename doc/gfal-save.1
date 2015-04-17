@@ -1,6 +1,6 @@
 .\" Manpage for gfal-save
 .\"
-.TH GFAL-SAVE 1 "October 2013" "v1.0.0"
+.TH GFAL-SAVE 1 "December 2014" "v1.2.0"
 .SH NAME
 gfal-mkdir \- make directories
 .SH SYNOPSIS
@@ -12,10 +12,13 @@ gfal-mkdir \- make directories
 ] [
 .B -v
 ] [
-.B -D 
+.B -D
 .I DEFINITION
 ] [
-.B -t 
+.B -C
+.I CLIENT-INFO
+] [
+.B -t
 .I TIMEOUT
 ] \fI file\fR ...
 
@@ -24,7 +27,7 @@ gfal-mkdir \- make directories
 Reads from stdin and writes to a file until it finds EOF. If the file exists, it will be overwritten.
 
 .SH OPTIONS
-.TP 
+.TP
 .B "-h, --help"
 show help about the command.
 .TP
@@ -34,9 +37,12 @@ output version information and exit.
 .B "-v, --verbose"
 verbose mode. Repeat up to 3 times for the most verbose mode.
 .TP
-.B "-d, --definition"
+.B "-D, --definition"
 define properties for gfal2.
-.TP 
+.TP
+.B "-C, --client-info"
+provide custom client-side information
+.TP
 .B "-t, --timeout"
 global timeout for the execution of the command. Command is interrupted if time expires before it finishes.
 .TP
@@ -46,13 +52,13 @@ destination file where the contents read from stdin will be written to.
 .SH EXAMPLES
 .TP
 .B cat
-/etc/group | 
+/etc/group |
 .B gfal-save
 srm://endpoint.cern.ch/path/group
 
 .SH FILES
 .I /etc/gfal2.d/*
-.RS 
+.RS
 All configuration files in this directory affect the behavior of the underlying gfal2.
 
 .SH AUTHORS
@@ -63,11 +69,12 @@ Adrien Devresse <adrien.devresse@cern.ch>
 Alejandro Alvarez Ayllon <alejandro.alvarez.ayllon@cern.ch>
 
 .SH "SEE ALSO"
-.BR gfal-copy (1),
-.BR gfal-rm (1),
 .BR gfal-cat (1),
-.BR gfal-save (1),
-.BR gfal-mkdir (1),
+.BR gfal-copy (1),
 .BR gfal-ls (1),
+.BR gfal-mkdir (1),
+.BR gfal-rename (1),
+.BR gfal-rm (1),
+.BR gfal-stat (1),
+.BR gfal-sum (1),
 .BR gfal-xattr (1)
-

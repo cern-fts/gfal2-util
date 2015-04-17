@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>gfal2-util</title>
+		<style type="text/css">
+		html {
+			background: gray;
+			display: table;
+			margin: auto;
+			margin-top: 1em;
+		}
+		body {
+			display: table-cell;
+			background: white;
+			width: 90ex;
+			padding: 1em 4ex;
+		}
+		p {
+			text-align: justify;
+		}
+		dt {
+			font-weight: bold;
+		}
+		</style>
+	</head>
+	<body>
+		<h1>gfal2-util</h1>
+		
+		<h2>Description</h2>
+		<p>
+			GFAL 2 utils are a group of command line tools for file manipulations with any protocol managed by gfal 2.0
+		</p>
+		
+		<h2>Installation</h2>
+		<pre>yum install gfal2-util gfal2-all</pre>
+		
+		<p>
+			Mind that the protocol support of gfal2-util depends on the set of plugins installed in your machine.
+			Installing gfal2-all will trigger an installation of the plugins for file, SRM, GridFTP, HTTP/DAV, LFC, RFIO and DCAP.
+			If you need XROOTD support, you will need to install additionally gfal2-plugin-xrootd.
+		</p>
+		
+		<h2>List of commands</h2>
+		<p>
+			We provide here a brief overview of the command line tools we provide as part of this package.
+			To see detailed usage of each one, you can invoke them with --help to show all the possible options.
+		</p>		
+		
+		<h3>Standard commands</h3>
+		<dl>
+			<dt><a href="html/gfal-cat.1.html">gfal-cat</a></dt>
+			<dd>Equivalent to cat. Print into the standard output the content of the requested file</dd>
+			<dt><a href="html/gfal-copy.1.html">gfal-copy</a></dt>
+			<dd>
+				Equivalent to cp but more powerful. Copy a file, or set of files, between different
+				storages and/or local. Recursive mode is supported. Try --dry-run to validate what will happen
+			</dd>
+			<dt><a href="html/gfal-ls.1.html">gfal-ls</a></dt>
+			<dd>Equivalent to ls. List the content of a directory. Use -l to generate a detailed list</dd>
+			<dt><a href="html/gfal-mkdir.1.html">gfal-mkdir</a></dt>
+			<dd>Equivalent to mkdir. Create a directory</dd>
+			<dt><a href="html/gfal-rm.1.html">gfal-rm</a></dt>
+			<dd>
+				Equivalent to rm. Remove a file, or a directory if -r is specified.
+				Try --dry-run if you want to validate what will happen without doing anything
+			</dd>
+			<dt><a href="html/gfal-save.1.html">gfal-save</a></dt>
+			<dd>Reads from stdin and writes into a local or remote file</dd>
+			<dt><a href="html/gfal-stat.1.html">gfal-stat</a></dt>
+			<dd>Equivalent to stat. Print information about the file or directory</dd>
+			<dt><a href="html/gfal-sum.1.html">gfal-sum</a></dt>
+			<dd>
+				Query or calculate the checksum of the given file.
+				Normally recognised checksums are adler32, md5 and sha1, but it depends on the protocol and/or storage software
+			</dd>
+			<dt><a href="html/gfal-xattr.1.html">gfal-xattr</a></dt>
+			<dd>
+				Equivalent to attr. Query or set an extended attribute from a file or directory.
+				Which extended attributes are supported depend on the protocol. For instance user.replicas or user.comment can be used for SRM or LFC.
+			</dd>
+		</dl>
+		
+		
+		<h3>Legacy commands</h3>
+		<p>
+			This commands exists purely to provide ways to access functionality previously provided by lcg-util.
+			We recommend avoiding the usage of these tools if possible.
+		</p>
+		<dl>
+			<dt><a href="html/gfal-legacy-bringonline.1.html">gfal-legacy-bringonline</a></dt>
+			<dd>Perform a staging operation on the given SURL</dd>
+			<dt><a href="html/gfal-legacy-register.1.html">gfal-legacy-register</a></dt>
+			<dd>Register a new replica in a catalog. We recommend using instead gfal-xattr [surl] user.replicas=+new_replica</dd>
+			<dt><a href="html/gfal-legacy-replicas.1.html">gfal-legacy-replicas</a></dt>
+			<dd>List replicas from a catalog or SRM. We recommend using instead gfal-xattr [surl] user.replicas</dd>
+			<dt><a href="html/gfal-legacy-unregister.1.html">gfal-legacy-unregister</a></dt>
+			<dd>Remove an existing replica from a catalog. We recommend using instead gfal-xattr [surl] user.replicas=-replica</dd>
+		</dl>
+		
+		<h2>License</h2>
+		<p>
+			This software is licensed under the <a href="http://www.apache.org/licenses/LICENSE-2.0.html">Apache 2 License</a>.
+			See <a href="LICENSE">LICENSE</a> for details.
+		</p>
+		
+		<h2>Release Notes</h2>
+		<p>
+			See <a href="RELEASE-NOTES">RELEASE-NOTES</a> for a detailed changelog.
+		</p>
+		
+		<h2>Contact</h2>
+		<p>
+			You can notify bugs or ask for feature requests via
+		</p>
+		<dl>
+			<dt>Tracker</dt>
+			<dd><a href="https://its.cern.ch/jira/browse/DMC/component/12918">https://its.cern.ch/jira/browse/DMC/component/12918</a></dd>
+			<dt>Mailing list</dt>
+			<dd><a href="mailto:dmc-support@cern.ch">dmc-support@cern.ch</a></dd>
+		</dl>
+	</body>
+</html>

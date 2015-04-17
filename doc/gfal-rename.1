@@ -1,10 +1,10 @@
-.\" Manpage for gfal-save
+.\" Manpage for gfal-rename
 .\"
-.TH GFAL-LEGACY-REGISTER 1 "December 2014" "v1.2.0"
+.TH GFAL-RENAME 1 "December 2014" "v1.2.0"
 .SH NAME
-gfal-legacy-register \- register a replica
+gfal-rename \- Renames files or directories
 .SH SYNOPSIS
-.B gfal-legacy-register
+.B gfal-rename
 [
 .B "-h"
 ] [
@@ -20,11 +20,13 @@ gfal-legacy-register \- register a replica
 ] [
 .B -t
 .I TIMEOUT
-] \fI lfc surl\fR
+]
+.I SOURCE
+.I DESTINATION
 
 .SH DESCRIPTION
-.B gfal-legacy-register
-Register a new replica into a catalog
+.B gfal-rename
+Renames SOURCE to DESTINATION.
 
 .SH OPTIONS
 .TP
@@ -46,17 +48,22 @@ provide custom client-side information
 .B "-t, --timeout"
 global timeout for the execution of the command. Command is interrupted if time expires before it finishes.
 .TP
-.B lfc
-LFC entry (lfc:// or guid:)
+.B "-E, --cert"
+user certificate
 .TP
-.B surl
-Site URL
+.B "--key"
+user private key
+.TP
+.B "-4"
+Forces gfal2-util to use IPv4 addresses only (if the plugin supports this)
+.TP
+.B "-6"
+Forces gfal2-util to use IPv6 addresses only (if the plugin supports this)
 
 .SH EXAMPLES
 .TP
-.B gfal-legacy-register
-guid:12345-678-abcdef
-srm://endpoint.cern.ch/path/group
+.B gfal-rename
+file:///tmp/original file:///tmp/newname
 
 .SH FILES
 .I /etc/gfal2.d/*
@@ -71,5 +78,12 @@ Adrien Devresse <adrien.devresse@cern.ch>
 Alejandro Alvarez Ayllon <alejandro.alvarez.ayllon@cern.ch>
 
 .SH "SEE ALSO"
-.BR gfal-legacy-replicas (1),
-.BR gfal-legacy-unregister (1)
+.BR gfal-cat (1),
+.BR gfal-copy (1),
+.BR gfal-ls (1),
+.BR gfal-mkdir (1),
+.BR gfal-rm (1),
+.BR gfal-save (1),
+.BR gfal-stat (1),
+.BR gfal-sum (1),
+.BR gfal-xattr (1)

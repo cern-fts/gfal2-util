@@ -4,7 +4,7 @@
 .SH NAME
 gfal-cat \- concatenate a file and print on the standard output
 .SH SYNOPSIS
-.B gfal-cat 
+.B gfal-cat
 [
 .B "-h"
 ] [
@@ -12,21 +12,21 @@ gfal-cat \- concatenate a file and print on the standard output
 ] [
 .B -v
 ] [
-.B -D 
+.B -D
 .I DEFINITION
 ] [
-.B -t 
+.B -t
 .I TIMEOUT
 ] [
 .B -p
-] 
+]
 .I FILE
 
 .SH DESCRIPTION
 .B gfal-cat
 Concatenate file to standard output. It simply opens the specified file and prints all its contents to stdout.
 .SH OPTIONS
-.TP 
+.TP
 .B "-h, --help"
 show help about the command.
 .TP
@@ -36,9 +36,12 @@ output version information and exit.
 .B "-v, --verbose"
 verbose mode. Repeat up to 3 times for the most verbose mode.
 .TP
-.B "-d, --definition"
+.B "-D, --definition"
 define properties for gfal2.
-.TP 
+.TP
+.B "-C, --client-info"
+provide custom client-side information
+.TP
 .B "-t, --timeout"
 global timeout for the execution of the command. Command is interrupted if time expires before it finishes.
 
@@ -49,7 +52,7 @@ srm://endpoint.cern.ch/path/file
 
 .SH FILES
 .I /etc/gfal2.d/*
-.RS 
+.RS
 All configuration files in this directory affect the behavior of the underlying gfal2.
 
 .SH AUTHORS
