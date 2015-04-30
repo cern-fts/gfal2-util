@@ -3,6 +3,7 @@ Created on Oct 2, 2013
 
 @author: "Duarte Meneses <duarte.meneses@cern.ch>"
 """
+import gfal2
 import sys
 import stat
 from datetime import datetime
@@ -83,8 +84,11 @@ class GfalCommands(CommandBase):
             l = self.context.listxattr(self.params.file)
 
             for attr in l:
-                v = self.context.getxattr(self.params.file, attr)
-                sys.stdout.write(attr + ' = ' + v + '\n')
+                try:
+                    v = self.context.getxattr(self.params.file, attr)
+                    sys.stdout.write(attr + ' = ' + v + '\n')
+                except gfal2.GError, e:
+                    sys.stdout.write(attr + ' FAILED: ' + str(e) + '\n')
 
     @base.arg('file', action='store', type=str,
               help="file uri to use for checksum calculation")
