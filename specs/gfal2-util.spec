@@ -45,6 +45,14 @@ python setup.py clean
 %setup -q
 
 %build
+# Validate the version
+gfal2_util_ver=`sed -n "s/VERSION = '\(.*\)'/\1/p" src/gfal2_util/base.py`
+gfal2_util_spec_ver=`expr "%{version}" : '\([0-9]*\\.[0-9]*\\.[0-9]*\)'`
+if [ "$gfal2_util_ver" != "$gfal2_util_spec_ver" ]; then
+    echo "The version in the spec file does not match the base.py version!"
+    echo "%{version} != $gfal2_util_ver"
+    exit 1
+fi
 python setup.py build
 
 %install
