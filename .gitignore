@@ -3,3 +3,6 @@
 *.rpm
 *.tar.gz
 *.log
+*.gz
+*.dsc
+

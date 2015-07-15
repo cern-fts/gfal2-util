@@ -1,0 +1,6 @@
+gfal2-util (1.3.0-1) unstable; urgency=low
+
+  * Deb packaging on CI
+
+ -- DMC Devel <dmc-devel@cern.ch>  Thu, 15 Jul 2015 10:00:00 +0200
+

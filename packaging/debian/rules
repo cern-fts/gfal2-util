@@ -1,0 +1,28 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+
+-include /usr/share/dpkg/buildflags.mk
+
+CFLAGS += $(CPPFLAGS)
+CXXFLAGS += $(CPPFLAGS)
+
+export CFLAGS CXXFLAGS LDFLAGS
+
+%:
+	dh $@
+
+override_dh_auto_configure:
+	dh_auto_configure
+
+override_dh_auto_build:
+	python setup.py build
+
+override_dh_install:
+	dh_auto_install
+
+override_dh_auto_clean:
+	dh_auto_clean
+
+override_dh_auto_test:
+	python test/functional/test_all.py
+
