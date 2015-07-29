@@ -15,7 +15,7 @@ if os.getuid() == 0:
     data_files.append((man_root, man_files))
 
 setup(name=module_name,
-      version='1.0.0',
+      version='1.3.0',
       license='GPLv3',
       description='GFAL2 utility tools',
       long_description='''gfal2-util is a set of basic utility tools for file
