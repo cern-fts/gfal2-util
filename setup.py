@@ -1,25 +1,18 @@
 #!/usr/bin/env python
+import os
 import sys
 from distutils.core import setup
 from glob import glob
 
-man_files=glob('doc/gfal*.1')
 doc_files=['RELEASE-NOTES', 'VERSION', 'LICENSE', 'readme.html']
 bin_files=glob('src/gfal-*')
 module_name='gfal2_util'
+data_files=[]
 
-#f = open('setup.cfg', 'w')
-#f.write('[bdist_rpm]\n')
-#f.write('install_script = install-rpm.sh\n')
-#f.write('release = 1\n')
-#f.write('packager = Duarte Meneses <duarte.meneses@cern.ch>\n')
-#f.write('doc_files = RELEASE-NOTES VERSION LICENSE\n')
-#f.write('requires = gfal2-python >= 1.2.1')
-#if sys.hexversion < 0x02070000:
-#        f.write(', python-argparse\n')
-#else:
-#        f.write('\n')
-#f.close()
+if os.getuid() == 0:
+    man_root = '/usr/share/man/man1'
+    man_files=glob('doc/gfal*.1')
+    data_files.append((man_root, man_files))
 
 setup(name=module_name,
       version='1.0.0',
@@ -35,6 +28,6 @@ gridFTP, http(s), SRM, xrootd, etc...''',
       packages=[module_name],
       package_dir={ module_name : 'src/' + module_name},
       scripts=bin_files,
-      data_files=[('/usr/share/man/man1', man_files)],
-                 # ('/usr/share/doc/' + module_name, doc_files)],
-     )
+      data_files=data_files,
+)
+
