@@ -74,7 +74,7 @@ class CommandLs(CommandBase):
     @base.arg('--xattr', type=str, action='append', default=[],
               help="query additional attributes. Can be specified multiple times. Only works for --long output")
     @base.arg('--time-style', type=str, default='locale', choices=time_formats.keys(),
-              help="time styke")
+              help="time style")
     @base.arg('--full-time', action="store_true", help="same as --time-style=full-iso")
     @base.arg('--color', type=str, choices=['always', 'never', 'auto'], default='auto',
               help='print colored entries with -l')
