@@ -14,6 +14,49 @@ from base import CommandBase
 from utils import file_mode_str
 
 
+def full_iso(date):
+    dt = datetime.fromtimestamp(date)
+    return dt.strftime("%Y-%m-%d %H:%M:%S.%f +0000")
+
+
+def long_iso(date):
+    dt = datetime.fromtimestamp(date)
+    return dt.strftime("%Y-%m-%d %H:%M")
+
+
+def time_iso(date):
+    dt = datetime.fromtimestamp(date)
+    dt_now = datetime.now()
+
+    diff_months = (dt_now - dt).days / 30  # approximate...
+
+    if diff_months < 6:
+        return dt.strftime("%m-%d %H:%M")
+    else:
+        return dt.strftime("%Y-%m-%d")
+
+
+def time_locale(date):
+    dt = datetime.fromtimestamp(date)
+    dt_now = datetime.now()
+
+    diff_months = (dt_now - dt).days / 30  # approximate...
+    day = dt.strftime("%d").lstrip("0").rjust(2)
+
+    if diff_months < 6:
+        return dt.strftime("%b " + day + " %H:%M")
+    else:
+        return dt.strftime("%b " + day + "  %Y")
+
+
+time_formats = {
+    'full-iso': full_iso,
+    'long-iso': long_iso,
+    'iso': time_iso,
+    'locale': time_locale
+}
+
+
 class CommandLs(CommandBase):
     @base.arg('-a', '--all', action="store_true", help="display hidden files")
     @base.arg('-l', '--long', action="store_true", help='long listing format')
@@ -22,10 +65,16 @@ class CommandLs(CommandBase):
     @base.arg('-H', '--human-readable', action="store_true",
               help='with -l, prints size in human readable format (e.g., 1K 234M 2G')
     @base.arg('--xattr', type=str, action='append', default=[],
-              help="Query additional attributes. Can be specified multiple times. Only works for --long output")
-    @base.arg('file', type=str, help="File's uri")
+              help="query additional attributes. Can be specified multiple times. Only works for --long output")
+    @base.arg('--time-style', type=str, default='locale', choices=time_formats.keys(),
+              help="time styke")
+    @base.arg('--full-time', action="store_true", help="same as --time-style=full-iso")
+    @base.arg('file', type=str, help="file's uri")
     def execute_ls(self):
         """List directory's contents"""
+        if self.params.full_time:
+            self.params.time_style = 'long-iso'
+
         st = self.context.stat(self.params.file)
 
         if stat.S_ISDIR(st.st_mode) and not self.params.directory:
@@ -59,8 +108,8 @@ class CommandLs(CommandBase):
 
     def _print_ls_entry(self, name, stat, extra=None):
         space = {
-            'st_mode': 5, 'st_nlink': 3, 'st_gid': 4, 'st_uid': 4,
-            'st_mtime': 10, 'size': 9, 'size_human': 4
+            'st_mode': 5, 'st_nlink': 3, 'st_gid': 5, 'st_uid': 5,
+            'st_mtime': 11, 'size': 9, 'size_human': 4
         }
 
         #if long, print some stuff from stat. Try to align as best as possible without buffering
@@ -72,7 +121,7 @@ class CommandLs(CommandBase):
                 size = self._size_to_human(size)
                 size_sp = space['size_human']
 
-            date = self._date_to_human(stat.st_mtime)
+            date = time_formats[self.params.time_style](stat.st_mtime)
 
             extra_str = ''
             if extra:
@@ -93,19 +142,6 @@ class CommandLs(CommandBase):
             #else simply print name
         else:
             sys.stdout.write("%s\n" % name)
-
-    @staticmethod
-    def _date_to_human(date):
-        dt = datetime.fromtimestamp(date)
-        dt_now = datetime.now()
-
-        diff_months = (dt_now - dt).days / 30  # approximate...
-        day = dt.strftime("%d").lstrip("0").rjust(2)
-
-        if diff_months < 6:
-            return dt.strftime("%b " + day + " %H:%M")
-        else:
-            return dt.strftime("%b " + day + "  %Y")
 
     @staticmethod
     def _size_to_human(size):
