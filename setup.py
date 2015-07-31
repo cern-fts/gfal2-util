@@ -9,10 +9,9 @@ bin_files=glob('src/gfal-*')
 module_name='gfal2_util'
 data_files=[]
 
-if os.getuid() == 0:
-    man_root = '/usr/share/man/man1'
-    man_files=glob('doc/gfal*.1')
-    data_files.append((man_root, man_files))
+man_root = 'share/man/man1'
+man_files=glob('doc/gfal*.1')
+data_files.append((man_root, man_files))
 
 setup(name=module_name,
       version='1.3.0',
