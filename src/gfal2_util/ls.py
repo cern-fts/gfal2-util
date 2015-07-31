@@ -56,6 +56,13 @@ time_formats = {
     'locale': time_locale
 }
 
+color_dict = dict()
+color_env = os.environ.get('LS_COLORS', None)
+if color_env:
+    for entry in [entry for entry in color_env.split(':') if '=' in entry]:
+        typ, color = entry.split('=')
+        color_dict[typ] = color
+
 
 class CommandLs(CommandBase):
     @base.arg('-a', '--all', action="store_true", help="display hidden files")
@@ -69,6 +76,8 @@ class CommandLs(CommandBase):
     @base.arg('--time-style', type=str, default='locale', choices=time_formats.keys(),
               help="time styke")
     @base.arg('--full-time', action="store_true", help="same as --time-style=full-iso")
+    @base.arg('--color', type=str, choices=['always', 'never', 'auto'], default='auto',
+              help='print colored entries with -l')
     @base.arg('file', type=str, help="file's uri")
     def execute_ls(self):
         """List directory's contents"""
@@ -127,12 +136,12 @@ class CommandLs(CommandBase):
                     file_mode_str(stat.st_mode),
                     stat.st_nlink,
                     stat.st_gid, stat.st_uid,
-                    size, date, name,
+                    size, date, self.color(name, stat.st_mode),
                     extra_str
                 )
             )
         else:
-            sys.stdout.write("%s\n" % name)
+            sys.stdout.write("%s\n" % self.color(name, None))
 
     @staticmethod
     def _size_to_human(size):
@@ -147,3 +156,24 @@ class CommandLs(CommandBase):
             return "%0.1f%s" % (math.ceil(size*10.0)/10.0, degree_symbols[degree])
         else:
             return "%0.0f%s" % (math.ceil(size), degree_symbols[degree])
+
+    def color(self, name, mode):
+        apply_color = False
+        if self.params.color == 'always':
+            apply_color = True
+        elif self.params.color == 'auto':
+            apply_color = sys.stdout.isatty()
+
+        if not apply_color:
+            return name
+
+        color = '037'
+        if mode is None:
+            color = color_dict.get('no', color)
+        elif stat.S_ISDIR(mode):
+            color = color_dict.get('di', color)
+        elif stat.S_ISLNK(mode):
+            color = color_dict.get('ln', color)
+        elif mode & (stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH):
+            color = color_dict.get('ex', color)
+        return '\033[%sm%s\033[0m' % (color, name)
