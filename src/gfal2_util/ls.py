@@ -116,14 +116,19 @@ class CommandLs(CommandBase):
         return 0
 
     def _print_ls_entry(self, name, stat, extra=None):
+        space = {
+            'st_mode': 5, 'st_nlink': 3, 'st_gid': 5, 'st_uid': 5,
+            'st_mtime': 11, 'size': 9, 'size_human': 4
+        }
+
         #if long, print some stuff from stat. Try to align as best as possible without buffering
         if self.params.long:
             size = stat.st_size
-            size_sp = 12
+            size_sp = space['size']
 
             if self.params.human_readable:
                 size = self._size_to_human(size)
-                size_sp = 5
+                size_sp = space['size_human']
 
             date = time_formats[self.params.time_style](stat.st_mtime)
 
@@ -132,11 +137,14 @@ class CommandLs(CommandBase):
                 extra_str = '\t'.join(extra)
 
             sys.stdout.write(
-                ("{0} {1:>4} {2:<5} {3:<5} {4:>%d} {5:>12} {6} {7}\n" % size_sp).format(
+                "%s %s %s %s %s %s %s\t%s\n" % (
                     file_mode_str(stat.st_mode),
-                    stat.st_nlink,
-                    stat.st_gid, stat.st_uid,
-                    size, date, self.color(name, stat.st_mode),
+                    str(stat.st_nlink).rjust(space['st_nlink']),
+                    str(stat.st_gid).ljust(space['st_gid']),
+                    str(stat.st_uid).ljust(space['st_uid']),
+                    str(size).rjust(size_sp),
+                    str(date).ljust(space['st_mtime']),
+                    self.color(name, stat.st_mode),
                     extra_str
                 )
             )
