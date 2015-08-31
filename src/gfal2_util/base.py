@@ -80,8 +80,8 @@ class CommandBase(object):
         else:
             gfal2.set_verbose(gfal2.verbose_level.debug)
 
-        gfal2_log = logging.getLogger('gfal2')
-        gfal2_log.setLevel(log_level_value)
+        root_logger = logging.getLogger()
+        root_logger.setLevel(log_level_value)
         handler = logging.StreamHandler(sys.stderr)
         handler.setLevel(log_level_value)
 
@@ -92,7 +92,7 @@ class CommandBase(object):
             logging.addLevelName(logging.ERROR, "\033[1;31m%-8s\033[1;m" % logging.getLevelName(logging.ERROR))
             logging.addLevelName(logging.WARNING, "\033[1;33m%-8s\033[1;m" % logging.getLevelName(logging.WARNING))
 
-        gfal2_log.addHandler(handler)
+        root_logger.addHandler(handler)
 
     #wrap method to catch exceptions in thread's stack
     def executor(self, func):

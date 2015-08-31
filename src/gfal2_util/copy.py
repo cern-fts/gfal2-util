@@ -1,3 +1,4 @@
+import logging
 import sys
 import os
 import stat
@@ -7,6 +8,9 @@ import gfal2
 import base
 from base import CommandBase
 from progress import Progress
+
+
+log = logging.getLogger(__name__)
 
 
 class CommandCopy(CommandBase):
@@ -104,8 +108,12 @@ class CommandCopy(CommandBase):
             pass
 
         # Perform some checks before continuing
+        is_lfc = destination.startswith('lfc://') or destination.startswith('lfn://') or destination.startswith('guid://')
         if dest_exists and not dest_isdir and not self.params.force:
-            return self._failure("Destination %s exists and overwrite is not set" % destination, errno.EEXIST)
+            if is_lfc:
+                log.warning("Destination exists, but it is an LFC, so try to add a new replica")
+            else:
+                return self._failure("Destination %s exists and overwrite is not set" % destination, errno.EEXIST)
         if dest_exists and not dest_isdir and source_isdir:
                 return self._failure("Can not copy a directory over a file", errno.EISDIR)
 
