@@ -121,3 +121,16 @@ class GfalCommands(CommandBase):
         Renames files or directories
         """
         self.context.rename(self.params.source, self.params.destination)
+
+    @base.arg('mode', action='store', type=str, help="new mode, in octal")
+    @base.arg('file', action='store', type=str, help="uri of the file to change permissions")
+    def execute_chmod(self):
+         """
+         Change the permissions of a file
+         """
+         try:
+            mode = int(self.params.mode, base=8)
+         except ValueError:
+             self.parser.error('Mode must be an octal number (i.e. 0755)')
+             return
+         self.context.chmod(self.params.file, mode)

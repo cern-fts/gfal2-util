@@ -177,23 +177,23 @@ class CommandBase(object):
         arguments = getattr(func, 'arguments', [])
 
         #Create parser and parse arguments
-        parser = argparse.ArgumentParser(prog=os.path.basename(a[0]), description=description, add_help=True)
-        parser.add_argument('-V', '--version', action=Gfal2VersionAction,
+        self.parser = argparse.ArgumentParser(prog=os.path.basename(a[0]), description=description, add_help=True)
+        self.parser.add_argument('-V', '--version', action=Gfal2VersionAction,
                             help="output version information and exit")
-        parser.add_argument('-v', '--verbose', action='count', default=0,
+        self.parser.add_argument('-v', '--verbose', action='count', default=0,
                             help="enable the verbose mode, -v for warning, -vv for info, -vvv for debug")
-        parser.add_argument('-D', '--definition', nargs=1, type=str, help="override a gfal parameter", action='append')
-        parser.add_argument('-t', '--timeout', type=int, default=1800,
+        self.parser.add_argument('-D', '--definition', nargs=1, type=str, help="override a gfal parameter", action='append')
+        self.parser.add_argument('-t', '--timeout', type=int, default=1800,
                             help="maximum time for the operation to terminate - default is 1800 seconds")
-        parser.add_argument('-E', '--cert', type=str, default=None, help="user certificate")
-        parser.add_argument('--key', type=str, default=None, help="user private key")
-        parser.add_argument('-4', action='store_true', help='forces gfal2-util to use IPv4 addresses only')
-        parser.add_argument('-6', action='store_true', help='forces gfal2-util to use IPv6 addresses only')
-        parser.add_argument('-C', '--client-info', type=str, help="provide custom client-side information",
+        self.parser.add_argument('-E', '--cert', type=str, default=None, help="user certificate")
+        self.parser.add_argument('--key', type=str, default=None, help="user private key")
+        self.parser.add_argument('-4', action='store_true', help='forces gfal2-util to use IPv4 addresses only')
+        self.parser.add_argument('-6', action='store_true', help='forces gfal2-util to use IPv6 addresses only')
+        self.parser.add_argument('-C', '--client-info', type=str, help="provide custom client-side information",
                             action='append')
 
         for (args, kwargs) in arguments:
-            parser.add_argument(*args, **kwargs)
+            self.parser.add_argument(*args, **kwargs)
 
-        self.params = parser.parse_args(a[1:])
+        self.params = self.parser.parse_args(a[1:])
         self.progr = os.path.basename(a[0])
