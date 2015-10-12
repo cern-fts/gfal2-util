@@ -1,46 +1,61 @@
+Mon Oct 12 2015 Alejandro Alvarez <aalvarez at cern.ch> - 1.3.0
+** Bug
+- [DMC-723] - gfal2-copy does not allow adding new replicas to an LFC entry
+** Epic
+- [DMC-698] - Port DMC clients to MacOSX
+** Improvement
+- [DMC-672] - When listing extended attributes, do not stop on failure
+- [DMC-674] - Validate version as part of the packaging
+- [DMC-709] - In gfal-ls, show size before date, as with system's ls
+- [DMC-710] - Add partial support for LS_COLORS
+- [DMC-721] - Man pages for gfal-copy missing information on how to register into the LFC
+** New Feature
+- [DMC-706] - Add --full-time and --time-style flags to gfal-ls
+- [DMC-730] - Add a gfal-chmod command
+
 Fri Apr 10 2015 Alejandro Alvarez <aalvarez at cern.ch> - 1.2.1
 ** Bug
-* [DMC-599] - Transfer timeout not respected
-* [DMC-628] - Stat surl before deciding if doing unlink or rmdir
+- [DMC-599] - Transfer timeout not respected
+- [DMC-628] - Stat surl before deciding if doing unlink or rmdir
 ** Improvement
-* [DMC-649] - Core: Improve logger system, deprecate old methods
+- [DMC-649] - Core: Improve logger system, deprecate old methods
 ** New Feature
-* [DMC-532] - gfal-copy -r (recursive)
-* [DMC-545] - Provide --dry-run for gfal-rm
-* [DMC-585] - Add a gfal-rename command
-* [DMC-667] - Make version (--version/-V) flag more verbose
+- [DMC-532] - gfal-copy -r (recursive)
+- [DMC-545] - Provide --dry-run for gfal-rm
+- [DMC-585] - Add a gfal-rename command
+- [DMC-667] - Make version (--version/-V) flag more verbose
 
 Fri Nov 07 2014 Alejandro Alvarez <aalvarez at cern.ch> - 1.1.0
-* [DMC-517] - Update gfal-copy manpage
-* [DMC-522] - is_alive is not available in Python 2.4 (EL5)
-* [DMC-442] - gfal-copy should accept a checksum parameter
-* [DMC-467] - Create a cli around xattr+replicas to ease its use 
-* [DMC-481] - Expose 'strict mode' parameter via Python bindings and gfal2-util
-* [DMC-513] - New command gfal-stat
-* [DMC-405] - support input from file in gfal-copy and gfal-del
+- [DMC-517] - Update gfal-copy manpage
+- [DMC-522] - is_alive is not available in Python 2.4 (EL5)
+- [DMC-442] - gfal-copy should accept a checksum parameter
+- [DMC-467] - Create a cli around xattr+replicas to ease its use 
+- [DMC-481] - Expose 'strict mode' parameter via Python bindings and gfal2-util
+- [DMC-513] - New command gfal-stat
+- [DMC-405] - support input from file in gfal-copy and gfal-del
 
 Wed Jul 02 2014 Alejandro Alvarez <aalvarez at cern.ch> - 1.0.0
-* [LCGUTIL-313] - gfal-copy force not working
-* [LCGUTIL-401] - Pass overwrite (--force) parameter to gfal2
-* [LCGUTIL-415] - gfal-ls barfs with head (sometimes)
-* [LCGUTIL-308] - gfal-cp to support chained copies?
-* [LCGUTIL-314] - gfal2 default timeout
-* [LCGUTIL-385] - GridFTP listing improvement (RELNOTE: session reuse enabled by default!)
-* [LCGUTIL-387] - Add buffer size parameter to gfal-cp
-* [LCGUTIL-392] - gfal-copy does not give the option to create parent directory
-* [LCGUTIL-283] - add an option to specify credentials to gfal-utils tools
-* [LCGUTIL-431] - Allow to do an ls with additional metadata
-* [LCGUTIL-340] - gfal2 - utils : exception triggered on gfal2-ls -l
-* [LCGUTIL-404] - gfal2-util broken on SL5
-* [LCGUTIL-413] - gfal-ls -l should indicate file type
+- [LCGUTIL-313] - gfal-copy force not working
+- [LCGUTIL-401] - Pass overwrite (--force) parameter to gfal2
+- [LCGUTIL-415] - gfal-ls barfs with head (sometimes)
+- [LCGUTIL-308] - gfal-cp to support chained copies?
+- [LCGUTIL-314] - gfal2 default timeout
+- [LCGUTIL-385] - GridFTP listing improvement (RELNOTE: session reuse enabled by default!)
+- [LCGUTIL-387] - Add buffer size parameter to gfal-cp
+- [LCGUTIL-392] - gfal-copy does not give the option to create parent directory
+- [LCGUTIL-283] - add an option to specify credentials to gfal-utils tools
+- [LCGUTIL-431] - Allow to do an ls with additional metadata
+- [LCGUTIL-340] - gfal2 - utils : exception triggered on gfal2-ls -l
+- [LCGUTIL-404] - gfal2-util broken on SL5
+- [LCGUTIL-413] - gfal-ls -l should indicate file type
 
 Version 0.2.0 :
-* [LCGUTIL-75] - gfal-tools : implement basic cancel logic in order to interrupt I/O operation
-* [LCGUTIL-76] - gfal-utils : implement advanced cancel logic in order to interrupt I/O operation
-* [LCGUTIL-208] - gfal-utils : gfal-ls should be able to stat() file and do long style listing of directory like "ls -l"
-* [LCGUTIL-209] - gfal-utils : gfal-copy should have a progress bar to allow to follow the status of a transfer
-* [LCGUTIL-252] - Add a gfal-gettturls (or similar)
-* [LCGUTIL-247] - GFAL2-UTILS : gfal-utils interrupt cmd line are not triggered properly
+- [LCGUTIL-75] - gfal-tools : implement basic cancel logic in order to interrupt I/O operation
+- [LCGUTIL-76] - gfal-utils : implement advanced cancel logic in order to interrupt I/O operation
+- [LCGUTIL-208] - gfal-utils : gfal-ls should be able to stat() file and do long style listing of directory like "ls -l"
+- [LCGUTIL-209] - gfal-utils : gfal-copy should have a progress bar to allow to follow the status of a transfer
+- [LCGUTIL-252] - Add a gfal-gettturls (or similar)
+- [LCGUTIL-247] - GFAL2-UTILS : gfal-utils interrupt cmd line are not triggered properly
 
 
 Version 0.0.14-0.1.alpha
