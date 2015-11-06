@@ -224,23 +224,23 @@ class CommandCopy(CommandBase):
         t = self.context.transfer_parameters()
         self._setup_transfer_params(t, event_callback, monitor_callback)
 
-        progress_bar = None
+        self.progress_bar = None
         if not self.params.dry_run and not self.params.verbose and sys.stdout.isatty():
-            progress_bar = Progress("Copying %s" % source)
-            progress_bar.update(total_size=source_size)
-            progress_bar.start()
+            self.progress_bar = Progress("Copying %s" % source)
+            self.progress_bar.update(total_size=source_size)
+            self.progress_bar.start()
         else:
             print "Copying %d bytes %s => %s" % (source_size, source, destination)
 
         try:
             if not self.params.dry_run:
                 ret = self.context.filecopy(t, source, destination)
-            if progress_bar:
-                progress_bar.stop(True)
+            if self.progress_bar:
+                self.progress_bar.stop(True)
                 print
         except gfal2.GError, e:
-            if progress_bar:
-                progress_bar.stop(False)
+            if self.progress_bar:
+                self.progress_bar.stop(False)
                 print
             if e.code == errno.EEXIST and self.params.force:
                 self.context.unlink(destination)
