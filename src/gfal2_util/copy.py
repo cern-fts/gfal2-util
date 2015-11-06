@@ -201,6 +201,11 @@ class CommandCopy(CommandBase):
         if self.params.just_copy:
             t.strict_copy = True
 
+        if event_callback:
+            t.event_callback = event_callback
+        if monitor_callback:
+            t.monitor_callback = monitor_callback
+
     def _do_file_copy(self, source, destination, source_size):
         def event_callback(event):
             if self.params.verbose:
