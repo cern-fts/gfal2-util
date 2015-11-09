@@ -33,7 +33,7 @@ from gfal2 import GError
 from gfal2_utils_parameters import apply_option
 
 
-VERSION = '1.3.0'
+VERSION = '1.3.1'
 
 
 def arg(*args, **kwargs):

@@ -1,3 +1,8 @@
+Mon Nov 09 2015 Alejandro Alvarez <aalvarez at cern.ch> - 1.3.1
+** Bug
+- [DMC-767] - Register callbacks in gfal-copy
+- [DMC-768] - Fix progress bar for gfal-copy
+
 Mon Oct 12 2015 Alejandro Alvarez <aalvarez at cern.ch> - 1.3.0
 ** Bug
 - [DMC-723] - gfal2-copy does not allow adding new replicas to an LFC entry
