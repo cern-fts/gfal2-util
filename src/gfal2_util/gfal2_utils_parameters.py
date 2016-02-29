@@ -78,3 +78,8 @@ def apply_option(context, params):
                 context.add_client_info(key, val)
             except:
                 context.add_client_info(cinfo, '')
+
+    if params.ipv6:
+        context.set_opt_boolean("GRIDFTP PLUGIN", "IPV6", True)
+    elif params.ipv4:
+        context.set_opt_boolean("GRIDFTP PLUGIN", "IPV6", False)

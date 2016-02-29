@@ -203,8 +203,8 @@ class CommandBase(object):
                             help="maximum time for the operation to terminate - default is 1800 seconds")
         self.parser.add_argument('-E', '--cert', type=str, default=None, help="user certificate")
         self.parser.add_argument('--key', type=str, default=None, help="user private key")
-        self.parser.add_argument('-4', action='store_true', help='forces gfal2-util to use IPv4 addresses only')
-        self.parser.add_argument('-6', action='store_true', help='forces gfal2-util to use IPv6 addresses only')
+        self.parser.add_argument('-4', dest='ipv4', action='store_true', help='forces gfal2-util to use IPv4 addresses only')
+        self.parser.add_argument('-6', dest='ipv6', action='store_true', help='forces gfal2-util to use IPv6 addresses only')
         self.parser.add_argument('-C', '--client-info', type=str, help="provide custom client-side information",
                             action='append')
 
