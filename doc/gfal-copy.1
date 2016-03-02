@@ -33,7 +33,8 @@ define properties for gfal2.
 provide custom client-side information
 .TP
 .BI "-t, --timeout " TIMEOUT
-maximum time for the operation to terminate - default is 1800 seconds
+maximum time for the operation to terminate - default is 1800 seconds. This timeout is enforced by gfal2-util, so it
+applies to the overall operation. It should be greater or equal than --transfer-timeout.
 .TP
 .BI "-E, --cert " CERT
 user certificate
@@ -66,7 +67,8 @@ source spacetoken to use for the transfer
 destination spacetoken to use for the transfer
 .TP
 .BI "-T, --transfer-timeout " TRANSFER_TIMEOUT
-global timeout for the transfer operation
+timeout for the transfer operation. This timeout is enforced by each plugin, so it applies to the transfer operation
+only.
 .TP
 .BI "-K, --checksum " CHECKSUM
 checksum algorithm to use, or algorithm:value
