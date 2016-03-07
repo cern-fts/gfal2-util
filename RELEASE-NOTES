@@ -1,3 +1,9 @@
+Mon Mar 07 2016 Alejandro Alvarez <aalvarez at cern.ch> - 1.3.2
+** Bug
+- [DMC-807] - gfal2-util: -4 and -6 flags do nothing
+** Improvement
+- [DMC-810] - Better document timeout vs transfer timeout
+
 Mon Nov 09 2015 Alejandro Alvarez <aalvarez at cern.ch> - 1.3.1
 ** Bug
 - [DMC-767] - Register callbacks in gfal-copy
