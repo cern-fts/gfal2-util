@@ -36,6 +36,8 @@ class CommandRm(CommandBase):
               help="do not perform any actual change, just print what would happen")
     @base.arg("--from-file", type=str, default=None,
               help="read surls from a file")
+    @base.arg("--bulk", action='store_true', default=False,
+              help="use bulk deletion")
     @base.arg("file", action='store', nargs='*', type=str,
               help="uri(s) of the file(s) to be deleted")
     def execute_rm(self):
@@ -44,6 +46,9 @@ class CommandRm(CommandBase):
         """
         if self.params.from_file and self.params.file:
             print >>sys.stderr, "--from-file and positional arguments can not be used at the same time"
+            return 1
+        if self.params.bulk and self.params.recursive:
+            print >>sys.stderr, "--bulk and --recursive can not be used at the same time"
             return 1
 
         if self.params.file:
@@ -55,8 +60,11 @@ class CommandRm(CommandBase):
             print >>sys.stderr, "Missing surl"
             return 1
 
-        for f in files:
-            self._do_rm(f)
+        if self.params.bulk:
+            self._do_bulk(files)
+        else:
+            for f in files:
+                self._do_rm(f)
 
     def _do_rm(self, surl):
         """
@@ -118,3 +126,18 @@ class CommandRm(CommandBase):
                 else:
                     print "%s\tFAILED" % surl
                     raise
+
+    def _do_bulk(self, surls):
+        """
+        Do a bulk deletion
+        """
+        if self.params.dry_run:
+            print "\tBULK DELETION"
+            return
+
+        errors = self.context.unlink(surls)
+        for error, surl in zip(errors, surls):
+            if error is None:
+                print "%s\tDELETED" % surl
+            else:
+                print "%s\tFAILED: %s" % (surl, error)
