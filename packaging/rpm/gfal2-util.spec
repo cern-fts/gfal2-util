@@ -3,18 +3,18 @@
 %{!?python_version:  %global python_version  %(%{__python} -c "from sys import version_info; print('%d.%d'% (version_info[0],version_info[1]))")}
 
 Name:			gfal2-util
-Version:		1.3.2
+Version:		1.3.3
 Release:		1%{?dist}
 Summary:		GFAL2 utility tools
 Group:			Applications/Internet
 License:		GPLv3
 URL:			https://svnweb.cern.ch/trac/lcgutil/wiki/gfal2
-# git clone https://gitlab.cern.ch/dmc/gfal2-util.git gfal2-util-1.3.1
-# pushd gfal2-util-1.3.1
-# git checkout v1.3.1
+# git clone https://gitlab.cern.ch/dmc/gfal2-util.git gfal2-util-1.3.3
+# pushd gfal2-util-1.3.3
+# git checkout v1.3.3
 # git submodule init && git submodule update
 # popd
-# tar czf gfal2-util-1.3.1.tar.gz gfal2-util-1.3.1
+# tar czf gfal2-util-1.3.3.tar.gz gfal2-util-1.3.3
 Source0:		%{name}-%{version}.tar.gz
 BuildRoot:		%(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
