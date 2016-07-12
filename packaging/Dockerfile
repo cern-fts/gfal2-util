@@ -18,6 +18,7 @@
 
 FROM docker.cern.ch/dmc-dev/gfal2
 
-RUN yum clean all
 RUN yum install -y lcg-CA voms-clients voms-config-all gfal2-util
 
+# Leave yum cache clean
+RUN yum clean all
