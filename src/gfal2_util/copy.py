@@ -120,6 +120,9 @@ class CommandCopy(CommandBase):
         return False
 
     def _do_copy(self, source, destination):
+        if destination == '-':
+            destination = 'file:///dev/stdout'
+
         # Check what are we dealing with
         try:
             source_stat = self.context.stat(source)

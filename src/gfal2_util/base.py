@@ -221,6 +221,8 @@ def surl(value):
     Special "type" for surls.
     It will convert, for instance, paths of the form "/path" to "file:///path"
     """
+    if value == '-':
+        return value
     parsed = urlparse(value)
     if not parsed.scheme:
         return urlunparse(('file', None, os.path.abspath(parsed.path), None, None, None))
