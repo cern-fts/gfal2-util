@@ -35,6 +35,13 @@ from progress import Progress
 log = logging.getLogger(__name__)
 
 
+def _is_special_file(fstat):
+    """
+    Returns true if the file is a special one (i.e. stdout, stderr, null....)
+    """
+    return stat.S_ISFIFO(fstat.st_mode) or stat.S_ISCHR(fstat.st_mode) or stat.S_ISSOCK(fstat.st_mode)
+
+
 class CommandCopy(CommandBase):
 
     @base.arg('-f', "--force", action='store_true',
@@ -122,16 +129,19 @@ class CommandCopy(CommandBase):
 
         dest_isdir = False
         dest_exists = False
+        dest_special = False
         try:
             dest_stat = self.context.stat(destination)
             dest_isdir = stat.S_ISDIR(dest_stat.st_mode)
             dest_exists = True
+            if destination.startswith('file:'):
+                dest_special = _is_special_file(dest_stat)
         except:
             pass
 
         # Perform some checks before continuing
         is_lfc = destination.startswith('lfc://') or destination.startswith('lfn://') or destination.startswith('guid://')
-        if dest_exists and not dest_isdir and not self.params.force:
+        if dest_exists and not dest_isdir and not dest_special and not self.params.force:
             if is_lfc:
                 log.warning("Destination exists, but it is an LFC, so try to add a new replica")
             else:
