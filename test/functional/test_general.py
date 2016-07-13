@@ -6,7 +6,7 @@ from base import TestBase
 
 class UtilGeneralTest(TestBase): 
     def test_protocol_not_supported(self):
-        (ret, out, err) = utils.run_command('gfal-ls', self.dirname)
+        (ret, out, err) = utils.run_command('gfal-ls', 'xyzf://fakepath')
         self.assertEqual(len(out), 0)
         self.assertTrue('Protocol not supported' in err)
         self.assertEqual(ret, 93)
