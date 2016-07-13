@@ -224,6 +224,6 @@ def surl(value):
     if value == '-':
         return value
     parsed = urlparse(value)
-    if not parsed.scheme:
-        return urlunparse(('file', None, os.path.abspath(parsed.path), None, None, None))
+    if not parsed[0]:
+        return urlunparse(('file', None, os.path.abspath(parsed[2]), None, None, None))
     return value
