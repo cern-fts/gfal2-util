@@ -78,7 +78,7 @@ class CommandLs(CommandBase):
     @base.arg('--full-time', action="store_true", help="same as --time-style=full-iso")
     @base.arg('--color', type=str, choices=['always', 'never', 'auto'], default='auto',
               help='print colored entries with -l')
-    @base.arg('file', type=str, help="file's uri")
+    @base.arg('file', type=base.surl, help="file's uri")
     def execute_ls(self):
         """List directory's contents"""
         if self.params.full_time:

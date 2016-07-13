@@ -23,6 +23,7 @@
 import argparse
 import logging
 import signal
+from urlparse import urlparse, urlunparse
 from threading import Thread
 import sys
 import errno
@@ -213,3 +214,14 @@ class CommandBase(object):
 
         self.params = self.parser.parse_args(a[1:])
         self.progr = os.path.basename(a[0])
+
+
+def surl(value):
+    """
+    Special "type" for surls.
+    It will convert, for instance, paths of the form "/path" to "file:///path"
+    """
+    parsed = urlparse(value)
+    if not parsed.scheme:
+        return urlunparse(('file', None, os.path.abspath(parsed.path), None, None, None))
+    return value

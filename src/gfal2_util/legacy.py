@@ -30,8 +30,8 @@ class CommandLegacy(CommandBase):
     Implement some legacy support around gfal2
     """
 
-    @base.arg('lfc', action='store', type=str, help="LFC entry (lfc:// or guid:)")
-    @base.arg('surl', action='store', type=str, help="Site URL to be unregistered")
+    @base.arg('lfc', action='store', type=base.surl, help="LFC entry (lfc:// or guid:)")
+    @base.arg('surl', action='store', type=base.surl, help="Site URL to be unregistered")
     def execute_unregister(self):
         """
         Unregister a replica.
@@ -39,8 +39,8 @@ class CommandLegacy(CommandBase):
         value = '-' + self.params.surl
         self.context.setxattr(self.params.lfc, 'user.replicas', value, len(value))
 
-    @base.arg('lfc', action='store', type=str, help="LFC entry (lfc:// or guid:)")
-    @base.arg('surl', action='store', type=str, help="Site URL to be unregistered")
+    @base.arg('lfc', action='store', type=base.surl, help="LFC entry (lfc:// or guid:)")
+    @base.arg('surl', action='store', type=base.surl, help="Site URL to be unregistered")
     def execute_register(self):
         """
         Register a replica.
@@ -48,7 +48,7 @@ class CommandLegacy(CommandBase):
         value = '+' + self.params.surl
         self.context.setxattr(self.params.lfc, 'user.replicas', value, len(value))
 
-    @base.arg('lfc', action='store', type=str, help="LFC entry (lfc:// or guid:)")
+    @base.arg('lfc', action='store', type=base.surl, help="LFC entry (lfc:// or guid:)")
     def execute_replicas(self):
         """
         List replicas.
@@ -59,7 +59,7 @@ class CommandLegacy(CommandBase):
 
     @base.arg('--pin-lifetime', action='store', type=int, default=0, help='Desired pin lifetime')
     @base.arg('--desired-request-time', action='store', type=int, default=28800, help='Desired total request time')
-    @base.arg('surl', action='store', type=str, help='Site URL')
+    @base.arg('surl', action='store', type=base.surl, help='Site URL')
     def execute_bringonline(self):
         """
         Execute bring online

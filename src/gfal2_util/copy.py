@@ -63,8 +63,8 @@ class CommandCopy(CommandBase):
               help="abort the whole copy as soon as one failure is encountered")
     @base.arg('--dry-run', action='store_true',
               help="do not perform any action, just print what would be done")
-    @base.arg('src', type=str, nargs='?', help="source file")
-    @base.arg('dst', action='store', nargs='+', type=str,
+    @base.arg('src', type=base.surl, nargs='?', help="source file")
+    @base.arg('dst', action='store', nargs='+', type=base.surl,
               help="destination file(s). If more than one is given, they will be chained copy: src -> dst1, dst1->dst2, ...")
     def execute_copy(self):
         """

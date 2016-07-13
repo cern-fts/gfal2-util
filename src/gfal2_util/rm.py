@@ -38,7 +38,7 @@ class CommandRm(CommandBase):
               help="read surls from a file")
     @base.arg("--bulk", action='store_true', default=False,
               help="use bulk deletion")
-    @base.arg("file", action='store', nargs='*', type=str,
+    @base.arg("file", action='store', nargs='*', type=base.surl,
               help="uri(s) of the file(s) to be deleted")
     def execute_rm(self):
         """
