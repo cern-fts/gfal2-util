@@ -1,5 +1,13 @@
 gfal2-util release notes
 ========================
+
+## Mon Aug 01 2016 Alejandro Alvarez <aalvarez at cern.ch> - 1.4.0
+### New Feature
+- [DMC-862] - /some/path: Automatically prefix things with file://
+- [DMC-865] - If destination file is special type (i.e. stdout, null), do not fail
+### Improvement
+- [DMC-836] - Add bulk deletion option
+
 ## Mon Mar 07 2016 Alejandro Alvarez <aalvarez at cern.ch> - 1.3.2
 ### Bug
 - [DMC-807] - gfal2-util: -4 and -6 flags do nothing
