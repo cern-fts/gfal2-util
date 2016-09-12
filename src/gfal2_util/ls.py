@@ -3,6 +3,7 @@ Created on Oct 10, 2013
 
 @author: Duarte Meneses <duarte.meneses@cern.ch>
 """
+import logging
 import math
 from datetime import datetime
 import os
@@ -60,8 +61,12 @@ color_dict = dict()
 color_env = os.environ.get('LS_COLORS', None)
 if color_env:
     for entry in [entry for entry in color_env.split(':') if '=' in entry]:
-        typ, color = entry.split('=')
-        color_dict[typ] = color
+        try:
+            typ, color = entry.split('=')
+            color_dict[typ] = color
+        except Exception, e:
+            print >>sys.stderr, "unparsable value for LS_COLORS environment variable:", entry
+            pass
 
 
 class CommandLs(CommandBase):
