@@ -151,7 +151,8 @@ class CommandBase(object):
             # See rule #3 in http://docs.python.org/2/library/signal.html
             t_main.start()
             if self.params.timeout > 0:
-                t_main.join(self.params.timeout)
+                # Increment the timeout a bit so plugins have a chance to timeout themselves
+                t_main.join(self.params.timeout + 30)
             else:
                 #if join(None) is used, it doesn't catch signals
                 while t_main.isAlive():

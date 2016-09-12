@@ -83,3 +83,7 @@ def apply_option(context, params):
         context.set_opt_boolean("GRIDFTP PLUGIN", "IPV6", True)
     elif params.ipv4:
         context.set_opt_boolean("GRIDFTP PLUGIN", "IPV6", False)
+
+    if params.timeout:
+        context.set_opt_integer("CORE", "NAMESPACE_TIMEOUT", params.timeout)
+        context.set_opt_integer("CORE", "CHECKSUM_TIMEOUT", params.timeout)
