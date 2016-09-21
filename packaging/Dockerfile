@@ -16,7 +16,7 @@
 
 # gfal2-util image
 
-FROM docker.cern.ch/dmc-dev/gfal2
+FROM gitlab-registry.cern.ch/dmc/gfal2
 
 RUN yum install -y lcg-CA voms-clients voms-config-all gfal2-util
 
