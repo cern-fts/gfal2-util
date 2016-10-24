@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 ## @license GPLv3
 
 from gfal2_util.shell import Gfal2Shell
