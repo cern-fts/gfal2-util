@@ -41,6 +41,12 @@ def _is_special_file(fstat):
     """
     return stat.S_ISFIFO(fstat.st_mode) or stat.S_ISCHR(fstat.st_mode) or stat.S_ISSOCK(fstat.st_mode)
 
+_checksum_mode_str_mapping = dict(
+    source=gfal2.checksum_mode.source,
+    target=gfal2.checksum_mode.target,
+    both=gfal2.checksum_mode.both
+)
+
 
 class CommandCopy(CommandBase):
 
@@ -60,6 +66,8 @@ class CommandCopy(CommandBase):
               help="global timeout for the transfer operation")
     @base.arg('-K', "--checksum", type=str, default=None,
               help='checksum algorithm to use, or algorithm:value')
+    @base.arg("--checksum-mode", type=str, default='both', choices=['source', 'target', 'both'],
+              help='checksum validation mode')
     @base.arg('--from-file', type=str, default=None,
               help="read sources from a file")
     @base.arg('--just-copy', action='store_true',
@@ -205,14 +213,15 @@ class CommandCopy(CommandBase):
             t.tcp_buffersize = self.params.tcp_buffersize
         if self.params.force:
             t.overwrite = self.params.force
+        if self.params.just_copy:
+            t.strict_copy = True
+
         if self.params.checksum:
-            t.checksum_check = True
+            mode = _checksum_mode_str_mapping[self.params.checksum_mode]
             chk_args = self.params.checksum.split(':')
             if len(chk_args) == 1:
                 chk_args.append('')
-            t.set_user_defined_checksum(chk_args[0], chk_args[1])
-        if self.params.just_copy:
-            t.strict_copy = True
+            t.set_checksum(mode, chk_args[0], chk_args[1])
 
         if event_callback:
             t.event_callback = event_callback
