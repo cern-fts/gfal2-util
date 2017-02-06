@@ -1,6 +1,15 @@
 gfal2-util release notes
 ========================
 
+## Mon Feb 06 2017 Alejandro Alvarez <aalvarez at cern.ch> - 1.5.0
+### Bug
+- [DMC-883] - gfal-ls fails when trying to evaluate the LS_COLORS envvar
+- [DMC-899] - gfal2-util must use /usr/bin/env python as shebang
+### New Feature
+- [DMC-892] - Generalize checksum methods
+### Improvement
+- [DMC-880] - If the option -t is passed, make sure that Davix knows it
+
 ## Mon Aug 01 2016 Alejandro Alvarez <aalvarez at cern.ch> - 1.4.0
 ### New Feature
 - [DMC-862] - /some/path: Automatically prefix things with file://
