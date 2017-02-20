@@ -2,33 +2,35 @@
 %{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 %{!?python_version:  %global python_version  %(%{__python} -c "from sys import version_info; print('%d.%d'% (version_info[0],version_info[1]))")}
 
-Name:			gfal2-util
-Version:		1.5.0
-Release:		1%{?dist}
-Summary:		GFAL2 utility tools
-Group:			Applications/Internet
-License:		GPLv3
-URL:			https://svnweb.cern.ch/trac/lcgutil/wiki/gfal2
-# git clone https://gitlab.cern.ch/dmc/gfal2-util.git gfal2-util-1.5.0
+Name:           gfal2-util
+Version:        1.5.0
+Release:        1%{?dist}
+Summary:        GFAL2 utility tools
+Group:          Applications/Internet
+License:        GPLv3
+URL:            http://dmc.web.cern.ch/
+# git clone https://gitlab.cern.ch/dmc/gfal2-util.git gfal2-util-1.5.0 --depth=1
 # pushd gfal2-util-1.5.0
 # git checkout v1.5.0
 # popd
-# tar czf gfal2-util-1.5.0.tar.gz gfal2-util-1.5.0
-Source0:		%{name}-%{version}.tar.gz
-BuildRoot:		%(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
+# tar czf gfal2-util-1.5.0.tar.gz --exclude-vcs gfal2-util-1.5.0
+Source0:        %{name}-%{version}.tar.gz
+BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
-BuildArch:		noarch
+BuildArch:      noarch
 
-BuildRequires:		gfal2-core
-BuildRequires:		gfal2-python >= 1.8.0
-BuildRequires:		gfal2-plugin-file
+BuildRequires:  gfal2-core
+BuildRequires:  gfal2-python >= 1.9.0
+BuildRequires:  gfal2-plugin-file
+BuildRequires:  python2
 
-Requires:		gfal2-python >= 1.8.0
+Requires:       gfal2-python >= 1.9.0
+Requires:       python2
 
-%if "0%{?python_version}" <= "2.7"
-BuildRequires:		python-argparse
-Requires:		python-argparse
-%endif # python < 2.7
+%if %{?fedora}%{!?fedora:0} < 26
+BuildRequires:      python-argparse
+Requires:       python-argparse
+%endif
 
 %description
 gfal2-util is a set of basic utility tools for file 
@@ -52,6 +54,7 @@ if [ "$gfal2_util_ver" != "$gfal2_util_spec_ver" ]; then
     echo "%{version} != $gfal2_util_ver"
     exit 1
 fi
+
 python setup.py build
 
 %install
@@ -70,6 +73,31 @@ python test/functional/test_all.py
 
 
 %changelog
+* Mon Feb 20 2017 Alejandro Alvarez <aalvarez at cern.ch> - 1.5.0-1
+- New upstream release
+
+* Fri Feb 10 2017 Fedora Release Engineering <releng@fedoraproject.org> - 1.4.0-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
+
+* Tue Sep 27 2016  Alejandro Alvarez <aalvarez at cern.ch> - 1.4.0-1
+- New upstream release
+- python-argparse is part of python's stdlib
+
+* Tue Jul 19 2016 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.3.2-2
+- https://fedoraproject.org/wiki/Changes/Automatic_Provides_for_Python_RPM_Packages
+
+* Tue Mar 08 2016 Alejandro Alvarez <aalvarez at cern.ch> - 1.3.2-1
+- Update for new upstream 1.3.2 release
+
+* Wed Feb 03 2016 Fedora Release Engineering <releng@fedoraproject.org> - 1.3.1-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
+
+* Mon Nov 09 2015 Alejandro Alvarez <aalvarez at cern.ch> - 1.3.1-1
+- Update for new upstream 1.3.1 release
+
+* Wed Jun 17 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.2.1-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
+
 * Fri Apr 17 2015 Alejandro Alvarez <aalvarez at cern.ch> - 1.2.1-1
 - Update for new upstream 1.2.1 release
 
