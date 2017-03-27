@@ -118,7 +118,14 @@ class CommandCopy(CommandBase):
 
         # Do the actual work
         for (source, destination) in copy_jobs:
-            self._do_copy(source, destination)
+            if destination == '-':
+                destination = 'file:///dev/stdout'
+
+            if self.params.just_copy:
+                self._do_file_copy(source, destination, 0)
+            else:
+                self._do_copy(source, destination)
+
         return 0
 
     def _failure(self, msg, errno):
@@ -128,9 +135,6 @@ class CommandCopy(CommandBase):
         return False
 
     def _do_copy(self, source, destination):
-        if destination == '-':
-            destination = 'file:///dev/stdout'
-
         # Check what are we dealing with
         try:
             source_stat = self.context.stat(source)
