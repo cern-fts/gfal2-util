@@ -1,10 +1,10 @@
-.\" Manpage for gfal-save
+.\" Manpage for gfal-stat
 .\"
-.TH GFAL-SAVE 1 "December 2014" "v1.2.0"
+.TH GFAL-STAT 1 "May 2017" "v1.5.0"
 .SH NAME
-gfal-mkdir \- make directories
+gfal-stat \- display extended information about a file or directory
 .SH SYNOPSIS
-.B gfal-save
+.B gfal-stat
 [
 .B "-h"
 ] [
@@ -20,11 +20,14 @@ gfal-mkdir \- make directories
 ] [
 .B -t
 .I TIMEOUT
-] \fI file\fR ...
+] [
+.B -p
+] \fIURL\f
+
 
 .SH DESCRIPTION
-.B gfal-save
-Reads from stdin and writes to a file until it finds EOF. If the file exists, it will be overwritten.
+.B gfal-stat
+Display extended information about a file or directory.
 
 .SH OPTIONS
 .TP
@@ -45,16 +48,27 @@ provide custom client-side information
 .TP
 .B "-t, --timeout"
 global timeout for the execution of the command. Command is interrupted if time expires before it finishes.
-.TP
-.B file
-destination file where the contents read from stdin will be written to.
 
 .SH EXAMPLES
-.TP
-.B cat
-/etc/group |
-.B gfal-save
-srm://endpoint.cern.ch/path/group
+.B gfal-stat
+file:///tmp/path1/path2
+    File: 'file:///tmp/path1/path2'
+    Size: 1986	directory
+    Access: (1777/drwxrwxrwx)	Uid: 0	Gid: 0
+    Access: 2017-05-10 13:15:35.000000
+    Modify: 2017-05-10 13:24:04.000000
+    Change: 2017-05-10 13:24:04.000000
+.PP
+
+.B gfal-stat
+srm://endpoint.cern.ch/path/directory1
+    File: 'srm://endpoint.cern.ch/path/directory1'
+    Size: 1986	directory
+    Access: (1777/drwxrwxrwx)	Uid: 0	Gid: 0
+    Access: 2017-05-10 13:15:35.000000
+    Modify: 2017-05-10 13:24:04.000000
+    Change: 2017-05-10 13:24:04.000000
+
 
 .SH FILES
 .I /etc/gfal2.d/*

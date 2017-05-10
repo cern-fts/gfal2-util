@@ -1,10 +1,10 @@
-.\" Manpage for gfal-save
+.\" Manpage for gfal-chmod
 .\"
-.TH GFAL-SAVE 1 "December 2014" "v1.2.0"
+.TH GFAL-CHMOD 1 "May 2017" "v1.5.0"
 .SH NAME
-gfal-mkdir \- make directories
+gfal-chmod \- Change the permissions of a file
 .SH SYNOPSIS
-.B gfal-save
+.B gfal-chmod
 [
 .B "-h"
 ] [
@@ -20,11 +20,13 @@ gfal-mkdir \- make directories
 ] [
 .B -t
 .I TIMEOUT
-] \fI file\fR ...
+]
+.I MODE
+.I URL
 
 .SH DESCRIPTION
-.B gfal-save
-Reads from stdin and writes to a file until it finds EOF. If the file exists, it will be overwritten.
+.B gfal-chmod
+Change the permissions of a file.
 
 .SH OPTIONS
 .TP
@@ -46,15 +48,22 @@ provide custom client-side information
 .B "-t, --timeout"
 global timeout for the execution of the command. Command is interrupted if time expires before it finishes.
 .TP
-.B file
-destination file where the contents read from stdin will be written to.
+.B "-E, --cert"
+user certificate
+.TP
+.B "--key"
+user private key
+.TP
+.B "-4"
+Forces gfal2-util to use IPv4 addresses only (if the plugin supports this)
+.TP
+.B "-6"
+Forces gfal2-util to use IPv6 addresses only (if the plugin supports this)
 
 .SH EXAMPLES
-.TP
-.B cat
-/etc/group |
-.B gfal-save
-srm://endpoint.cern.ch/path/group
+.B gfal-chmod
+0755
+file:///tmp/original
 
 .SH FILES
 .I /etc/gfal2.d/*
