@@ -1,16 +1,14 @@
 #!/usr/bin/env python
-import os
-import sys
 from distutils.core import setup
 from glob import glob
 
-doc_files=['RELEASE-NOTES', 'VERSION', 'LICENSE', 'readme.html']
-bin_files=glob('src/gfal-*')
-module_name='gfal2_util'
-data_files=[]
+doc_files = ['RELEASE-NOTES', 'VERSION', 'LICENSE', 'readme.html']
+bin_files = glob('src/gfal-*')
+module_name = 'gfal2_util'
+data_files = []
 
 man_root = 'share/man/man1'
-man_files=glob('doc/gfal*.1')
+man_files = glob('doc/man/gfal*.1')
 data_files.append((man_root, man_files))
 
 setup(name=module_name,
@@ -25,8 +23,7 @@ gridFTP, http(s), SRM, xrootd, etc...''',
       author_email='dmc-devel@cern.ch',
       url='http://dmc.web.cern.ch/projects/gfal2-utils',
       packages=[module_name],
-      package_dir={ module_name : 'src/' + module_name},
+      package_dir={module_name: 'src/' + module_name},
       scripts=bin_files,
       data_files=data_files,
-)
-
+      )
