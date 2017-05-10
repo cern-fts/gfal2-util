@@ -3,23 +3,89 @@
 	<head>
 		<title>gfal2-util</title>
 		<style type="text/css">
-		html {
-			background: gray;
-			display: table;
-			margin: auto;
-			margin-top: 1em;
-		}
 		body {
-			display: table-cell;
-			background: white;
-			width: 90ex;
-			padding: 1em 4ex;
+			margin: 40px auto;
+			max-width: 80ch;
+			line-height: 1.6;
+			font-size: 18px;
+			color: #333;
+			padding: 0 10px
 		}
-		p {
+
+		a {
+    		color: blue;
+		}
+
+		a:visited {
+			color: blue;
+		}
+
+		h2 {
+			margin-top: 1.5em;
+		}
+
+		p,dd {
 			text-align: justify;
 		}
+
 		dt {
 			font-weight: bold;
+		}
+
+		.cmd {
+			background: #333;
+			color: white;
+			font-family: monospace;
+			font-size: 15px;
+			padding: 0.2em 0.5em 0.2em 0.5em;
+			margin-left: 0.2em;
+			margin-right: 0.2em;
+		}
+
+		.cmd:before {
+			content: "$ "
+		}
+
+		.url {
+			font-family: monospace;
+			font-size: 15px;
+			color: #AA1111;
+			display: inline-block;
+		}
+
+		pre {
+			background: #333;
+			color: white;
+			font-family: monospace;
+			font-size: 15px;
+			white-space: pre-wrap;
+			padding: 0.2em 0.5em 0.2em 0.5em;
+		}
+
+		pre:before {
+			content: "$ ";
+		}
+
+		dl.protocol-list>dt {
+			font-family: monospace;
+			font-size: 15px;
+		}
+
+		table td, th {
+			padding: 0.2em  1em 0.2em 1em;
+		}
+
+		table th {
+			text-align: left;
+		}
+
+		table tr:hover {
+			background: #DDDDDD;
+		}
+
+		table#equivalences>tbody>tr td:nth-child(2),td:nth-child(3) {
+			font-family: monospace;
+			font-size: 14px;
 		}
 		</style>
 	</head>
@@ -28,74 +94,329 @@
 		
 		<h2>Description</h2>
 		<p>
-			GFAL 2 utils are a group of command line tools for file manipulations with any protocol managed by gfal 2.0
+			GFAL 2 utils are a group of command line tools for file manipulations with any protocol managed by gfal2
 		</p>
 		
 		<h2>Installation</h2>
 		<pre>yum install gfal2-util gfal2-all</pre>
-		
-		<p>
-			Mind that the protocol support of gfal2-util depends on the set of plugins installed in your machine.
-			Installing gfal2-all will trigger an installation of the plugins for file, SRM, GridFTP, HTTP/DAV, LFC, RFIO and DCAP.
-			If you need XROOTD support, you will need to install additionally gfal2-plugin-xrootd.
-		</p>
-		
-		<h2>List of commands</h2>
-		<p>
-			We provide here a brief overview of the command line tools we provide as part of this package.
-			To see detailed usage of each one, you can invoke them with --help to show all the possible options.
-		</p>		
-		
-		<h3>Standard commands</h3>
+
+		<h2>List of command line tools</h2>
 		<dl>
-			<dt><a href="html/gfal-cat.1.html">gfal-cat</a></dt>
-			<dd>Equivalent to cat. Print into the standard output the content of the requested file</dd>
-			<dt><a href="html/gfal-copy.1.html">gfal-copy</a></dt>
-			<dd>
-				Equivalent to cp but more powerful. Copy a file, or set of files, between different
-				storages and/or local. Recursive mode is supported. Try --dry-run to validate what will happen
-			</dd>
-			<dt><a href="html/gfal-ls.1.html">gfal-ls</a></dt>
-			<dd>Equivalent to ls. List the content of a directory. Use -l to generate a detailed list</dd>
-			<dt><a href="html/gfal-mkdir.1.html">gfal-mkdir</a></dt>
-			<dd>Equivalent to mkdir. Create a directory</dd>
-			<dt><a href="html/gfal-rm.1.html">gfal-rm</a></dt>
-			<dd>
-				Equivalent to rm. Remove a file, or a directory if -r is specified.
-				Try --dry-run if you want to validate what will happen without doing anything
-			</dd>
-			<dt><a href="html/gfal-save.1.html">gfal-save</a></dt>
-			<dd>Reads from stdin and writes into a local or remote file</dd>
-			<dt><a href="html/gfal-stat.1.html">gfal-stat</a></dt>
-			<dd>Equivalent to stat. Print information about the file or directory</dd>
-			<dt><a href="html/gfal-sum.1.html">gfal-sum</a></dt>
-			<dd>
-				Query or calculate the checksum of the given file.
-				Normally recognised checksums are adler32, md5 and sha1, but it depends on the protocol and/or storage software
-			</dd>
-			<dt><a href="html/gfal-xattr.1.html">gfal-xattr</a></dt>
-			<dd>
-				Equivalent to attr. Query or set an extended attribute from a file or directory.
-				Which extended attributes are supported depend on the protocol. For instance user.replicas or user.comment can be used for SRM or LFC.
-			</dd>
+			<dt>gfal-cat</dt>
+			<dd>Concatenate a list of files into the standard output.</dd>
+			<dt>gfal-chmod</dt>
+			<dd>Change permissions for a file or directory.</dd>
+			<dt>gfal-copy</dt>
+			<dd>Copy files from source to destination(s).</dd>
+			<dt>gfal-legacy-bringonline</dt>
+			<dd>TODO</dd>
+			<dt>gfal-legacy-register</dt>
+			<dd>Register a new replica into a catalog.</dd>
+			<dt>gfal-legacy-replicas</dt>
+			<dd>List the replicas of an entry in a catalog.</dd>
+			<dt>gfal-legacy-unregister</dt>
+			<dd>Remove a replica from a catalog.</dd>
+			<dt>gfal-ls</dt>
+			<dd>Equivalent to the system `ls` command.</dd>
+			<dt>gfal-mkdir</dt>
+			<dd>Create a directory.</dd>
+			<dt>gfal-rename</dt>
+			<dd>Rename a file or directory.</dd>
+			<dt>gfal-rm</dt>
+			<dd>Remove a file or directory (with -r).</dd>
+			<dt>gfal-save</dt>
+			<dd>Write standard input to a file.</dd>
+			<dt>gfal-stat</dt>
+			<dd>Show extended information about a file or directory.</dd>
+			<dt>gfal-sum</dt>
+			<dd>Retrieve the file checksum.</dd>
+			<dt>gfal-xattr</dt>
+			<dd>List or display a file's extended attributes.</dd>
 		</dl>
-		
-		
-		<h3>Legacy commands</h3>
-		<p>
-			This commands exists purely to provide ways to access functionality previously provided by lcg-util.
-			We recommend avoiding the usage of these tools if possible.
-		</p>
-		<dl>
-			<dt><a href="html/gfal-legacy-bringonline.1.html">gfal-legacy-bringonline</a></dt>
-			<dd>Perform a staging operation on the given SURL</dd>
-			<dt><a href="html/gfal-legacy-register.1.html">gfal-legacy-register</a></dt>
-			<dd>Register a new replica in a catalog. We recommend using instead gfal-xattr [surl] user.replicas=+new_replica</dd>
-			<dt><a href="html/gfal-legacy-replicas.1.html">gfal-legacy-replicas</a></dt>
-			<dd>List replicas from a catalog or SRM. We recommend using instead gfal-xattr [surl] user.replicas</dd>
-			<dt><a href="html/gfal-legacy-unregister.1.html">gfal-legacy-unregister</a></dt>
-			<dd>Remove an existing replica from a catalog. We recommend using instead gfal-xattr [surl] user.replicas=-replica</dd>
-		</dl>
+
+	<h2>Third party copy</h2>
+	<p>
+		To understand some parts of this documentation, it is useful to know the difference between a third
+		party copy and a regular one.
+	</p>
+	<p>
+		<b>Third party copy:</b> When doing a copy between two remote endpoints, the data is sent directly
+		between the two participating storages.<br/>
+		<b>Non-third party copy:</b> The data goes through the client doing the copy.
+	</p>
+	<p>
+		Gfal2 is capable of doing both, depending on the protocol combination. Some protocols do support third party
+		copy (see below), some others do not. In any case, when copying between two different protocols,
+		the copy will <em>not</em> be third party copy (e.g from GridFTP to DAV).<br/>
+		SRM is an exception to this.
+	</p>
+
+	<h2>Protocol support</h2>
+	<p>
+		Gfal2 relies on plugins to add support for different protocols. Depending on your installation, some may not be
+		available.<br/>
+		To use a given protocol, the general syntax is <span class="url">protocol://host[:port]/path</span>. For instance:
+	</p>
+
+	<ul>
+		<li class="url">gsiftp://dpm.cern.ch/dpm/cern.ch/home/dteam</li>
+		<li class="url">davs://dpm.cern.ch/dpm/cern.ch/home/dteam</li>
+		<li class="url">davs://dpm.cern.ch:443/dpm/cern.ch/home/dteam</li>
+	</ul>
+
+	<p>
+		SRM is an exception to this.
+	</p>
+
+	<p>
+		You can check what is installed using <span class="cmd">rpm -qa | grep gfal2-plugin</span>.
+		The normally available protocols are:
+	</p>
+
+	<dl class="protocol-list">
+		<dt>file://</dt>
+		<dd>Local file access. It can be omitted (i.e. <span class="cmd">gfal-ls /</span>).</dd>
+		<dt>gsiftp://</dt>
+		<dd>
+			<a href="https://en.wikipedia.org/wiki/GridFTP">GridFTP</a> protocol. It has third-party copy support.
+		</dd>
+		<dt>srm://</dt>
+		<dd>
+			<a href="https://sdm.lbl.gov/srm-wg/doc/SRM.v2.2.html">SRM</a> protocol. Its support for third-party copies
+			depends on the transfer URL negotiated with the endpoint, and the protocol used for the other peer.<br/>
+			gfal2 is capable of resolving the full SURL using the information system (e.g srm://host/path), but otherwise,
+			you can also use the full SURL (e.g <span class="url">srm://host:8446/srm/managerv2?SFN=/path</span>)
+		</dd>
+		<dt>root://</dt>
+		<dd><a href="http://xrootd.org/">XRootD</a> protocol. Some storages support third party copies, others do not.</dd>
+		<dt>dav(s)://</dt>
+		<dd>
+			WebDAV protocol. Some storages support third party copies, but to enable it, you need to use
+			<span class="url">davs+3rd://</span>
+		</dd>
+		<dt>https://</dt>
+		<dd>
+			Plain HTTPS protocol. Some storages support third party copies, but to enable it, you need to use
+			<span class="url">https+3rd://</span>
+		</dd>
+		<dt>s3://</dt>
+		<dd>S3 protocol. Does not support third party copy, but it could still be achieved if the peer is a davs+3rd endpoint</dd>
+		<dt>lfc://</dt>
+		<dd>LFC endpoints. Requires the endpoint to be part of the url (lfc://lfc.cern.ch/path)</dd>
+		<dt>guid:</dt>
+		<dd>
+			LFC endpoints, by GUID. It uses the LFC_HOST configured under <span class="url">/etc/gfal2.d/lfc_plugin.conf</span>
+		</dd>
+		<dt>rfio://</dt>
+		<dd>RFIO protocol.</dd>
+		<dt>dcap://</dt>
+		<dd>DCAP protocol, only supported by dCache endpoints.</dd>
+	</dl>
+
+	<p>
+		These plugins may not be normally installed.
+	</p>
+	<dl class="protocol-list">
+		<dt>sftp://</dt>
+		<dd>Experimental. SFTP support. Works with an SSH private key, instead of a X509 proxy.</dd>
+		<dt>mock://</dt>
+		<dd>
+			Useful for testing. Allows to force a given reply depending on the URL used. See its
+			<a href="https://gitlab.cern.ch/dmc/gfal2/blob/develop/src/plugins/mock/README_PLUGIN_MOCK">documentation</a>.
+		</dd>
+	</dl>
+
+	<h2>Configuration</h2>
+	<p>
+		All plugin configuration files are stored under <span class="url">/etc/gfal2.d/</span>. You can navigate them
+		and have a look at the different configuration options on the
+		<a href="https://gitlab.cern.ch/dmc/gfal2/tree/master/dist/etc/gfal2.d">gfal2 repository</a>.
+	</p>
+	<p>
+		In any case, for all commands, any value can be overridden by using the flag
+		<span class="url">-D"GROUP:PARAM=VALUE"</span>
+	</p>
+	<p>
+		For example, let's say we want to do a listing of an SRM endpoint, but using a different infosys endpoint.
+	</p>
+	<pre>gfal-ls -D"BDII:LCG_GFAL_INFOSYS=myinfosys.cern.ch:2170" srm://endpoint.cern.ch/dpm/cern.ch/home/dteam/</pre>
+
+	<h2>Examples</h2>
+
+	<h3>Uploading a file to the Grid</h3>
+	<pre>gfal-copy -fpK /home/doe/file1 srm://dpmhead-rc.cern.ch:8446/srm/managerv2?SFN=/dpm/cern.ch/home/dteam/dir/nested/file1</pre>
+
+	<p>
+		In this example, the flag -f tells gfal-copy to overwrite the destination if it already exists, -p enables
+		automatic directory creation, and -K enables checksum validation.
+	</p>
+
+	<h3>Copying files out of the Grid</h3>
+	<p>
+		gfal-copy can be used for uploading, downloading, and also third party copies. Same syntax applies.
+	</p>
+	<pre>gfal-copy -fpK srm://dpmhead-rc.cern.ch:8446/srm/managerv2?SFN=/dpm/cern.ch/home/dteam/dir/nested/file1 /home/doe/file1</pre>
+
+	<h3>Listing files and directories</h3>
+	<pre>gfal-ls -l srm://dpmhead-rc.cern.ch:8446/srm/managerv2?SFN=/dpm/cern.ch/home/dteam/
+-rw-rw-r--   1 46    45          192 Jun 21  2016 853.test
+-rw-rw-r--   1 46    45       641064 Jun 16  2016 aaaabbaaa
+-rw-rw-r--   1 46    48            0 Jun  6  2016 build.out
+-rw-rw-r--   1 46    49        49185 Nov 18 16:04 dmc-901.test
+-rw-rw-r--   1 46    49        49185 Nov 18 16:05 dmc-902.test
+-rw-rw-r--   1 46    50      5279801 Apr 28 16:20 test</pre>
+
+	<p>
+		In this example, -l enables long listing, which displays then mode, owner, size and mtime
+		next to each entry. Without -l, the short version is displayed instead: only the names.
+	</p>
+	<p>
+		gfal-ls uses the environment variable LS_COLORS when -l is passed, if the terminal supports it.
+	</p>
+
+	<h3>Get information about a file or directory</h3>
+	<pre>gfal-stat srm://dpmhead-rc.cern.ch:8446/srm/managerv2?SFN=/dpm/cern.ch/
+  File: 'srm://dpmhead-trunk.cern.ch:8446/srm/managerv2?SFN=/dpm/cern.ch'
+  Size: 0	directory
+Access: (0755/drwxr-xr-x)	Uid: 45	Gid: 45
+Access: 1970-01-01 01:00:00.000000
+Modify: 2015-06-10 18:26:00.000000
+Change: 2017-05-09 11:42:52.000000</pre>
+
+	<h3>Get the checksum of a file</h3>
+	<pre>gfal-sum srm://dpmhead-trunk.cern.ch:8446/srm/managerv2?SFN=/dpm/cern.ch/home/dteam/aalvarez/aaaabbaaa adler32
+srm://dpmhead-trunk.cern.ch:8446/srm/managerv2?SFN=/dpm/cern.ch/home/dteam/aalvarez/aaaabbaaa c88e70d6</pre>
+	<pre>gfal-sum srm://dpmhead-trunk.cern.ch:8446/srm/managerv2?SFN=/dpm/cern.ch/home/dteam/aalvarez/aaaabbaaa md5
+srm://dpmhead-trunk.cern.ch:8446/srm/managerv2?SFN=/dpm/cern.ch/home/dteam/aalvarez/aaaabbaaa 64fd36ae477e970b06949fe90d0c8c20</pre>
+
+	<h3>Get information about space tokens</h3>
+	<pre>gfal-xattr srm://dpmhead-trunk.cern.ch:8446/srm/managerv2?SFN=/dpm/cern.ch/home/dteam/ spacetoken
+["65e3ad04-ada1-11e6-b531-c860001bd938","bd1dae50-108c-11e7-82fa-c860001bd938","77056126-194f-11e7-82fa-c860001bd938","4ad03b22-2a92-11e7-82fa-c860001bd938","45e35c78-2b52-11e7-82fa-c860001bd938"]</pre>
+	<pre>gfal-xattr srm://dpmhead-trunk.cern.ch:8446/srm/managerv2?SFN=/dpm/cern.ch/home/dteam/ spacetoken.token?65e3ad04-ada1-11e6-b531-c860001bd938
+{ "spacetoken": "65e3ad04-ada1-11e6-b531-c860001bd938", "owner": "root", "totalsize": 14937625, "unusedsize": 112193261767, "usedsize": 0, "guaranteedsize": 107374182400, "lifetimeleft": -1, "retention": "CUSTODIAL", "accesslatency": "NEARLINE" }</pre>
+
+	<h2>Apendix: lcg-util equivalence table</h2>
+	<table id="equivalences">
+		<thead>
+			<tr>
+				<th>Description</th>
+				<th>lcg-util</th>
+				<th>gfal-util</th>
+			</tr>
+		</thead>
+		<tbody>
+		<tr>
+			<td>Add an alias for a given GUID</td>
+			<td>lcg-aa</td>
+			<td>Deprecated</td>
+		</tr>
+		<tr>
+			<td>Bring SURLs online</td>
+			<td>lcg-bringonline</td>
+			<td>gfal-legacy-bringonline</td>
+		</tr>
+		<tr>
+			<td>Copy files with no catalog involved</td>
+			<td>lcg-cp</td>
+			<td>gfal-copy</td>
+		</tr>
+		<tr>
+			<td>Copy and register a file</td>
+			<td>lcg-cr</td>
+			<td>gfal-copy</td>
+		</tr>
+		<tr>
+			<td>Delete a file / directory</td>
+			<td>lcg-del</td>
+			<td>gfal-rm</td>
+		</tr>
+		<tr>
+			<td>Get the file checksum</td>
+			<td>lcg-get-checksum</td>
+			<td>gfal-sum</td>
+		</tr>
+		<tr>
+			<td>Get the TURLs for given SURLs</td>
+			<td>lcg-getturls</td>
+			<td>gfal-xattr "user.replicas"</td>
+		</tr>
+		<tr>
+			<td>Get the TURL for a given SURL</td>
+			<td>lcg-gt</td>
+			<td>gfal-xattr "user.replicas"</td>
+		</tr>
+		<tr>
+			<td>List aliases for a given LFN/GUID</td>
+			<td>lcg-la</td>
+			<td>Deprecated</td>
+		</tr>
+		<tr>
+			<td>Get the GUID for a given LFN</td>
+			<td>lcg-lg</td>
+			<td>gfal-xattr "user.guid"</td>
+		</tr>
+		<tr>
+			<td>Lists the replicas for a given LFN</td>
+			<td>lcg-lr</td>
+			<td>gfal-xattr "user.replicas"</td>
+		</tr>
+		<tr>
+			<td>List information / directory</td>
+			<td>lcg-ls</td>
+			<td>gfal-ls</td>
+		</tr>
+		<tr>
+			<td>Remove an alias</td>
+			<td>lcg-ra</td>
+			<td>Deprecated</td>
+		</tr>
+		<tr>
+			<td>Copy between Ses using the catalog</td>
+			<td>lcg-rep</td>
+			<td>gfal-copy</td>
+		</tr>
+		<tr>
+			<td>Register a file in a catalog</td>
+			<td>lcg-rf</td>
+			<td>gfal-copy</td>
+		</tr>
+		<tr>
+			<td>Set a file status to done</td>
+			<td>lcg-sd</td>
+			<td>Deprecated*</td>
+		</tr>
+		<tr>
+			<td>Get space tokens associated to a description</td>
+			<td>lcg-stmd</td>
+			<td>gfal-xattr "spacetoken"/"spacetoken.token?$tok"/"spacetoken.description?$desc"</td>
+		</tr>
+		<tr>
+			<td>Unregister a file</td>
+			<td>lcg-uf</td>
+			<td>gfal-legacy-unregister</td>
+		</tr>
+		<tr>
+			<td>Create a directory</td>
+			<td></td>
+			<td>gfal-mkdir</td>
+		</tr>
+		<tr>
+			<td>Dump the standard input into a file</td>
+			<td></td>
+			<td>gfal-save</td>
+		</tr>
+		<tr>
+			<td>Dump a file into the standard output</td>
+			<td></td>
+			<td>gfal-cat</td>
+		</tr>
+		</tbody>
+	</table>
+
+	<p>
+		(*) These actions are actually performed internally by the SRM plugin when needed.
+	</p>
+
 		
 		<h2>License</h2>
 		<p>
