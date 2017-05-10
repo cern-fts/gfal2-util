@@ -22,7 +22,7 @@ interactions and file copy based on the GFAL 2.0 toolkit.
 gfal2-util supports the protocols of GFAL 2.0 : WebDav(s),
 gridFTP, http(s), SRM, xrootd, etc...''',
       author='Duarte Meneses, Adrien Devresse',
-      author_email='duarte.meneses@cern.ch, adrien.devresse@cern.ch',
+      author_email='dmc-devel@cern.ch',
       url='http://dmc.web.cern.ch/projects/gfal2-utils',
       packages=[module_name],
       package_dir={ module_name : 'src/' + module_name},
