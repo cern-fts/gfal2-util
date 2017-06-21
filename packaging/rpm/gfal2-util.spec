@@ -3,17 +3,17 @@
 %{!?python_version:  %global python_version  %(%{__python} -c "from sys import version_info; print('%d.%d'% (version_info[0],version_info[1]))")}
 
 Name:           gfal2-util
-Version:        1.5.0
+Version:        1.5.1
 Release:        1%{?dist}
 Summary:        GFAL2 utility tools
 Group:          Applications/Internet
 License:        GPLv3
 URL:            http://dmc.web.cern.ch/
-# git clone https://gitlab.cern.ch/dmc/gfal2-util.git gfal2-util-1.5.0 --depth=1
-# pushd gfal2-util-1.5.0
-# git checkout v1.5.0
+# git clone https://gitlab.cern.ch/dmc/gfal2-util.git gfal2-util-1.5.1 --depth=1
+# pushd gfal2-util-1.5.1
+# git checkout v1.5.1
 # popd
-# tar czf gfal2-util-1.5.0.tar.gz --exclude-vcs gfal2-util-1.5.0
+# tar czf gfal2-util-1.5.1.tar.gz --exclude-vcs gfal2-util-1.5.1
 Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 

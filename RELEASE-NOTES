@@ -1,6 +1,10 @@
 gfal2-util release notes
 ========================
 
+## Wed Jun 21 2017 Alejandro Alvarez <aalvarez at cern.ch> - 1.5.1
+### Bug
+- [DMC-933] - gfal-copy does stat/propfind even if --just-copy is given
+
 ## Mon Feb 06 2017 Alejandro Alvarez <aalvarez at cern.ch> - 1.5.0
 ### Bug
 - [DMC-883] - gfal-ls fails when trying to evaluate the LS_COLORS envvar
