@@ -18,7 +18,7 @@
 
 FROM gitlab-registry.cern.ch/dmc/gfal2
 
-RUN yum install -y lcg-CA voms-clients voms-config-all gfal2-util
+RUN yum install -y lcg-CA voms-clients voms-config-all gfal2-util fts-client
 
 # Leave yum cache clean
 RUN yum clean all
