@@ -104,10 +104,11 @@ class CommandCopy(CommandBase):
                 # Next hop
                 # If dst happens to be a dir, append the file name
                 is_dst_dir = False
-                try:
-                    is_dst_dir = stat.S_ISDIR(self.context.stat(dst).st_mode)
-                except:
-                    pass
+                if not self.params.just_copy:
+                    try:
+                        is_dst_dir = stat.S_ISDIR(self.context.stat(dst).st_mode)
+                    except:
+                        pass
                 if is_dst_dir:
                     s = dst + '/' + os.path.basename(s)
                 else:
