@@ -3,7 +3,7 @@
 %{!?python_version:  %global python_version  %(%{__python} -c "from sys import version_info; print('%d.%d'% (version_info[0],version_info[1]))")}
 
 Name:           gfal2-util
-Version:        1.5.1
+Version:        1.5.2
 Release:        1%{?dist}
 Summary:        GFAL2 utility tools
 Group:          Applications/Internet
