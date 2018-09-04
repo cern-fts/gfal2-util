@@ -1,3 +1,9 @@
+gfal2-util (1.5.2-1) unstable; urgency=medium
+
+  * New release
+
+ -- DMC Devel <dmc-devel@cern.ch>  Wed, 29 Aug 2018 09:40:00 +0200
+
 gfal2-util (1.5.1-1) unstable; urgency=medium
 
   * New release
