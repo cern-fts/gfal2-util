@@ -66,6 +66,8 @@ class CommandCopy(CommandBase):
               help="global timeout for the transfer operation")
     @base.arg('-K', "--checksum", type=str, default=None,
               help='checksum algorithm to use, or algorithm:value')
+    @base.arg("--copy-mode", type=str, default='', choices=['pull', 'push', 'streamed',''],
+              help='copy mode. N.B. supported only for HTTP/DAV to HTTP/DAV transfers')
     @base.arg("--checksum-mode", type=str, default='both', choices=['source', 'target', 'both'],
               help='checksum validation mode')
     @base.arg('--from-file', type=str, default=None,
@@ -227,6 +229,23 @@ class CommandCopy(CommandBase):
             if len(chk_args) == 1:
                 chk_args.append('')
             t.set_checksum(mode, chk_args[0], chk_args[1])
+        
+	if self.params.copy_mode:
+            if self.params.copy_mode == 'pull':
+                self.context.set_opt_boolean("HTTP PLUGIN", "ENABLE_REMOTE_COPY", True)
+                self.context.set_opt_boolean("HTTP PLUGIN", "ENABLE_FALLBACK_TPC_COPY", False)
+                self.context.set_opt_string("HTTP PLUGIN", "DEFAULT_COPY_MODE", "3rd pull")
+            elif self.params.copy_mode == 'push':
+                self.context.set_opt_boolean("HTTP PLUGIN", "ENABLE_REMOTE_COPY", True)
+                self.context.set_opt_boolean("HTTP PLUGIN", "ENABLE_FALLBACK_TPC_COPY", False)
+                self.context.set_opt_string("HTTP PLUGIN", "DEFAULT_COPY_MODE", "3rd push")
+            elif self.params.copy_mode == 'streamed':
+                self.context.set_opt_boolean("HTTP PLUGIN", "ENABLE_REMOTE_COPY", False)
+                self.context.set_opt_string("HTTP PLUGIN", "DEFAULT_COPY_MODE", "streamed")
+            else:
+                self.context.set_opt_boolean("HTTP PLUGIN", "ENABLE_REMOTE_COPY", True)
+                self.context.set_opt_boolean("HTTP PLUGIN", "ENABLE_FALLBACK_TPC_COPY", True)
+                self.context.set_opt_string("HTTP PLUGIN", "DEFAULT_COPY_MODE", "3rd pull")
 
         if event_callback:
             t.event_callback = event_callback
