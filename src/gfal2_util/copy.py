@@ -67,7 +67,7 @@ class CommandCopy(CommandBase):
     @base.arg('-K', "--checksum", type=str, default=None,
               help='checksum algorithm to use, or algorithm:value')
     @base.arg("--copy-mode", type=str, default='', choices=['pull', 'push', 'streamed',''],
-              help='copy mode. N.B. supported only for HTTP/DAV to HTTP/DAV transfers')
+              help='copy mode. N.B. supported only for HTTP/DAV to HTTP/DAV transfers, if not specified the pull mode will be executed first with fallbacks to other modes in case of errors')
     @base.arg("--checksum-mode", type=str, default='both', choices=['source', 'target', 'both'],
               help='checksum validation mode')
     @base.arg('--from-file', type=str, default=None,
