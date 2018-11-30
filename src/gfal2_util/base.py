@@ -228,7 +228,7 @@ def surl(value):
     if not parsed[0]:
         return urlunparse(('file', None, os.path.abspath(parsed[2]), None, None, None))
     elif parsed[0] == 'http':
-	return  urlunparse(('dav', parsed[1], os.path.abspath(parsed[2]), parsed[3], parsed[4], parsed[5]))
+	return  urlunparse(('dav', parsed[1], parsed[2], parsed[3], parsed[4], parsed[5]))
     elif parsed[0] == 'https':
-	return  urlunparse(('davs',parsed[1], os.path.abspath(parsed[2]), parsed[3], parsed[4], parsed[5]))
+	return  urlunparse(('davs',parsed[1], parsed[2], parsed[3], parsed[4], parsed[5]))
     return value
