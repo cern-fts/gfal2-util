@@ -1,6 +1,14 @@
 gfal2-util release notes
 ========================
 
+## Thu Feb 21 2019  Andrea Manzi <amanzi at cern.ch> - 1.5.2
+### Bug
+- [DMC-1070] - gfal-ls cannot list WebDAV directories
+- [DMC-1142] - Shebang on gfal-utils commands should specify python2 instead of python
+### Improvement
+- [DMC-1124] - Add --copy-mode to gfal-copy
+- [DMC-1077] - gfal-copy --just-copy stats dest
+
 ## Wed Jun 21 2017 Alejandro Alvarez <aalvarez at cern.ch> - 1.5.1
 ### Bug
 - [DMC-933] - gfal-copy does stat/propfind even if --just-copy is given

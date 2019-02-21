@@ -43,10 +43,10 @@ user certificate
 user private key
 .TP
 .B "-4"
-Forces gfal2-util to use IPv4 addresses only
+Forces gfal2-util to use IPv4 addresses only (Option valid only for gsiftp endpoints)
 .TP
 .B "-6"
-Forces gfal2-util to use IPv6 addresses only
+Forces gfal2-util to use IPv6 addresses only (Option valid only for gsiftp endpoints)
 .TP
 .B "-f, --force"
 if destination file(s) cannot be overwritten, delete it and try again
@@ -78,7 +78,9 @@ read sources from a file
 .TP
 .B "--just-copy"
 just do the copy and skip any preparation (i.e. checksum, overwrite, stats etc.). Warning - use of this switch is incompatible with the presence of directories in the argument list.
-
+.TP
+.B "--copy-mode"
+select the TPC copy mode for HTTP transfers. Valid options are 'pull', 'push' and 'streamed'
 
 .SH EXAMPLES
 .TP
