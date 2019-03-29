@@ -3,7 +3,7 @@
 %{!?python_version:  %global python_version  %(%{__python} -c "from sys import version_info; print('%d.%d'% (version_info[0],version_info[1]))")}
 
 Name:           gfal2-util
-Version:        1.5.2
+Version:        1.5.3
 Release:        1%{?dist}
 Summary:        GFAL2 utility tools
 Group:          Applications/Internet
@@ -73,6 +73,9 @@ python test/functional/test_all.py
 
 
 %changelog
+* Fri Mar 29 2019 Andrea Manzi <aalvarez at cern.ch> - 1.5.3-1
+- New upstream release
+
 * Mon Feb 20 2017 Alejandro Alvarez <aalvarez at cern.ch> - 1.5.0-1
 - New upstream release
 
