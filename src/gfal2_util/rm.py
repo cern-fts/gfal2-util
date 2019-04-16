@@ -34,6 +34,8 @@ class CommandRm(CommandBase):
               help="remove directories and their contents recursively")
     @base.arg("--dry-run", action='store_true',
               help="do not perform any actual change, just print what would happen")
+    @base.arg("--just-delete", action='store_true',
+              help="do not perform any check on the file, this is needed for HTTP signed URLs")
     @base.arg("--from-file", type=str, default=None,
               help="read surls from a file")
     @base.arg("--bulk", action='store_true', default=False,
@@ -70,24 +72,9 @@ class CommandRm(CommandBase):
         """
         Perform the action, either removing or just informing
         """
-        try:
-            st = self.context.stat(surl)
-        except gfal2.GError, e:
-            if e.code == errno.ENOENT:
-                print "%s\tMISSING" % surl
-                return
-            else:
-                print "%s\tFAILED" % surl
-                raise
-
-        if stat.S_ISDIR(st.st_mode):
-            self._do_rmdir(surl)
-        elif self.params.dry_run:
-            print "%s\tSKIP" % surl
-        else:
+        if not self.params.just_delete:
             try:
-                self.context.unlink(surl)
-                print "%s\tDELETED" % surl
+                st = self.context.stat(surl)
             except gfal2.GError, e:
                 if e.code == errno.ENOENT:
                     print "%s\tMISSING" % surl
@@ -95,6 +82,24 @@ class CommandRm(CommandBase):
                 else:
                     print "%s\tFAILED" % surl
                     raise
+
+            if stat.S_ISDIR(st.st_mode):
+                self._do_rmdir(surl)
+                return
+        if self.params.dry_run:
+            print "%s\tSKIP" % surl
+            return
+        
+        try:
+            self.context.unlink(surl)
+            print "%s\tDELETED" % surl
+        except gfal2.GError, e:
+            if e.code == errno.ENOENT:
+                print "%s\tMISSING" % surl
+                return
+            else:
+                print "%s\tFAILED" % surl
+                raise
 
     def _do_rmdir(self, surl):
         """

@@ -220,15 +220,11 @@ class CommandBase(object):
 def surl(value):
     """
     Special "type" for surls.
-    It will convert, for instance, paths of the form "/path" to "file:///path" and http/https to dav/davs
+    It will convert, for instance, paths of the form "/path" to "file:///path" 
     """
     if value == '-':
         return value
     parsed = urlparse(value)
     if not parsed[0]:
         return urlunparse(('file', None, os.path.abspath(parsed[2]), None, None, None))
-    elif parsed[0] == 'http':
-	return  urlunparse(('dav', parsed[1], parsed[2], parsed[3], parsed[4], parsed[5]))
-    elif parsed[0] == 'https':
-	return  urlunparse(('davs',parsed[1], parsed[2], parsed[3], parsed[4], parsed[5]))
     return value
