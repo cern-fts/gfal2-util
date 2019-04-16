@@ -53,6 +53,9 @@ also remove directories and their contents recursively.
 .TP
 .B "--bulk"
 perform bulk deletion.
+.TP
+.B "--just-delete"
+do not perform any check on the file prior to delete. this is needed to delete HTTP signed URLs
 
 .SH EXAMPLES
 .TP
@@ -74,6 +77,8 @@ Duarte Meneses <duarte.meneses@cern.ch>
 Adrien Devresse <adrien.devresse@cern.ch>
 .br
 Alejandro Alvarez Ayllon <alejandro.alvarez.ayllon@cern.ch>
+.br
+Andrea Manzi <andrea.manzi@cern.ch>
 
 .SH "SEE ALSO"
 .BR gfal-cat (1),
