@@ -73,7 +73,7 @@ python test/functional/test_all.py
 
 
 %changelog
-* Fri Mar 29 2019 Andrea Manzi <aalvarez at cern.ch> - 1.5.3-1
+* Fri Mar 29 2019 Andrea Manzi <amanzi at cern.ch> - 1.5.3-1
 - New upstream release
 
 * Mon Feb 20 2017 Alejandro Alvarez <aalvarez at cern.ch> - 1.5.0-1

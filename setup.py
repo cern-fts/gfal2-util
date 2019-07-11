@@ -12,14 +12,14 @@ man_files = glob('doc/man/gfal*.1')
 data_files.append((man_root, man_files))
 
 setup(name=module_name,
-      version='1.4.0',
+      version='1.5.3',
       license='GPLv3',
       description='GFAL2 utility tools',
       long_description='''gfal2-util is a set of basic utility tools for file
 interactions and file copy based on the GFAL 2.0 toolkit.
 gfal2-util supports the protocols of GFAL 2.0 : WebDav(s),
 gridFTP, http(s), SRM, xrootd, etc...''',
-      author='Duarte Meneses, Adrien Devresse',
+      author='Duarte Meneses, Adrien Devresse, Andrea Manzi',
       author_email='dmc-devel@cern.ch',
       url='http://dmc.web.cern.ch/projects/gfal2-utils',
       packages=[module_name],

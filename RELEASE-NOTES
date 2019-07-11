@@ -1,6 +1,12 @@
 gfal2-util release notes
 ========================
 
+## Thu Jul 11 2019  Andrea Manzi <amanzi at cern.ch> - 1.5.3
+### Bug
+- [DMC-1155] - gfal-rm with signed https URL gives 401 error
+### Task
+- [DMC-1150] - Set XrdSecGSIDELEGPROXY=1 in gfal-copy to enable XRD TPC with delegation
+
 ## Thu Feb 21 2019  Andrea Manzi <amanzi at cern.ch> - 1.5.2
 ### Bug
 - [DMC-1070] - gfal-ls cannot list WebDAV directories
