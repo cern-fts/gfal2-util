@@ -145,8 +145,8 @@ class CommandLs(CommandBase):
                 "%s %s %s %s %s %s %s\t%s\n" % (
                     file_mode_str(stat.st_mode),
                     str(stat.st_nlink).rjust(space['st_nlink']),
-                    str(stat.st_gid).ljust(space['st_gid']),
                     str(stat.st_uid).ljust(space['st_uid']),
+                    str(stat.st_gid).ljust(space['st_gid']),
                     str(size).rjust(size_sp),
                     str(date).ljust(space['st_mtime']),
                     self.color(name, stat.st_mode),
