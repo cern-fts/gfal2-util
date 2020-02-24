@@ -1,11 +1,13 @@
 import unittest
-from . import utils
 import shutil
 import os
 
+import utils
+
+
 class TestBase(unittest.TestCase):
     def setUp(self):
-        #create dir
+        # Create dir
         self.dirname = '/tmp/test_' + utils.create_random_suffix()
         os.mkdir(self.dirname)
 

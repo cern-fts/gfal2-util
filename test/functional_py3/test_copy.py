@@ -1,15 +1,18 @@
-import unittest
-from . import utils
 import os
-from  . base import TestBase
+import unittest
+
+from base import TestBase
+import utils
 
 class UtilCopyTest(TestBase):
     def test_copy(self):
         ffname3 = self.ffname1 + "_copy"
         self.assertFalse(os.path.isfile(ffname3))
 
-        (ret, out, err) = utils.run_command('gfal-copy', \
-                            'file://' + self.ffname1 + ' file://' + ffname3)
+        (ret, out, err) = utils.run_command(
+            'gfal-copy',
+            'file://' + self.ffname1 + ' file://' + ffname3
+        )
 
         self.assertTrue(os.path.isfile(ffname3))
         self.assertEqual(ret, 0)
@@ -24,8 +27,9 @@ class UtilCopyTest(TestBase):
 
         self.assertFalse(os.path.isfile(dst))
 
-        (ret, out, err) = utils.run_command('gfal-copy', \
-                            'file://' + self.ffname1 + ' file://' + dst_path)
+        (ret, out, err) = utils.run_command(
+            'gfal-copy', 'file://' + self.ffname1 + ' file://' + dst_path
+        )
 
         self.assertTrue(os.path.isfile(dst))
         self.assertEqual(ret, 0)
@@ -46,7 +50,7 @@ class UtilCopyTest(TestBase):
 
         self.assertTrue(os.path.isfile(d1))
         self.assertTrue(os.path.isfile(d2))
-        self.assertTrue(os.path.isfile(d3 + '/' +  os.path.basename(d2)))
+        self.assertTrue(os.path.isfile(d3 + '/' + os.path.basename(d2)))
         self.assertTrue(os.path.isfile(d4))
 
         if os.path.isfile(d1):
@@ -63,8 +67,9 @@ class UtilCopyTest(TestBase):
 
             self.assertFalse(os.path.isfile(dst))
 
-            (ret, out, err) = utils.run_command('gfal-copy', \
-                                'file://' + self.ffname1 + ' file://' + dst_path)
+            (ret, out, err) = utils.run_command(
+                'gfal-copy', 'file://' + self.ffname1 + ' file://' + dst_path
+            )
 
             self.assertTrue(os.path.isfile(dst))
             self.assertEqual(ret, 0)
@@ -78,10 +83,13 @@ class UtilCopyTest(TestBase):
             self.assertTrue(os.path.isdir(src))
             dst = '/tmp/'
 
-            (ret, out, err) = utils.run_command('gfal-copy', \
-                                'file://' + src + ' file://' + dst)
+            (ret, out, err) = utils.run_command(
+                'gfal-copy', 'file://' + src + ' file://' + dst
+            )
 
-            self.assertFalse(os.path.isfile(dst + os.path.basename(self.ffname1)))
+            self.assertFalse(
+                os.path.isfile(dst + os.path.basename(self.ffname1))
+            )
             self.assertTrue(ret >= 0)
 
     def test_copy_parent_enoent(self):
@@ -89,7 +97,9 @@ class UtilCopyTest(TestBase):
         dst_path = '/tmp/make/parent'
         self.assertFalse(os.path.isfile(dst_path))
 
-        (ret, out, err) = utils.run_command('gfal-copy', 'file://' + self.ffname1 + ' file://' + dst_path)
+        (ret, out, err) = utils.run_command(
+            'gfal-copy', 'file://' + self.ffname1 + ' file://' + dst_path
+        )
 
         self.assertFalse(os.path.isfile(dst_path))
         self.assertTrue(ret >= 0)
@@ -99,7 +109,9 @@ class UtilCopyTest(TestBase):
         dst_path = '/tmp/make/parent'
         self.assertFalse(os.path.isfile(dst_path))
 
-        (ret, out, err) = utils.run_command('gfal-copy', '-p file://' + self.ffname1 + ' file://' + dst_path)
+        (ret, out, err) = utils.run_command(
+            'gfal-copy', '-p file://' + self.ffname1 + ' file://' + dst_path
+        )
 
         self.assertTrue(os.path.isfile(dst_path))
         self.assertTrue(ret >= 0)
@@ -108,23 +120,22 @@ class UtilCopyTest(TestBase):
         os.rmdir('/tmp/make/')
 
     def test_copy_pseudotty(self):
-        """
-        Regression test for DMC-522
-        Trick gfal-copy into thinking it is inside a tty so we trigger some logic that would not
-        be executed otherwise
+        """ Regression test for DMC-522.
+        Trick gfal-copy into thinking it is inside a tty so we trigger some
+        logic that would not be executed otherwise
         """
         ffname3 = self.ffname1 + "_copy"
         self.assertFalse(os.path.isfile(ffname3))
 
-        (ret, out, err) = utils.run_command_pty('gfal-copy', \
-                            'file://' + self.ffname1 + ' file://' + ffname3)
+        (ret, out, err) = utils.run_command_pty(
+            'gfal-copy', 'file://' + self.ffname1 + ' file://' + ffname3
+        )
 
         self.assertTrue(os.path.isfile(ffname3))
-        self.assertNotEqual(len(out), 0) # this makes sure the interactive mode works!
+
+        # This makes sure the interactive mode works.
+        self.assertNotEqual(len(out), 0)
         self.assertEqual(ret, 0)
 
         if os.path.isfile(ffname3):
             os.remove(ffname3)
-
-if __name__ == '__main__':
-    unittest.main()
