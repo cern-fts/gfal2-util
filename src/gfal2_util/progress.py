@@ -122,22 +122,22 @@ class Progress(object):
                 sys.stdout.write(str_rate)
 
             elif self.status.get('total_size'):
-                str_transferred = " File size: %s" % \
+                str_filesize = " File size: %s" % \
                     self._get_size_str(self.status['total_size'])
 
                 #write file size
-                sys.stdout.write(str_transferred)
-                used_width = len(str_label) + len(str_time) + len(str_transferred)
+                sys.stdout.write(str_filesize)
+                used_width = len(str_label) + len(str_time) + len(str_filesize)
                 unused_width = total_width - used_width
 
                 #white space
                 sys.stdout.write(' ' * unused_width)
 
             elif self.status.get('curr_size'):
-                str_rate = self._get_rate_str(self.status['rate']) + ' '
-                str_curr_size = self._get_size_str(self.status['curr_size'])
+                str_rate = self._get_rate_str(self.status['rate'])
+                str_curr_size = self._get_size_str(self.status['curr_size']) + ' '
 
-                used_width = len(str_label) + len(str_time) + len(str_rate) + len(str_curr_size) + len(str_rate)
+                used_width = len(str_label) + len(str_time) + len(str_curr_size) + len(str_rate)
                 unused_width = total_width - used_width
 
                 #white space
@@ -170,7 +170,7 @@ class Progress(object):
             self.status['curr_size'] = curr_size
         if total_size:
             self.status['total_size'] = total_size
-        if curr_size and time_elapsed:
+        if curr_size and time_elapsed and total_size:
             self.status['rate'] = float(curr_size)/float(time_elapsed)
             self.status['percentage'] = (float(curr_size) / float(total_size))*100.0
         elif rate:
