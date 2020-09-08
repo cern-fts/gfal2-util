@@ -30,6 +30,9 @@ from base import CommandBase
 
 
 class CommandRm(CommandBase):
+    def __init__(self):
+        self.return_code = 0
+
     @base.arg("-r", "-R", "--recursive", action='store_true',
               help="remove directories and their contents recursively")
     @base.arg("--dry-run", action='store_true',
@@ -48,10 +51,10 @@ class CommandRm(CommandBase):
         """
         if self.params.from_file and self.params.file:
             print >>sys.stderr, "--from-file and positional arguments can not be used at the same time"
-            return 1
+            return errno.EINVAL
         if self.params.bulk and self.params.recursive:
             print >>sys.stderr, "--bulk and --recursive can not be used at the same time"
-            return 1
+            return errno.EINVAL
 
         if self.params.file:
             files = self.params.file
@@ -60,13 +63,15 @@ class CommandRm(CommandBase):
             files = filter(lambda f: len(f) > 0, files)
         else:
             print >>sys.stderr, "Missing surl"
-            return 1
+            return errno.EINVAL
 
         if self.params.bulk:
             self._do_bulk(files)
         else:
             for f in files:
                 self._do_rm(f)
+
+        return self.return_code
 
     def _do_rm(self, surl):
         """
@@ -76,6 +81,7 @@ class CommandRm(CommandBase):
             try:
                 st = self.context.stat(surl)
             except gfal2.GError, e:
+                self._propagate_error_code(e.code)
                 if e.code == errno.ENOENT:
                     print "%s\tMISSING" % surl
                     return
@@ -86,6 +92,7 @@ class CommandRm(CommandBase):
             if stat.S_ISDIR(st.st_mode):
                 self._do_rmdir(surl)
                 return
+
         if self.params.dry_run:
             print "%s\tSKIP" % surl
             return
@@ -94,6 +101,7 @@ class CommandRm(CommandBase):
             self.context.unlink(surl)
             print "%s\tDELETED" % surl
         except gfal2.GError, e:
+            self._propagate_error_code(e.code)
             if e.code == errno.ENOENT:
                 print "%s\tMISSING" % surl
                 return
@@ -126,6 +134,7 @@ class CommandRm(CommandBase):
                 self.context.rmdir(surl)
                 print "%s\tRMDIR" % surl
             except gfal2.GError, e:
+                self._propagate_error_code(e.code)
                 if e.code == errno.ENOENT:
                     print "%s\tMISSING" % surl
                 else:
@@ -146,3 +155,11 @@ class CommandRm(CommandBase):
                 print "%s\tDELETED" % surl
             else:
                 print "%s\tFAILED: %s" % (surl, error)
+                self._propagate_error_code(error.code)
+
+    def _propagate_error_code(self, error_code):
+        """
+        Propagate the error code if the return code is empty 
+        """
+        if self.return_code == 0:
+            self.return_code = error_code

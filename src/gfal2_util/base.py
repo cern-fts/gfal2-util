@@ -120,7 +120,6 @@ class CommandBase(object):
                 raise
         except GError, e:
             sys.stderr.write("%s error: %d (%s) - %s\n" % (self.progr, e.code, os.strerror(e.code), e.message))
-
             self.return_code = e.code
 
     def execute(self, func):
