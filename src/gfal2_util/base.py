@@ -87,7 +87,8 @@ class CommandBase(object):
         return CommandBase.__subclasses__()
 
     @staticmethod
-    def __set_log_level(level):
+    def __setup_logger(level, log_file):
+        # Handle logging level
         level = max(0, level)
         level = min(3, level)
 
@@ -97,13 +98,18 @@ class CommandBase(object):
         else:
             gfal2.set_verbose(gfal2.verbose_level.debug)
 
+        # Handle log file
+        log_stream = sys.stdout
+        if log_file:
+            log_stream = open(log_file, 'w+')
+
         root_logger = logging.getLogger()
         root_logger.setLevel(log_level_value)
-        handler = logging.StreamHandler(sys.stderr)
+        handler = logging.StreamHandler(log_stream)
         handler.setLevel(log_level_value)
 
         handler.setFormatter(logging.Formatter('%(levelname)s %(message)s'))
-        if sys.stderr.isatty():
+        if log_stream.isatty():
             logging.addLevelName(logging.DEBUG, "\033[1;2m%-8s\033[1;m" % logging.getLevelName(logging.DEBUG))
             logging.addLevelName(logging.INFO, "\033[1;34m%-8s\033[1;m" % logging.getLevelName(logging.INFO))
             logging.addLevelName(logging.ERROR, "\033[1;31m%-8s\033[1;m" % logging.getLevelName(logging.ERROR))
@@ -135,8 +141,8 @@ class CommandBase(object):
             if 'X509_USER_PROXY' in os.environ:
                 del os.environ['X509_USER_PROXY']
 
-        #Set verbose
-        self.__set_log_level(self.params.verbose)
+        # Setup log verbosity and destination
+        self.__setup_logger(self.params.verbose, self.params.log_file)
 
         self.context = gfal2.creat_context()
         apply_option(self.context, self.params)
@@ -204,10 +210,11 @@ class CommandBase(object):
                             help="maximum time for the operation to terminate - default is 1800 seconds")
         self.parser.add_argument('-E', '--cert', type=str, default=None, help="user certificate")
         self.parser.add_argument('--key', type=str, default=None, help="user private key")
-        self.parser.add_argument('-4', dest='ipv4', action='store_true', help='forces gfal2-util to use IPv4 addresses only. N.B. this is valid only for gridftp')
-        self.parser.add_argument('-6', dest='ipv6', action='store_true', help='forces gfal2-util to use IPv6 addresses only. N.B. this is valid only for gridftp')
+        self.parser.add_argument('-4', dest='ipv4', action='store_true', help="forces gfal2-util to use IPv4 addresses only. N.B. this is valid only for gridftp")
+        self.parser.add_argument('-6', dest='ipv6', action='store_true', help="forces gfal2-util to use IPv6 addresses only. N.B. this is valid only for gridftp")
         self.parser.add_argument('-C', '--client-info', type=str, help="provide custom client-side information",
                             action='append')
+        self.parser.add_argument('--log-file', type=str, default=None, help="write Gfal2 library logs to the given file location")
 
         for (args, kwargs) in arguments:
             self.parser.add_argument(*args, **kwargs)
