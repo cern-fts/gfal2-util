@@ -34,7 +34,7 @@ from gfal2 import GError
 from gfal2_utils_parameters import apply_option
 
 
-VERSION = '1.5.3'
+VERSION = '1.5.4'
 
 
 def arg(*args, **kwargs):
