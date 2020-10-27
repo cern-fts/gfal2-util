@@ -74,6 +74,8 @@ class CommandCopy(CommandBase):
               help="read sources from a file")
     @base.arg('--just-copy', action='store_true',
               help="just do the copy and skip any preparation (i.e. checksum, overwrite, etc.)")
+    @base.arg('--no-delegation', action='store_true',
+              help="disable TPC with proxy delegation")
     @base.arg('-r', '--recursive', action='store_true',
               help="copy directories recursively")
     @base.arg('--abort-on-failure', action='store_true',
@@ -222,6 +224,8 @@ class CommandCopy(CommandBase):
             t.overwrite = self.params.force
         if self.params.just_copy:
             t.strict_copy = True
+        if self.params.no_delegation:
+            t.proxy_delegation = False
 
         if self.params.checksum:
             mode = _checksum_mode_str_mapping[self.params.checksum_mode]
