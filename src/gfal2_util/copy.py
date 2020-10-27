@@ -70,6 +70,8 @@ class CommandCopy(base.CommandBase):
               help="read sources from a file")
     @base.arg('--just-copy', action='store_true',
               help="just do the copy and skip any preparation (i.e. checksum, overwrite, etc.)")
+    @base.arg('--no-delegation', action='store_true',
+              help="disable TPC with proxy delegation")
     @base.arg('-r', '--recursive', action='store_true',
               help="copy directories recursively")
     @base.arg('--abort-on-failure', action='store_true',
@@ -220,6 +222,11 @@ class CommandCopy(base.CommandBase):
             t.overwrite = self.params.force
         if self.params.just_copy:
             t.strict_copy = True
+        if self.params.no_delegation:
+            if hasattr(t, 'proxy_delegation'): # available since gfal-python 1.9.6
+                t.proxy_delegation = False
+            else:
+                sys.stderr.write("[warn] '--no-delegation' flag requires gfal2-python >= 1.9.6\n")
 
         if self.params.checksum:
             chk_args = self.params.checksum.split(':')
