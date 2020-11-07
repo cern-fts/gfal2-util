@@ -44,11 +44,12 @@ def get_parameter_from_str(str_value):
 
 
 def parse_parameter(str_params):
-    group_sep = str_params.index(":")
-    res = str_params[:group_sep]
-    value_sep = str_params[group_sep + 1:].index("=") + group_sep + 1
-    return (res, str_params[group_sep + 1:value_sep],
-            get_parameter_from_str_list(str_params[value_sep + 1:]))
+    value_sep = str_params.index("=")
+    group_sep = str_params[:value_sep].rindex(":")
+    group = str_params[:group_sep]
+    option = str_params[group_sep + 1:value_sep]
+    value = str_params[value_sep + 1:]
+    return (group, option, get_parameter_from_str_list(value))
 
 
 def set_gfal_tool_parameter(context, param_struct):
