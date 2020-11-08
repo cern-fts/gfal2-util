@@ -1,6 +1,14 @@
 gfal2-util release notes
 ========================
 
+## Tue Nov 08 2020 Petr Vokac <petr.vokac at cern.ch> - 1.5.5
+### Improvement
+- [DMC-1223] make sources compatible with python 2.4 - 3.9
+- [DMC-1223] automatically choose available python interpreter
+  the one from GFAL_PYTHONBIN env is most preferred
+  with fallback to python3, python2, python
+- [DMC-1223] drop separate python3 code
+
 ## Mon Sep 14 2020 Mihai Patrascoiu <mipatras at cern.ch> - 1.5.4
 ### Bug
 - [DMC-1212] - Prevent gfal2-copy output crashing when filesize is reported 0

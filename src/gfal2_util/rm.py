@@ -19,17 +19,18 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#from __future__ import absolute_import # not available in python 2.4
+from __future__ import division
 
 import sys
 import stat
 import errno
 
 import gfal2
-import base
-from base import CommandBase
+from gfal2_util import base
 
 
-class CommandRm(CommandBase):
+class CommandRm(base.CommandBase):
     def __init__(self):
         self.return_code = 0
 
@@ -50,19 +51,19 @@ class CommandRm(CommandBase):
         Removes files or directories
         """
         if self.params.from_file and self.params.file:
-            print >>sys.stderr, "--from-file and positional arguments can not be used at the same time"
+            sys.stderr.write("--from-file and positional arguments can not be used at the same time\n")
             return errno.EINVAL
         if self.params.bulk and self.params.recursive:
-            print >>sys.stderr, "--bulk and --recursive can not be used at the same time"
+            sys.stderr.write("--bulk and --recursive can not be used at the same time\n")
             return errno.EINVAL
 
         if self.params.file:
             files = self.params.file
         elif self.params.from_file:
             files = [line.strip() for line in open(self.params.from_file, 'r').readlines()]
-            files = filter(lambda f: len(f) > 0, files)
+            files = [f for f in files if len(f) > 0]
         else:
-            print >>sys.stderr, "Missing surl"
+            sys.stderr.write("Missing surl\n")
             return errno.EINVAL
 
         if self.params.bulk:
@@ -80,13 +81,14 @@ class CommandRm(CommandBase):
         if not self.params.just_delete:
             try:
                 st = self.context.stat(surl)
-            except gfal2.GError, e:
+            except gfal2.GError:
+                e = sys.exc_info()[1]
                 self._propagate_error_code(e.code)
                 if e.code == errno.ENOENT:
-                    print "%s\tMISSING" % surl
+                    print("%s\tMISSING" % surl)
                     return
                 else:
-                    print "%s\tFAILED" % surl
+                    print("%s\tFAILED" % surl)
                     raise
 
             if stat.S_ISDIR(st.st_mode):
@@ -94,19 +96,20 @@ class CommandRm(CommandBase):
                 return
 
         if self.params.dry_run:
-            print "%s\tSKIP" % surl
+            print("%s\tSKIP" % surl)
             return
         
         try:
             self.context.unlink(surl)
-            print "%s\tDELETED" % surl
-        except gfal2.GError, e:
+            print("%s\tDELETED" % surl)
+        except gfal2.GError:
+            e = sys.exc_info()[1]
             self._propagate_error_code(e.code)
             if e.code == errno.ENOENT:
-                print "%s\tMISSING" % surl
+                print("%s\tMISSING" % surl)
                 return
             else:
-                print "%s\tFAILED" % surl
+                print("%s\tFAILED" % surl)
                 raise
 
     def _do_rmdir(self, surl):
@@ -128,17 +131,18 @@ class CommandRm(CommandBase):
 
         # Rmdir self
         if self.params.dry_run:
-            print "%s\tSKIP DIR" % surl
+            print("%s\tSKIP DIR" % surl)
         else:
             try:
                 self.context.rmdir(surl)
-                print "%s\tRMDIR" % surl
-            except gfal2.GError, e:
+                print("%s\tRMDIR" % surl)
+            except gfal2.GError:
+                e = sys.exc_info()[1]
                 self._propagate_error_code(e.code)
                 if e.code == errno.ENOENT:
-                    print "%s\tMISSING" % surl
+                    print("%s\tMISSING" % surl)
                 else:
-                    print "%s\tFAILED" % surl
+                    print("%s\tFAILED" % surl)
                     raise
 
     def _do_bulk(self, surls):
@@ -146,15 +150,15 @@ class CommandRm(CommandBase):
         Do a bulk deletion
         """
         if self.params.dry_run:
-            print "\tBULK DELETION"
+            print("\tBULK DELETION")
             return
 
         errors = self.context.unlink(surls)
         for error, surl in zip(errors, surls):
             if error is None:
-                print "%s\tDELETED" % surl
+                print("%s\tDELETED" % surl)
             else:
-                print "%s\tFAILED: %s" % (surl, error)
+                print("%s\tFAILED: %s" % (surl, error))
                 self._propagate_error_code(error.code)
 
     def _propagate_error_code(self, error_code):

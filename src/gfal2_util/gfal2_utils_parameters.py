@@ -19,6 +19,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+from __future__ import division
 
 def get_parameter_from_str_list(str_value_list):
     str_value_tab = str_value_list.split(",")

@@ -1,5 +1,7 @@
+from __future__ import absolute_import
+
 import unittest
-import utils
+from . import utils
 import shutil
 import os
 

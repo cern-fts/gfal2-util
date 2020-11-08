@@ -1,8 +1,10 @@
-from base import TestBase
+from __future__ import absolute_import
+
+from .base import TestBase
 import unittest
 import os
 import shutil
-import utils
+from . import utils
 
 class UtilMkdirTest(TestBase):    
     def test_mkdir(self):
@@ -47,7 +49,7 @@ class UtilMkdirTest(TestBase):
         self.assertTrue(os.path.isdir(self.dirname))
         self.assertEqual(len(out), 0)
         self.assertTrue(len(err) > 0)
-        self.assertTrue('File exists' in err)
+        self.assertTrue(bytes('File exists',  'utf-8')  in err)
         self.assertEqual(ret, 17)
         
     def test_already_exists_p(self):

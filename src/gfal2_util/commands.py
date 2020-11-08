@@ -19,18 +19,19 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#from __future__ import absolute_import # not available in python 2.4
+from __future__ import division
 
 import gfal2
 import sys
 import stat
 from datetime import datetime
 
-import base
-from base import CommandBase
-from utils import file_type_str, file_mode_str
+from gfal2_util import base
+from gfal2_util.utils import file_type_str, file_mode_str
 
 
-class GfalCommands(CommandBase):
+class GfalCommands(base.CommandBase):
     @base.arg('-m', '--mode', action='store', type=int, default=755, help="display hidden files")
     @base.arg('-p', '--parents', action='store_true', help="no error if existing, make parent directories as needed")
     @base.arg('directory', action='store', nargs='+', type=base.surl, help="Directory's uri")
@@ -42,9 +43,9 @@ class GfalCommands(CommandBase):
             try:
                 mode = int(str(self.params.mode), 8)
             except ValueError:
-                mode = 0755
+                mode = int('755', 8) # python < 2.6 doesn't support 0o755
         else:
-            mode = 0755
+            mode = int('755', 8) # python < 2.6 doesn't support 0o755
         for d in self.params.directory:
             if self.params.parents:
                 self.context.mkdir_rec(d, mode)
@@ -104,7 +105,8 @@ class GfalCommands(CommandBase):
                 try:
                     v = self.context.getxattr(self.params.file, attr)
                     sys.stdout.write(attr + ' = ' + v + '\n')
-                except gfal2.GError, e:
+                except gfal2.GError:
+                    e = sys.exc_info()[1]
                     sys.stdout.write(attr + ' FAILED: ' + str(e) + '\n')
 
     @base.arg('file', action='store', type=base.surl,
@@ -124,12 +126,18 @@ class GfalCommands(CommandBase):
         Stats a file
         """
         st = self.context.stat(self.params.file)
-        print "  File: '%s'" % self.params.file
-        print "  Size: %d\t%s" % (st.st_size, file_type_str(stat.S_IFMT(st.st_mode)))
-        print "Access: (%04o/%s)\tUid: %d\tGid: %d\t" % (stat.S_IMODE(st.st_mode), file_mode_str(st.st_mode), st.st_uid, st.st_gid)
-        print "Access: %s" % datetime.fromtimestamp(st.st_atime).strftime("%Y-%m-%d %H:%M:%S.%f")
-        print "Modify: %s" % datetime.fromtimestamp(st.st_mtime).strftime("%Y-%m-%d %H:%M:%S.%f")
-        print "Change: %s" % datetime.fromtimestamp(st.st_ctime).strftime("%Y-%m-%d %H:%M:%S.%f")
+        print("  File: '%s'" % self.params.file)
+        print("  Size: %d\t%s" % (st.st_size, file_type_str(stat.S_IFMT(st.st_mode))))
+        print("Access: (%04o/%s)\tUid: %d\tGid: %d\t" % (stat.S_IMODE(st.st_mode), file_mode_str(st.st_mode), st.st_uid, st.st_gid))
+        if sys.version_info >= (2, 6):
+            print("Access: %s" % datetime.fromtimestamp(st.st_atime).strftime("%Y-%m-%d %H:%M:%S.%f"))
+            print("Modify: %s" % datetime.fromtimestamp(st.st_mtime).strftime("%Y-%m-%d %H:%M:%S.%f"))
+            print("Change: %s" % datetime.fromtimestamp(st.st_ctime).strftime("%Y-%m-%d %H:%M:%S.%f"))
+        else:
+            # python 2.4 and 2.5 doesn't support %f in strftime
+            print("Access: %s" % datetime.fromtimestamp(st.st_atime).strftime("%Y-%m-%d %H:%M:%S.000000"))
+            print("Modify: %s" % datetime.fromtimestamp(st.st_mtime).strftime("%Y-%m-%d %H:%M:%S.000000"))
+            print("Change: %s" % datetime.fromtimestamp(st.st_ctime).strftime("%Y-%m-%d %H:%M:%S.000000"))
 
     @base.arg('source', action='store', type=base.surl, help="original file name")
     @base.arg('destination', action='store', type=base.surl, help="new file name")

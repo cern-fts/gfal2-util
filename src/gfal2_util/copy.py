@@ -19,6 +19,8 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#from __future__ import absolute_import # not available in python 2.4
+from __future__ import division
 
 import logging
 import sys
@@ -27,9 +29,8 @@ import stat
 import errno
 
 import gfal2
-import base
-from base import CommandBase
-from progress import Progress
+from gfal2_util import base
+from gfal2_util.progress import Progress
 
 
 log = logging.getLogger(__name__)
@@ -41,14 +42,8 @@ def _is_special_file(fstat):
     """
     return stat.S_ISFIFO(fstat.st_mode) or stat.S_ISCHR(fstat.st_mode) or stat.S_ISSOCK(fstat.st_mode)
 
-_checksum_mode_str_mapping = dict(
-    source=gfal2.checksum_mode.source,
-    target=gfal2.checksum_mode.target,
-    both=gfal2.checksum_mode.both
-)
 
-
-class CommandCopy(CommandBase):
+class CommandCopy(base.CommandBase):
 
     @base.arg('-f', "--force", action='store_true',
               help="if destination file(s) cannot be overwritten, delete it and try again")
@@ -88,7 +83,7 @@ class CommandCopy(CommandBase):
         Copy a file or set of files
         """
         if self.params.from_file and self.params.src:
-            print >>sys.stderr, "Could not combine --from-file with a source in the positional arguments"
+            sys.stderr.write("Could not combine --from-file with a source in the positional arguments\n")
             return 1
 
         copy_jobs = list()
@@ -116,7 +111,7 @@ class CommandCopy(CommandBase):
                 else:
                     s = dst
         else:
-            print >>sys.stderr, "Missing source"
+            sys.stderr.write("Missing source\n")
             return 1
 
         # Do the actual work
@@ -134,7 +129,7 @@ class CommandCopy(CommandBase):
     def _failure(self, msg, errno):
         if self.params.abort_on_failure or not self.params.recursive:
             raise gfal2.GError(msg, errno)
-        print "ERROR (%d): %s" % (errno, msg)
+        print("ERROR (%d): %s" % (errno, msg))
         return False
 
     def _do_copy(self, source, destination):
@@ -142,7 +137,8 @@ class CommandCopy(CommandBase):
         try:
             source_stat = self.context.stat(source)
             source_isdir = stat.S_ISDIR(source_stat.st_mode)
-        except gfal2.GError, e:
+        except gfal2.GError:
+            e = sys.exc_info()[1]
             return self._failure("Could not stat the source: %s" % e.message, e.code)
 
         dest_isdir = False
@@ -170,14 +166,15 @@ class CommandCopy(CommandBase):
         if source_isdir and not dest_exists:
             try:
                 self._mkdir(destination)
-            except gfal2.GError, e:
+            except gfal2.GError:
+                e = sys.exc_info()[1]
                 return self._failure("Could not create the directory: %s" % e.message, e.code)
             return self._recursive_copy(source, destination)
         elif dest_isdir and source_isdir:
             if self.params.recursive:
                 return self._recursive_copy(source, destination)
             else:
-                print "Skipping %s" % source
+                print("Skipping %s" % source)
                 return True
         elif dest_isdir:
             if destination[-1] != '/':
@@ -187,9 +184,9 @@ class CommandCopy(CommandBase):
         return self._do_file_copy(source, destination, source_stat.st_size)
 
     def _mkdir(self, surl):
-        print "Mkdir %s" % surl
+        print("Mkdir %s" % surl)
         if not self.params.dry_run:
-            self.context.mkdir_rec(surl, 0755)
+            self.context.mkdir_rec(surl, int('755', 8)) # python < 2.6 doesn't support 0o755
 
     def _recursive_copy(self, source, destination):
         all_sources = self.context.listdir(source)
@@ -224,13 +221,21 @@ class CommandCopy(CommandBase):
             t.strict_copy = True
 
         if self.params.checksum:
-            mode = _checksum_mode_str_mapping[self.params.checksum_mode]
             chk_args = self.params.checksum.split(':')
             if len(chk_args) == 1:
                 chk_args.append('')
-            t.set_checksum(mode, chk_args[0], chk_args[1])
-        
-	if self.params.copy_mode:
+            if hasattr(t, 'set_checksum'): # available since gfal-python 1.9.0
+                mode = dict(
+                        source=gfal2.checksum_mode.source,
+                        target=gfal2.checksum_mode.target,
+                        both=gfal2.checksum_mode.both
+                       )[self.params.checksum_mode]
+                t.set_checksum(mode, chk_args[0], chk_args[1])
+            else:
+                t.checksum_check = True
+                t.set_user_defined_checksum(chk_args[0], chk_args[1])
+
+        if self.params.copy_mode:
             if self.params.copy_mode == 'pull':
                 self.context.set_opt_boolean("HTTP PLUGIN", "ENABLE_REMOTE_COPY", True)
                 self.context.set_opt_boolean("HTTP PLUGIN", "ENABLE_FALLBACK_TPC_COPY", False)
@@ -255,14 +260,14 @@ class CommandCopy(CommandBase):
     def _do_file_copy(self, source, destination, source_size):
         def event_callback(event):
             if self.params.verbose:
-                print "event: %s" % str(event)
+                print("event: %s" % str(event))
 
         def monitor_callback(src, dst, avg, inst, trans, elapsed):
             if self.params.verbose:
-                print "monitor: %s %s %s %s %s %s" % (
+                print("monitor: %s %s %s %s %s %s" % (
                     str(src), str(dst),
                     str(avg), str(inst), str(trans), str(elapsed)
-                )
+                ))
 
             if self.progress_bar:
                 self.progress_bar.update(trans, source_size, avg, elapsed)
@@ -276,20 +281,27 @@ class CommandCopy(CommandBase):
             self.progress_bar.update(total_size=source_size)
             self.progress_bar.start()
         else:
-            print "Copying %d bytes %s => %s" % (source_size, source, destination)
+            print("Copying %d bytes %s => %s" % (source_size, source, destination))
 
         try:
             if not self.params.dry_run:
                 ret = self.context.filecopy(t, source, destination)
             if self.progress_bar:
                 self.progress_bar.stop(True)
-                print
-        except gfal2.GError, e:
+                print("")
+        except gfal2.GError:
+            e = sys.exc_info()[1]
             if self.progress_bar:
                 self.progress_bar.stop(False)
-                print
+                print("")
             if e.code == errno.EEXIST and self.params.force:
                 self.context.unlink(destination)
                 return self._do_file_copy(source, destination, source_size)
             return self._failure(e.message, e.code)
-
+        except SystemError:
+            #e = sys.exc_info()[1]
+            #etype, value = sys.exc_info()[:2]
+            etype, value, tb = sys.exc_info()
+            print("ERROR: %s (%s)" % (str(etype), str(value)))
+            import traceback
+            traceback.print_exception(etype, value, tb)

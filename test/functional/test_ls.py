@@ -1,31 +1,33 @@
+from __future__ import absolute_import
+
 import unittest
-import utils
+from . import utils
 import shutil
 import os
-from base import TestBase
+from .base import TestBase
 
 class UtilLsTest(TestBase):    
     def test_size(self):
         (ret, out, err) = utils.run_command('gfal-ls', '-lH ' + ' file://' + self.ffname1)
-        self.assertTrue(' 1.1K ' in out)
+        self.assertTrue(bytes(' 1.1K ',  'utf-8')  in out)
         self.assertEqual(ret, 0)
 
         (ret, out, err) = utils.run_command('gfal-ls', '-l' + ' file://' + self.ffname1)
-        self.assertTrue(' 1025 ' in out)
+        self.assertTrue(bytes(' 1025 ', 'utf-8') in out)
         self.assertEqual(ret, 0)
     
     def test_invalid(self):
         inv_name = self.ffname1 + "INVALID"
         (ret, out, err) = utils.run_command('gfal-ls', '-lH ' + ' file://' + inv_name)
         self.assertEqual(ret, 2)
-        self.assertTrue('No such file or directory' in err)
+        self.assertTrue(bytes('No such file or directory', 'utf-8') in err)
         self.assertEqual(len(out), 0)
 
     def test_basic(self):
         (ret, out, err) = utils.run_command('gfal-ls', 'file://' + self.dirname)
         self.assertEqual(len(out.splitlines()), utils.num_entries(self.dirname))
-        self.assertTrue(self.fname1 in out)
-        self.assertTrue(self.fname2 in out)
+        self.assertTrue(bytes(self.fname1,  'utf-8')  in out)
+        self.assertTrue(bytes(self.fname2, 'utf-8')  in out)
         self.assertEqual(ret, 0)
         
     def test_directory(self):
@@ -36,11 +38,11 @@ class UtilLsTest(TestBase):
         
     def test_name(self):
         (ret, out, err) = utils.run_command('gfal-ls', '-l' + ' file://' + self.ffname1)
-        self.assertTrue(' file://' + self.ffname1 in out)
+        self.assertTrue(bytes(' file://' + self.ffname1,  'utf-8') in out)
         self.assertEqual(ret, 0)
         
         (ret, out, err) = utils.run_command('gfal-ls', '-dl' + ' file://' + self.ffname1)
-        self.assertTrue(' file://' + self.ffname1 in out)
+        self.assertTrue(bytes(' file://' + self.ffname1,  'utf-8') in out)
         self.assertEqual(ret, 0)
     
     def tearDown(self):

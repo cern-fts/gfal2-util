@@ -1,7 +1,9 @@
+from __future__ import absolute_import
+
 import unittest
-import utils
+from . import utils
 import os
-from base import TestBase
+from .base import TestBase
 
 class UtilRmTest(TestBase):
     def test_recursive(self):
@@ -15,9 +17,9 @@ class UtilRmTest(TestBase):
         self.assertTrue(os.path.exists(self.dirname))
         (ret, out, err) = utils.run_command('gfal-rm', 'file://' + self.dirname)
         self.assertTrue(os.path.exists(self.dirname))
-        print out
-        print err
-        self.assertTrue("directory" in err)
+        print(out)
+        print(err)
+        self.assertTrue(bytes("directory" , 'utf-8') in err)
         self.assertEqual(ret, 21)
 
     def test_multiple(self):

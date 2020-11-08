@@ -1,9 +1,11 @@
+# Written by Sebastian Rittau <srittau@jroger.in-berlin.de> and placed in
+# the Public Domain. With contributions by Paolo Borelli and others.
+from __future__ import absolute_import
+
 """
 XML Test Runner for PyUnit
 """
 
-# Written by Sebastian Rittau <srittau@jroger.in-berlin.de> and placed in
-# the Public Domain. With contributions by Paolo Borelli and others.
 __version__ = "0.1"
 
 import os.path
@@ -194,7 +196,7 @@ class XMLTestRunner(object):
             err_s = sys.stderr.getvalue()
         except AttributeError:
             err_s = ""
-	sys.stdout = self._orig_stdout
+        sys.stdout = self._orig_stdout
         sys.stderr = self._orig_stderr
 
         time_taken = time.time() - start_time

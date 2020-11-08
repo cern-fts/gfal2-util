@@ -1,6 +1,7 @@
-#!/usr/bin/env python2
+#!/bin/sh
+# -*- coding: utf-8 -*-
 #
-# Copyright (c) CERN 2013-2015
+# Copyright (c) CERN 2013-2020
 #
 # Copyright (c) Members of the EMI Collaboration. 2012-2013
 #    See  http://www.eu-emi.eu/partners for details on the copyright
@@ -21,8 +22,16 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# Execute script content with first python interpreter found:
+# * GFAL_PYTHONBIN environment variable
+# * python3 on the PATH if import gfal2 succeeds
+# * python2 on the PATH if import gfal2 succeeds
+# * python on the PATH if import gfal2 succeeds
+# * /usr/bin/python
+"exec" "$([ $GFAL_PYTHONBIN ] && echo $GFAL_PYTHONBIN || { unalias python3 2> /dev/null; unset python3; GFAL_PYTHONBIN=$(command -v python3); [ $GFAL_PYTHONBIN ] && $GFAL_PYTHONBIN -c 'import gfal2' 2> /dev/null > /dev/null && { echo $GFAL_PYTHONBIN; unset GFAL_PYTHONBIN; } || { unalias python2 2> /dev/null; unset python2; GFAL_PYTHONBIN=$(command -v python2); [ $GFAL_PYTHONBIN ] && $GFAL_PYTHONBIN -c 'import gfal2' 2> /dev/null > /dev/null && { echo $GFAL_PYTHONBIN; unset GFAL_PYTHONBIN; } || { unalias python 2> /dev/null; unset python; GFAL_PYTHONBIN=$(command -v python); [ $GFAL_PYTHONBIN ] && $GFAL_PYTHONBIN -c 'import gfal2' 2> /dev/null > /dev/null && { echo $GFAL_PYTHONBIN; unset GFAL_PYTHONBIN; } || echo /usr/bin/python; }; }; })" "-u" "-Wignore" "$0" "$@"
+
 from gfal2_util.shell import Gfal2Shell
 import sys
 
 if __name__ == "__main__":
-    sys.exit(Gfal2Shell().main(sys.argv))
+        sys.exit(Gfal2Shell().main(sys.argv))

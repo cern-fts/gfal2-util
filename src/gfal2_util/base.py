@@ -19,22 +19,26 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#from __future__ import absolute_import # not available in python 2.4
+from __future__ import division
 
 import argparse
 import logging
 import signal
-from urlparse import urlparse, urlunparse
+try:
+    from urllib.parse import urlparse, urlunparse
+except ImportError:
+    from urlparse import urlparse, urlunparse
 from threading import Thread
 import sys
 import errno
 import os
 
 import gfal2
-from gfal2 import GError
-from gfal2_utils_parameters import apply_option
+from gfal2_util.gfal2_utils_parameters import apply_option
 
 
-VERSION = '1.5.4'
+VERSION = '1.5.5'
 
 
 def arg(*args, **kwargs):
@@ -71,7 +75,7 @@ class Gfal2VersionAction(argparse.Action):
         version_str = "gfal2-util version %s (gfal2 %s)" % (VERSION, gfal2.get_version())
         for plugin in sorted(gfal2.creat_context().get_plugin_names()):
             version_str += '\n\t' + plugin
-        print version_str
+        print(version_str)
         sys.exit(0)
 
 
@@ -121,10 +125,12 @@ class CommandBase(object):
     def executor(self, func):
         try:
             self.return_code = func(self)
-        except IOError, e:
+        except IOError:
+            e = sys.exc_info()[1]
             if e.errno != errno.EPIPE:
                 raise
-        except GError, e:
+        except gfal2.GError:
+            e = sys.exc_info()[1]
             sys.stderr.write("%s error: %d (%s) - %s\n" % (self.progr, e.code, os.strerror(e.code), e.message))
             self.return_code = e.code
 
@@ -150,6 +156,9 @@ class CommandBase(object):
 
         t_main = Thread(target=self.executor, args=[func])
         t_main.daemon = True
+        if not hasattr(t_main, 'is_alive'):
+            # is_alive was added in python 2.6 and isAlive deprecated in python 3.8
+            t_main.is_alive = t_main.isAlive
 
         try:
             #run in another thread to be able to catch signals while C functions don't return
@@ -160,11 +169,11 @@ class CommandBase(object):
                 t_main.join(self.params.timeout + 30)
             else:
                 #if join(None) is used, it doesn't catch signals
-                while t_main.isAlive():
+                while t_main.is_alive():
                     t_main.join(3600)
 
             #self._enable_output()
-            if t_main.isAlive():
+            if t_main.is_alive():
                 if self.progress_bar is not None:
                     self.progress_bar.stop(False)
                 sys.stderr.write('Command timed out after %d seconds!\n' % self.params.timeout)
@@ -180,9 +189,12 @@ class CommandBase(object):
             #cancel in another thread to avoid blocking us
             t_cancel = Thread(target=cancel)
             t_cancel.daemon = True  # in no case hog the entire program
+            if not hasattr(t_cancel, 'is_alive'):
+                # is_alive was added in python 2.6 and isAlive deprecated in python 3.8
+                t_cancel.is_alive = t_cancel.isAlive
             t_cancel.start()
             t_cancel.join(4)
-            if t_cancel.isAlive():
+            if t_cancel.is_alive():
                 sys.stderr.write("failed to cancel after waiting some time\n")
 
             return errno.EINTR

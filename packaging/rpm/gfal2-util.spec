@@ -3,7 +3,7 @@
 %{!?python_version:  %global python_version  %(%{__python} -c "from sys import version_info; print('%d.%d'% (version_info[0],version_info[1]))")}
 
 Name:           gfal2-util
-Version:        1.5.4
+Version:        1.5.5
 Release:        1%{?dist}
 Summary:        GFAL2 utility tools
 Group:          Applications/Internet
@@ -20,15 +20,25 @@ BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 BuildArch:      noarch
 
 BuildRequires:  gfal2-core
-BuildRequires:  gfal2-python >= 1.9.0
 BuildRequires:  gfal2-plugin-file
+%if %{?fedora}%{!?fedora:0} >= 29 || %{?rhel}%{!?rhel:0} >= 8
+BuildRequires:  gfal2-python3 >= 1.9.0
+BuildRequires:  python3
+%else
+BuildRequires:  gfal2-python >= 1.9.0
 BuildRequires:  python2
+%endif
 
+%if %{?fedora}%{!?fedora:0} >= 29 || %{?rhel}%{!?rhel:0} >= 8
+Requires:       gfal2-python3 >= 1.9.0
+Requires:       python3
+%else
 Requires:       gfal2-python >= 1.9.0
 Requires:       python2
+%endif
 
-%if %{?fedora}%{!?fedora:0} < 26
-BuildRequires:      python-argparse
+%if %{?fedora}%{!?fedora:0} < 26 || %{?rhel}%{!?rhel:0} < 7
+BuildRequires:  python-argparse
 Requires:       python-argparse
 %endif
 
@@ -73,6 +83,9 @@ python test/functional/test_all.py
 
 
 %changelog
+* Sun Nov 08 2020 Petr Vokac <petr.vokac at cern.ch> - 1.5.5-1
+- New upstream release
+
 * Mon Sep 14 2020 Mihai Patrascoiu <mipatras at cern.ch> - 1.5.4-1
 - New upstream release
 

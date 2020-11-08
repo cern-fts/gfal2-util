@@ -1,14 +1,16 @@
+from __future__ import absolute_import
+
 import unittest
-import utils
+from . import utils
 import shutil
 import os
-from base import TestBase
+from .base import TestBase
 
 class UtilGeneralTest(TestBase): 
     def test_protocol_not_supported(self):
         (ret, out, err) = utils.run_command('gfal-ls', 'xyzf://fakepath')
         self.assertEqual(len(out), 0)
-        self.assertTrue('Protocol not supported' in err)
+        self.assertTrue(bytes('Protocol not supported', 'utf-8') in err)
         self.assertEqual(ret, 93)
         
     def _test_full_path(self):

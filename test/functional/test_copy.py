@@ -1,7 +1,9 @@
+from __future__ import absolute_import
+
 import unittest
-import utils
+from . import utils
 import os
-from base import TestBase
+from  . base import TestBase
 
 class UtilCopyTest(TestBase):
     def test_copy(self):

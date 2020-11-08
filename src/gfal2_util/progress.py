@@ -19,6 +19,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+from __future__ import division
 
 import subprocess
 import sys
@@ -50,6 +51,9 @@ class Progress(object):
 
         self.t_main = threading.Thread(target=self._run)
         self.t_main.daemon = True
+        if not hasattr(self.t_main, 'is_alive'):
+            # is_alive was added in python 2.6 and isAlive deprecated in python 3.8
+            self.t_main.is_alive = self.t_main.isAlive
         self.t_main.start()
 
     @staticmethod
@@ -182,7 +186,7 @@ class Progress(object):
         if not self.started:
             return
 
-        if self.t_main.isAlive():
+        if self.t_main.is_alive():
             self.lock.acquire()
             if self.stopped:
                 self.lock.release()

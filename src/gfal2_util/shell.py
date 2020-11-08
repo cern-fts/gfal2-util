@@ -19,20 +19,22 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#from __future__ import absolute_import # not available in python 2.4
+from __future__ import division
 
-from base import CommandBase
-import commands # @UnusedImport
-import ls # @UnusedImport
-import legacy # @UnusedImport
-import copy # @UnusedImport
-import rm # @UnusedImport
+from gfal2_util import base
+from gfal2_util import commands # @UnusedImport
+from gfal2_util import ls # @UnusedImport
+from gfal2_util import legacy # @UnusedImport
+from gfal2_util import copy # @UnusedImport
+from gfal2_util import rm # @UnusedImport
 
 
 class CommandFactory(object):
 
     @staticmethod
     def __find_classes():
-        return CommandBase().get_subclasses()
+        return base.CommandBase().get_subclasses()
 
     @staticmethod
     def __find_command(clasz, cmd):

@@ -3,6 +3,9 @@ Created on Oct 10, 2013
 
 @author: Duarte Meneses <duarte.meneses@cern.ch>
 """
+#from __future__ import absolute_import # not available in python 2.4
+from __future__ import division
+
 import logging
 import math
 from datetime import datetime
@@ -10,14 +13,17 @@ import os
 import sys
 import stat
 
-import base
-from base import CommandBase
-from utils import file_mode_str
+from gfal2_util import base
+from gfal2_util.utils import file_mode_str
 
 
 def full_iso(date):
     dt = datetime.fromtimestamp(date)
-    return dt.strftime("%Y-%m-%d %H:%M:%S.%f +0000")
+    if sys.version_info >= (2, 6):
+        return dt.strftime("%Y-%m-%d %H:%M:%S.%f +0000")
+    else:
+        # python 2.4 and 2.5 doesn't support %f in strftime
+        return dt.strftime("%Y-%m-%d %H:%M:%S.000000 +0000")
 
 
 def long_iso(date):
@@ -64,12 +70,12 @@ if color_env:
         try:
             typ, color = entry.split('=')
             color_dict[typ] = color
-        except Exception, e:
-            print >>sys.stderr, "unparsable value for LS_COLORS environment variable:", entry
-            pass
+        except Exception:
+            e = sys.exc_info()[1]
+            sys.stderr.write("unparsable value for LS_COLORS environment variable: %s\n" % entry)
 
 
-class CommandLs(CommandBase):
+class CommandLs(base.CommandBase):
     @base.arg('-a', '--all', action="store_true", help="display hidden files")
     @base.arg('-l', '--long', action="store_true", help='long listing format')
     @base.arg('-d', '--directory', action="store_true",
@@ -78,7 +84,7 @@ class CommandLs(CommandBase):
               help='with -l, prints size in human readable format (e.g., 1K 234M 2G')
     @base.arg('--xattr', type=str, action='append', default=[],
               help="query additional attributes. Can be specified multiple times. Only works for --long output")
-    @base.arg('--time-style', type=str, default='locale', choices=time_formats.keys(),
+    @base.arg('--time-style', type=str, default='locale', choices=list(time_formats.keys()),
               help="time style")
     @base.arg('--full-time', action="store_true", help="same as --time-style=full-iso")
     @base.arg('--color', type=str, choices=['always', 'never', 'auto'], default='auto',
