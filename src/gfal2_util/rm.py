@@ -19,6 +19,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 #from __future__ import absolute_import # not available in python 2.4
 from __future__ import division
 
