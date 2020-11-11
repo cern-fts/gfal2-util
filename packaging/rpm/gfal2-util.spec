@@ -3,7 +3,7 @@
 %{!?python_version:  %global python_version  %(%{__python} -c "from sys import version_info; print('%d.%d'% (version_info[0],version_info[1]))")}
 
 Name:           gfal2-util
-Version:        1.5.5
+Version:        1.6.0
 Release:        1%{?dist}
 Summary:        GFAL2 utility tools
 Group:          Applications/Internet
@@ -83,7 +83,7 @@ python test/functional/test_all.py
 
 
 %changelog
-* Sun Nov 08 2020 Petr Vokac <petr.vokac at cern.ch> - 1.5.5-1
+* Sun Nov 08 2020 Petr Vokac <petr.vokac at cern.ch> - 1.6.0-1
 - New upstream release
 
 * Mon Sep 14 2020 Mihai Patrascoiu <mipatras at cern.ch> - 1.5.4-1

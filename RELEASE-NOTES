@@ -1,7 +1,7 @@
 gfal2-util release notes
 ========================
 
-## Tue Nov 08 2020 Petr Vokac <petr.vokac at cern.ch> - 1.5.5
+## Tue Nov 08 2020 Petr Vokac <petr.vokac at cern.ch> - 1.6.0
 ### Improvement
 - [DMC-1223] make sources compatible with python 2.4 - 3.9
 - [DMC-1223] automatically choose available python interpreter
