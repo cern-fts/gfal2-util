@@ -28,7 +28,7 @@
 # * python3 on the PATH if import gfal2, gfal2_util succeeds
 # * python2 on the PATH if import gfal2, gfal2_util succeeds
 # * /usr/bin/python
-"exec" "$(  function check_interpreter { unalias $1 2> /dev/null; unset $1; GFAL_PYTHONBIN=$(command -v $1); [ $GFAL_PYTHONBIN ] && $GFAL_PYTHONBIN -c 'import gfal2, gfal2_util' > /dev/nul 2>&1 && { echo $GFAL_PYTHONBIN; unset GFAL_PYTHONBIN; }; }; [ $GFAL_PYTHONBIN ] && echo $GFAL_PYTHONBIN || check_interpreter python || check_interpreter python3 || check_interpreter python2 || echo /usr/bin/python )" "-u" "-Wignore" "$0" "$@"
+"exec" "$(  check_interpreter() { unalias $1 2> /dev/null; unset $1; GFAL_PYTHONBIN=$(command -v $1); [ $GFAL_PYTHONBIN ] && $GFAL_PYTHONBIN -c 'import gfal2, gfal2_util' > /dev/null 2>&1 && { echo $GFAL_PYTHONBIN; unset GFAL_PYTHONBIN; }; }; [ $GFAL_PYTHONBIN ] && echo $GFAL_PYTHONBIN || check_interpreter python || check_interpreter python3 || check_interpreter python2 || echo /usr/bin/python )" "-u" "-Wignore" "$0" "$@"
 
 from gfal2_util.shell import Gfal2Shell
 import sys
