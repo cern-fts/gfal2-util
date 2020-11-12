@@ -1,9 +1,8 @@
-from __future__ import absolute_import
-
 import unittest
-from . import utils
 import shutil
 import os
+
+import utils
 
 class TestBase(unittest.TestCase):
     def setUp(self):

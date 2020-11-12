@@ -1,11 +1,10 @@
-from __future__ import absolute_import
 from builtins import bytes
-
-from .base import TestBase
 import unittest
 import os
 import shutil
-from . import utils
+
+from base import TestBase
+import utils
 
 class UtilMkdirTest(TestBase):    
     def test_mkdir(self):

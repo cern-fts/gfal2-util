@@ -1,10 +1,9 @@
-from __future__ import absolute_import
 from builtins import bytes
-
 import unittest
-from . import utils
 import os
-from .base import TestBase
+
+from base import TestBase
+import utils
 
 class UtilRmTest(TestBase):
     def test_recursive(self):

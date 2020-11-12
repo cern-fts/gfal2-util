@@ -1,11 +1,9 @@
-from __future__ import absolute_import
 from builtins import bytes
-
 import unittest
-from . import utils
-import shutil
 import os
-from .base import TestBase
+
+from base import TestBase
+import utils
 
 class UtilLsTest(TestBase):
     def test_size(self):
