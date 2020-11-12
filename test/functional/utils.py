@@ -9,10 +9,9 @@ import stat
 import inspect
 
 def create_file(path, size):
-    fout = open(path, 'w')
-    fout.write(str(os.urandom(size)))
+    fout = open(path, 'wb')
+    fout.write(bytearray(os.urandom(size)))
     fout.close()
-
 
 def create_random_suffix():
     return datetime.datetime.now().strftime("%y%m%d_%H%M%S")

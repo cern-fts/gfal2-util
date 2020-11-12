@@ -1,4 +1,5 @@
 from __future__ import absolute_import
+from builtins import bytes
 
 import unittest
 from . import utils
@@ -6,10 +7,10 @@ import shutil
 import os
 from .base import TestBase
 
-class UtilLsTest(TestBase):    
+class UtilLsTest(TestBase):
     def test_size(self):
         (ret, out, err) = utils.run_command('gfal-ls', '-lH ' + ' file://' + self.ffname1)
-        self.assertTrue(bytes(' 1.1K ',  'utf-8')  in out)
+        self.assertTrue(bytes(' 1.1K ', 'utf-8') in out)
         self.assertEqual(ret, 0)
 
         (ret, out, err) = utils.run_command('gfal-ls', '-l' + ' file://' + self.ffname1)
@@ -26,8 +27,8 @@ class UtilLsTest(TestBase):
     def test_basic(self):
         (ret, out, err) = utils.run_command('gfal-ls', 'file://' + self.dirname)
         self.assertEqual(len(out.splitlines()), utils.num_entries(self.dirname))
-        self.assertTrue(bytes(self.fname1,  'utf-8')  in out)
-        self.assertTrue(bytes(self.fname2, 'utf-8')  in out)
+        self.assertTrue(bytes(self.fname1, 'utf-8') in out)
+        self.assertTrue(bytes(self.fname2, 'utf-8') in out)
         self.assertEqual(ret, 0)
         
     def test_directory(self):
@@ -38,15 +39,12 @@ class UtilLsTest(TestBase):
         
     def test_name(self):
         (ret, out, err) = utils.run_command('gfal-ls', '-l' + ' file://' + self.ffname1)
-        self.assertTrue(bytes(' file://' + self.ffname1,  'utf-8') in out)
+        self.assertTrue(bytes(' file://' + self.ffname1, 'utf-8') in out)
         self.assertEqual(ret, 0)
         
         (ret, out, err) = utils.run_command('gfal-ls', '-dl' + ' file://' + self.ffname1)
-        self.assertTrue(bytes(' file://' + self.ffname1,  'utf-8') in out)
+        self.assertTrue(bytes(' file://' + self.ffname1, 'utf-8') in out)
         self.assertEqual(ret, 0)
-    
-    def tearDown(self):
-        shutil.rmtree(self.dirname)
-    
+
 if __name__ == '__main__':
     unittest.main()

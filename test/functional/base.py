@@ -7,7 +7,6 @@ import os
 
 class TestBase(unittest.TestCase):
     def setUp(self):
-        #create dir
         self.dirname = '/tmp/test_' + utils.create_random_suffix()
         os.mkdir(self.dirname)
 
