@@ -148,7 +148,7 @@ Requires:      python3
 %endif
 
 %changelog
-* Sun Nov 08 2020 Petr Vokac <petr.vokac at cern.ch> - 1.6.0-1
+* Thu Nov 12 2020 Petr Vokac <petr.vokac at cern.ch> - 1.6.0-1
 - New upstream release
 
 * Mon Sep 14 2020 Mihai Patrascoiu <mipatras at cern.ch> - 1.5.4-1
