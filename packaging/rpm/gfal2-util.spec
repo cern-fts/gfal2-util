@@ -95,6 +95,20 @@ rm -rf %{buildroot}
 rm -rf %{buildroot}
 
 #-------------------------------------------------------------------------------
+# Gfal2-util-scripts package
+#-------------------------------------------------------------------------------
+%package scripts
+Summary: gfal2 command line scripts
+
+%description scripts
+Provides a set of command line scripts to call gfal2-util python functions.
+
+%files scripts
+%defattr (-,root,root)
+%{_bindir}/gfal-*
+%{_mandir}/man1/*
+
+#-------------------------------------------------------------------------------
 # Gfal2-util package for Python2
 #-------------------------------------------------------------------------------
 %if %{with python2}
@@ -106,6 +120,7 @@ BuildRequires: python2
 BuildRequires: python2-rpm-macros
 BuildRequires: python2-future
 Requires:      gfal2-python >= 1.9.0
+Requires:      gfal2-util-scripts = %{version}-%{release}
 Requires:      python2
 Requires:      python2-future
 %if %{?fedora}%{!?fedora:0} < 26 || %{?rhel}%{!?rhel:0} < 7
@@ -121,8 +136,6 @@ Obsoletes: gfal2-util < %{version}-%{release}
 %files -n python2-gfal2-util
 %defattr (-,root,root)
 %{python2_sitelib}/gfal2_util*
-%{_bindir}/gfal-*
-%{_mandir}/man1/*
 %doc RELEASE-NOTES VERSION LICENSE readme.html
 %endif
 
@@ -137,6 +150,7 @@ BuildRequires: gfal2-python3 >= 1.9.0
 BuildRequires: python3
 BuildRequires: python3-rpm-macros
 Requires:      gfal2-python3 >= 1.9.0
+Requires:      gfal2-util-scripts = %{version}-%{release}
 Requires:      python3
 
 %description -n python3-gfal2-util %_description
@@ -144,8 +158,6 @@ Requires:      python3
 %files -n python3-gfal2-util
 %defattr (-,root,root)
 %{python3_sitelib}/gfal2_util*
-%{_bindir}/gfal-*
-%{_mandir}/man1/*
 %doc RELEASE-NOTES VERSION LICENSE readme.html
 %endif
 
