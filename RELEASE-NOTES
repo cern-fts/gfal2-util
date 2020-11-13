@@ -9,6 +9,7 @@ gfal2-util release notes
   with fallback to python3, python2, python
 - [DMC-1223] drop separate python3 code
 - [DMC-1229] Introduce Gfal2 transfer parameter to enable/disable proxy delegation
+- Fix the parsing of passed-in definitions to allow complex groups
 
 ## Mon Sep 14 2020 Mihai Patrascoiu <mipatras at cern.ch> - 1.5.4
 ### Bug
