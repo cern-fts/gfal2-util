@@ -103,6 +103,7 @@ Summary: gfal2 clients for python2
 
 BuildRequires: gfal2-python >= 1.9.0
 BuildRequires: python2
+BuildRequires: python2-rpm-macros
 BuildRequires: python2-future
 Requires:      gfal2-python >= 1.9.0
 Requires:      python2
@@ -134,6 +135,7 @@ Summary: gfal2 clients for python3
 
 BuildRequires: gfal2-python3 >= 1.9.0
 BuildRequires: python3
+BuildRequires: python3-rpm-macros
 Requires:      gfal2-python3 >= 1.9.0
 Requires:      python3
 
@@ -150,6 +152,7 @@ Requires:      python3
 %changelog
 * Thu Nov 12 2020 Petr Vokac <petr.vokac at cern.ch> - 1.6.0-1
 - New upstream release
+- Provide distinct packages for Python2 and Python3
 
 * Mon Sep 14 2020 Mihai Patrascoiu <mipatras at cern.ch> - 1.5.4-1
 - New upstream release
