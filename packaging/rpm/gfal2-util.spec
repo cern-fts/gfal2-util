@@ -162,7 +162,7 @@ Requires:      python3
 %endif
 
 %changelog
-* Thu Nov 12 2020 Petr Vokac <petr.vokac at cern.ch> - 1.6.0-1
+* Thu Nov 19 2020 Petr Vokac <petr.vokac at cern.ch> - 1.6.0-1
 - New upstream release
 - Provide distinct packages for Python2 and Python3
 
