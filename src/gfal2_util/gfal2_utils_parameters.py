@@ -46,8 +46,12 @@ def get_parameter_from_str(str_value):
 
 
 def parse_parameter(str_params):
-    value_sep = str_params.index("=")
-    group_sep = str_params[:value_sep].rindex(":")
+    value_sep = str_params.find('=')
+    if value_sep == -1:
+        raise ValueError("parameter '%s' doesn't include value, use 'group:option=value'" % str_params)
+    group_sep = str_params[:value_sep].rfind(':')
+    if group_sep == -1:
+        raise ValueError("parameter '%s' doesn't include group name, use 'group:option=value'" % str_params)
     group = str_params[:group_sep]
     option = str_params[group_sep + 1:value_sep]
     value = str_params[value_sep + 1:]
