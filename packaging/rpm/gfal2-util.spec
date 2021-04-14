@@ -22,7 +22,7 @@
 %endif
 
 Name:           gfal2-util
-Version:        1.6.0
+Version:        1.7.0
 Release:        1%{?dist}
 Summary:        GFAL2 utility tools
 Group:          Applications/Internet
@@ -115,11 +115,11 @@ Provides a set of command line scripts to call gfal2-util python functions.
 %package -n python2-gfal2-util
 Summary: gfal2 clients for python2
 
-BuildRequires: gfal2-python >= 1.9.0
+BuildRequires: gfal2-python >= 1.11.0
 BuildRequires: python2
 BuildRequires: python2-rpm-macros
 BuildRequires: python2-future
-Requires:      gfal2-python >= 1.9.0
+Requires:      gfal2-python >= 1.11.0
 Requires:      gfal2-util-scripts = %{version}-%{release}
 Requires:      python2
 Requires:      python2-future
@@ -146,10 +146,10 @@ Obsoletes: gfal2-util < %{version}-%{release}
 %package -n python3-gfal2-util
 Summary: gfal2 clients for python3
 
-BuildRequires: gfal2-python3 >= 1.9.0
+BuildRequires: gfal2-python3 >= 1.11.0
 BuildRequires: python3
 BuildRequires: python3-rpm-macros
-Requires:      gfal2-python3 >= 1.9.0
+Requires:      gfal2-python3 >= 1.11.0
 Requires:      gfal2-util-scripts = %{version}-%{release}
 Requires:      python3
 
