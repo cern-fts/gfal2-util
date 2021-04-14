@@ -160,3 +160,32 @@ class GfalCommands(base.CommandBase):
              self.parser.error('Mode must be an octal number (i.e. 0755)')
              return
          self.context.chmod(self.params.file, mode)
+
+    @base.arg('--issuer', action='store', type=str, help="token issuer URL")
+    @base.arg('--validity', action='store', type=int, default=60, help="token validity in minutes")
+    @base.arg('-w', '--write', dest='write_access', action='store_true', help="flag to request write access token")
+    @base.arg('path', action='store', type=base.surl, help="URI to request token for")
+    @base.arg('activities', action='store', nargs='*', type=str, help="activities for macaroon request")
+    def execute_token(self):
+        """
+        Retrieve a SE-issued token
+        """
+        if self.params.validity < 0:
+            sys.stderr.write("Validity must be a number >= 0\n")
+            return 1
+
+        if self.params.verbose:
+            if len(self.params.activities) > 0:
+                print("Will use user-provided activities")
+            else:
+                print("Will use default activities for {} access"
+                      .format(['read', 'write'][self.params.write_access]))
+
+        issuer = self.params.issuer if self.params.issuer is not None else ''
+        if len(self.params.activities) > 0:
+            token = self.context.token_retrieve(self.params.path, issuer, self.params.validity,
+                                                self.params.activities)
+        else:
+            token = self.context.token_retrieve(self.params.path, issuer, self.params.validity,
+                                                self.params.write_access)
+        sys.stdout.write(token + '\n')

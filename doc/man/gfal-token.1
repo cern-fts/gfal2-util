@@ -1,0 +1,94 @@
+.\" Manpage for gfal-token
+.\"
+.TH GFAL-TOKEN 1 "April 2021" "v1.7.0"
+.SH NAME
+gfal-token \- retrieve SE-issued token for a given path
+.SH SYNOPSIS
+.B gfal-token
+[
+.I "OPTION"
+]...
+.I PATH
+[
+.I ACTIVITY
+]...
+
+.SH DESCRIPTION
+.B gfal-token
+This command retrieves a Storage Element issued token for a given path. Additionally, a token issuer URL may be passed.
+The command can take either a list of user-defined activities or use predefined activities for the read/write access flag.
+Behind the scenes, Gfal2 will try to first retrieve a SciTokens-style token, followed by a macaroon-style token.
+If at any point, a token is successfully retrieved, operation stops and the token is printed.
+.SH OPTIONS
+.TP
+.B "-h, --help"
+show help about the command.
+.TP
+.B "-V, --version"
+output version information and exit.
+.TP
+.B "-v, --verbose"
+verbose mode. Repeat up to 3 times for the most verbose mode.
+.TP
+.B "-D, --definition"
+define properties for gfal2.
+.TP
+.B "-C, --client-info"
+provide custom client-side information
+.TP
+.B "-t, --timeout"
+global timeout for the execution of the command. Command is interrupted if time expires before it finishes.
+.TP
+.B "--issuer"
+token issuer endpoint
+.TP
+.B "--validity"
+token validity expressed in minutes
+.TP
+.B "-w, --write"
+token read/write access flag. Default activities are associated with these flags: read = [LIST,DOWNLOAD], write = [LIST,MANAGE,UPLOAD,DELETE]
+.TP
+.B PATH
+resource URI for which token is requested
+.TP
+.B ACTIVITY
+optional argument, user-specified activity list.
+This list takes precedence over the read/write access flag default activities
+
+.SH EXAMPLES
+.TP
+Retrieve a SE-issued token using default write activities
+.B gfal-token
+--write https://endpoint.cern.ch/path/file
+.PP
+.TP
+Retrieve a SE-issued token using custom activities
+.B gfal-token
+https://endpoint.cern.ch/path/file LIST MANAGE UPLOAD
+
+.SH FILES
+.I /etc/gfal2.d/*
+.RS
+All configuration files in this directory affect the behavior of the underlying gfal2.
+
+.SH AUTHORS
+Duarte Meneses <duarte.meneses@cern.ch>
+.br
+Adrien Devresse <adrien.devresse@cern.ch>
+.br
+Alejandro Alvarez Ayllon <alejandro.alvarez.ayllon@cern.ch>
+.br
+Mihai Patrascoiu <mihai.patrascoiu@cern.ch>
+
+.SH "SEE ALSO"
+.BR gfal-cat (1),
+.BR gfal-chmod (1),
+.BR gfal-copy (1),
+.BR gfal-ls (1),
+.BR gfal-mkdir (1),
+.BR gfal-rename (1),
+.BR gfal-rm (1),
+.BR gfal-save (1),
+.BR gfal-stat (1),
+.BR gfal-sum (1),
+.BR gfal-xattr (1)
