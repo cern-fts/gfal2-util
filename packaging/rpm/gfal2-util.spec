@@ -2,22 +2,19 @@
 # Configure python2/3 according to platform and passed-in parameter
 #-------------------------------------------------------------------------------
 
-# Require --with=python3 in order to enable python3 build package
-%bcond_with python3
+# Require --without=python3 in order to disable python3 build package
+%bcond_without python3
 
-# Require --without=python2 in order to disable python2 build package
+# Require --without=python2 in order to disable python2 build package on Fedora < 29 or RHEL<8
+%if (0%{?fedora} && 0%{?fedora} < 29) || (0%{?rhel} && 0%{?rhel} < 8)
 %bcond_without python2
-
-# Always enable python3 build on Fedora >= 29 or RHEL8
-%if %{?fedora}%{!?fedora:0} >= 29 || %{?rhel}%{!?rhel:0} >= 8
-%define with_python3 1
 %endif
 
-%if %{with python2}
+%if 0%{with python2}
 %{!?python2_sitelib: %global python2_sitelib %(%{__python2} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 %endif
 
-%if %{with python3}
+%if 0%{with python3}
 %{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
 %endif
 
@@ -50,7 +47,7 @@ gridFTP, http(s), SRM, xrootd, etc...
 %description %_description
 
 %prep
-%if %{without python2} && %{without python3}
+%if 0%{?without python2} && 0%{?without python3}
   echo "Must either remove --without=python2 or provide --with=python3 switch"
   exit 1
 %endif
@@ -67,28 +64,20 @@ if [ "$gfal2_util_ver" != "$gfal2_util_spec_ver" ]; then
     exit 1
 fi
 
-%if %{with python2}
+%if 0%{with python2}
   python2 setup.py build
 %endif
-%if %{with python3}
+%if 0%{with python3}
   python3 setup.py build
 %endif
 
 %install
 rm -rf %{buildroot}
-%if %{with python2}
+%if 0%{with python2}
   python2 setup.py install --root=%{buildroot}
 %endif
-%if %{with python3}
+%if 0%{with python3}
   python3 setup.py install --root=%{buildroot}
-%endif
-
-%check
-%if %{with python2}
-  python2 test/functional/test_all.py
-%endif
-%if %{with python3}
-  python3 test/functional/test_all.py
 %endif
 
 %clean
@@ -111,7 +100,7 @@ Provides a set of command line scripts to call gfal2-util python functions.
 #-------------------------------------------------------------------------------
 # Gfal2-util package for Python2
 #-------------------------------------------------------------------------------
-%if %{with python2}
+%if 0%{with python2}
 %package -n python2-gfal2-util
 Summary: gfal2 clients for python2
 
@@ -121,9 +110,10 @@ BuildRequires: python2-rpm-macros
 BuildRequires: python2-future
 Requires:      gfal2-python >= 1.9.0
 Requires:      gfal2-util-scripts = %{version}-%{release}
+Requires:      gfal2-plugin-file
 Requires:      python2
 Requires:      python2-future
-%if %{?fedora}%{!?fedora:0} < 26 || %{?rhel}%{!?rhel:0} < 7
+%if (0%{?fedora} && 0%{?fedora} < 26) || (0%{?rhel} && 0%{?rhel} < 7)
 BuildRequires: python-argparse
 Requires:      python-argparse
 %endif
@@ -142,7 +132,7 @@ Obsoletes: gfal2-util < %{version}-%{release}
 #-------------------------------------------------------------------------------
 # Gfal2-util package for Python3
 #-------------------------------------------------------------------------------
-%if %{with python3}
+%if 0%{with python3}
 %package -n python3-gfal2-util
 Summary: gfal2 clients for python3
 
@@ -151,6 +141,7 @@ BuildRequires: python3
 BuildRequires: python3-rpm-macros
 Requires:      gfal2-python3 >= 1.9.0
 Requires:      gfal2-util-scripts = %{version}-%{release}
+Requires:      gfal2-plugin-file
 Requires:      python3
 
 %description -n python3-gfal2-util %_description
