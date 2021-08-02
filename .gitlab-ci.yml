@@ -75,7 +75,7 @@ centos8-test:
     - eosfusebind
     - |
         for platform in cc7 centos8; do 
-            packaging/gfal2-repo-manager.py --action add --base /eos/project/d/dmc/www/repos/ --ref ${CI_COMMIT_REF_NAME} --packages ${platform}/RPMS/*/*.rpm ${platform}/SRPMS/*
+            packaging/gfal2-repo-manager.py --action add --base /eos/project/d/dmc/www/repos/ --arch-dir x86_64 --ref ${CI_COMMIT_REF_NAME} --packages ${platform}/RPMS/*/*.rpm ${platform}/SRPMS/*
         done
     - sleep 60
   tags:
