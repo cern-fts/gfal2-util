@@ -54,7 +54,7 @@ centos8-test:
   script:
     - dnf -y update
     - dnf -y install epel-release
-    - cp ci/repo/dmc-gitlabci-el8.repo /etc/yum.repos.d
+    - cp ci/repo/dmc-devel-el8.repo /etc/yum.repos.d
     - dnf install -y centos8/RPMS/*/*.rpm
     - python3 test/functional/test_all.py
 
