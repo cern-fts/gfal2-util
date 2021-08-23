@@ -1,0 +1,37 @@
+#!/bin/sh
+# -*- coding: utf-8 -*-
+#
+# Copyright (c) CERN 2013-2021
+#
+# Copyright (c) Members of the EMI Collaboration. 2012-2013
+#    See  http://www.eu-emi.eu/partners for details on the copyright
+#    holders.
+#
+# This file is part of gfal2-util
+#
+# gfal2-util is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+# Execute script content with first python interpreter found:
+# * GFAL_PYTHONBIN environment variable
+# * python on the PATH if import gfal2, gfal2_util succeeds
+# * python3 on the PATH if import gfal2, gfal2_util succeeds
+# * python2 on the PATH if import gfal2, gfal2_util succeeds
+# * /usr/bin/python
+"exec" "$(  check_interpreter() { unalias $1 2> /dev/null; unset $1; GFAL_PYTHONBIN=$(command -v $1); [ $GFAL_PYTHONBIN ] && $GFAL_PYTHONBIN -c 'import gfal2, gfal2_util' > /dev/null 2>&1 && { echo $GFAL_PYTHONBIN; unset GFAL_PYTHONBIN; }; }; [ $GFAL_PYTHONBIN ] && echo $GFAL_PYTHONBIN || check_interpreter python || check_interpreter python3 || check_interpreter python2 || echo /usr/bin/python )" "-u" "-Wignore" "$0" "$@"
+
+from gfal2_util.shell import Gfal2Shell
+import sys
+
+if __name__ == "__main__":
+        sys.exit(Gfal2Shell().main(sys.argv))
