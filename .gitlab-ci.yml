@@ -43,6 +43,7 @@ cc7-test:
     - cc7
   script:
     - yum -y update
+    - cp ci/repo/dmc-devel-el7.repo /etc/yum.repos.d
     - yum install -y cc7/RPMS/*/*.rpm
     - python test/functional/test_all.py
 
