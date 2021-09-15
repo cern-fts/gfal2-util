@@ -5,8 +5,8 @@
 # Require --without=python3 in order to disable python3 build package
 %bcond_without python3
 
-# Require --without=python2 in order to disable python2 build package on Fedora < 29 or RHEL<8
-%if (0%{?fedora} && 0%{?fedora} < 29) || (0%{?rhel} && 0%{?rhel} < 8)
+# Require --without=python2 in order to disable python2 build package on RHEL7
+%if 0%{?rhel} == 7
 %bcond_without python2
 %endif
 
@@ -38,10 +38,10 @@ BuildArch:      noarch
 BuildRequires:  gfal2-core
 BuildRequires:  gfal2-plugin-file
 
-%global _description\
-gfal2-util is a set of basic utility tools for file\
-interactions and file copy based on the GFAL 2.0 toolkit.\
-gfal2-util supports the protocols of GFAL 2.0 : WebDav(s),\
+%global _description \
+gfal2-util is a set of basic utility tools for file \
+interactions and file copy based on the GFAL 2.0 toolkit. \
+gfal2-util supports the protocols of GFAL 2.0 : WebDav(s), \
 gridFTP, http(s), SRM, xrootd, etc...
 
 %description %_description
@@ -87,7 +87,7 @@ rm -rf %{buildroot}
 # Gfal2-util-scripts package
 #-------------------------------------------------------------------------------
 %package scripts
-Summary: gfal2 command line scripts
+Summary:        gfal2 command line scripts
 
 %description scripts
 Provides a set of command line scripts to call gfal2-util python functions.
@@ -102,24 +102,21 @@ Provides a set of command line scripts to call gfal2-util python functions.
 #-------------------------------------------------------------------------------
 %if 0%{with python2}
 %package -n python2-gfal2-util
-Summary: gfal2 clients for python2
+Summary:        gfal2 clients for python2
 
-BuildRequires: gfal2-python >= 1.11.0
-BuildRequires: python2
-BuildRequires: python2-rpm-macros
-BuildRequires: python2-future
-Requires:      gfal2-python >= 1.11.0
-Requires:      gfal2-util-scripts = %{version}-%{release}
-Requires:      gfal2-plugin-file
-Requires:      python2
-Requires:      python2-future
-%if (0%{?fedora} && 0%{?fedora} < 26) || (0%{?rhel} && 0%{?rhel} < 7)
-BuildRequires: python-argparse
-Requires:      python-argparse
-%endif
+BuildRequires:  gfal2-python >= 1.11.0
+BuildRequires:  python2
+BuildRequires:  python2-rpm-macros
+BuildRequires:  python2-future
+Requires:       gfal2-python >= 1.11.0
+Requires:       gfal2-util-scripts = %{version}-%{release}
+Requires:       gfal2-plugin-file
+Requires:       python2
+Requires:       python2-future
 
-Provides: gfal2-util = %{version}-%{release}
-Obsoletes: gfal2-util < %{version}-%{release}
+# Remove around FC30
+Provides:       gfal2-util = %{version}-%{release}
+Obsoletes:      gfal2-util < %{version}-%{release}
 
 %description -n python2-gfal2-util %_description
 
@@ -134,15 +131,15 @@ Obsoletes: gfal2-util < %{version}-%{release}
 #-------------------------------------------------------------------------------
 %if 0%{with python3}
 %package -n python3-gfal2-util
-Summary: gfal2 clients for python3
+Summary:        gfal2 clients for python3
 
-BuildRequires: gfal2-python3 >= 1.11.0
-BuildRequires: python3
-BuildRequires: python3-rpm-macros
-Requires:      gfal2-python3 >= 1.11.0
-Requires:      gfal2-util-scripts = %{version}-%{release}
-Requires:      gfal2-plugin-file
-Requires:      python3
+BuildRequires:  gfal2-python3 >= 1.11.0
+BuildRequires:  python3
+BuildRequires:  python3-rpm-macros
+Requires:       gfal2-python3 >= 1.11.0
+Requires:       gfal2-util-scripts = %{version}-%{release}
+Requires:       gfal2-plugin-file
+Requires:       python3
 
 %description -n python3-gfal2-util %_description
 
@@ -203,4 +200,4 @@ Requires:      python3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
 
 * Mon Nov 04 2013 Adrien Devresse <adevress at cern.ch> - 0.2.1-1
- - Initial EPEL compatible version
+- Initial EPEL compatible version
