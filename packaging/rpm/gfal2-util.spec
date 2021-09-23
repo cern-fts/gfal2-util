@@ -150,6 +150,10 @@ Requires:       python3
 %endif
 
 %changelog
+* Thu Sep 23 2021 Joao Lopes <batistal@cern.ch> - 1.7.0-1
+- New upstream release
+- Introduces SE-Token retrieval
+
 * Thu Nov 19 2020 Petr Vokac <petr.vokac at cern.ch> - 1.6.0-1
 - New upstream release
 - Provide distinct packages for Python2 and Python3
