@@ -223,10 +223,10 @@ class CommandCopy(base.CommandBase):
         if self.params.just_copy:
             t.strict_copy = True
         if self.params.no_delegation:
-            if hasattr(t, 'proxy_delegation'): # available since gfal-python 1.9.6
+            if hasattr(t, 'proxy_delegation'): # available since gfal2-python 1.10.0
                 t.proxy_delegation = False
             else:
-                sys.stderr.write("[warn] '--no-delegation' flag requires gfal2-python >= 1.9.6\n")
+                sys.stderr.write("[warn] '--no-delegation' flag requires gfal2-python >= 1.10.0\n")
 
         if self.params.checksum:
             chk_args = self.params.checksum.split(':')
