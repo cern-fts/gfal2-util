@@ -20,7 +20,7 @@
 
 Name:           gfal2-util
 Version:        1.7.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        GFAL2 utility tools
 Group:          Applications/Internet
 License:        GPLv3
@@ -158,6 +158,10 @@ Obsoletes:      gfal2-util < %{version}-%{release}
 %endif
 
 %changelog
+* Thu Oct 07 2021 Mihai Patrascoiu <mipatras@cern.ch> - 1.7.0-2
+- New upstream release
+- Python3 package with Provides and Obsoletes capabilities
+
 * Thu Sep 23 2021 Joao Lopes <batistal@cern.ch> - 1.7.0-1
 - New upstream release
 - Introduces SE-Token retrieval
