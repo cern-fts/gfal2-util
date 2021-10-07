@@ -114,7 +114,7 @@ Requires:       gfal2-plugin-file
 Requires:       python2
 Requires:       python2-future
 
-# Remove around FC30
+# Introduced in v1.6.0 / Remove around FC36
 Provides:       gfal2-util = %{version}-%{release}
 Obsoletes:      gfal2-util < %{version}-%{release}
 
@@ -140,6 +140,14 @@ Requires:       gfal2-python3 >= 1.11.0
 Requires:       gfal2-util-scripts = %{version}-%{release}
 Requires:       gfal2-plugin-file
 Requires:       python3
+
+# EL7 upgrade path is for python2-gfal2-util
+%if 0%{?rhel} != 7
+Provides:       gfal2-util = %{version}-%{release}
+%endif
+
+# Introduced in v1.6.0 / Remove around FC36
+Obsoletes:      gfal2-util < %{version}-%{release}
 
 %description -n python3-gfal2-util %_description
 
