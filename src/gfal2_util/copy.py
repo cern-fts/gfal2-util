@@ -72,6 +72,8 @@ class CommandCopy(base.CommandBase):
               help="just do the copy and skip any preparation (i.e. checksum, overwrite, etc.)")
     @base.arg('--no-delegation', action='store_true',
               help="disable TPC with proxy delegation")
+    @base.arg('--no-cleanup-on-failure', action='store_true',
+              help="disable destination file cleanup on transfer failure")
     @base.arg('-r', '--recursive', action='store_true',
               help="copy directories recursively")
     @base.arg('--abort-on-failure', action='store_true',
@@ -227,6 +229,11 @@ class CommandCopy(base.CommandBase):
                 t.proxy_delegation = False
             else:
                 sys.stderr.write("[warn] '--no-delegation' flag requires gfal2-python >= 1.10.0\n")
+        if self.params.no_cleanup_on_failure:
+            if hasattr(t, 'cleanup_on_failure'): # available since gfal-python 1.11.1
+                t.cleanup_on_failure = False
+            else:
+                sys.stderr.write("[warn] '--no-cleanup-on-failure' flag requires gfal2-python >= v1.11.1\n")
 
         if self.params.checksum:
             chk_args = self.params.checksum.split(':')
