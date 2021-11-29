@@ -72,6 +72,8 @@ class CommandCopy(base.CommandBase):
               help="just do the copy and skip any preparation (i.e. checksum, overwrite, etc.)")
     @base.arg('--no-delegation', action='store_true',
               help="disable TPC with proxy delegation")
+    @base.arg('--evict', action='store_true',
+              help="evict source file from disk buffer when the transfer is finished")
     @base.arg('-r', '--recursive', action='store_true',
               help="copy directories recursively")
     @base.arg('--abort-on-failure', action='store_true',
@@ -227,7 +229,11 @@ class CommandCopy(base.CommandBase):
                 t.proxy_delegation = False
             else:
                 sys.stderr.write("[warn] '--no-delegation' flag requires gfal2-python >= 1.10.0\n")
-
+        if self.params.evict:
+            if hasattr(t, 'evict'):
+                t.evict = True
+            else:
+                sys.stderr.write("[warn] '--evict' flag requires gfal2-python >= 1.12.0\n")
         if self.params.checksum:
             chk_args = self.params.checksum.split(':')
             if len(chk_args) == 1:
