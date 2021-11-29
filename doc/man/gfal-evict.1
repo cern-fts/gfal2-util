@@ -1,0 +1,84 @@
+.\" Manpage for gfal-evict
+.\"
+.TH GFAL-EVICT 1 "April 2021" "v1.8.0"
+.SH NAME
+gfal-evict \- Evict file from a disk buffer
+.SH SYNOPSIS
+.B gfal-evict
+[
+.I "OPTION"
+]...
+.I FILE
+[
+.I TOKEN
+]
+
+.SH DESCRIPTION
+.B gfal-evict
+This command evicts a file from a disk buffer
+.SH OPTIONS
+.TP
+.B "-h, --help"
+show help about the command.
+.TP
+.B "-V, --version"
+output version information and exit.
+.TP
+.B "-v, --verbose"
+verbose mode. Repeat up to 3 times for the most verbose mode.
+.TP
+.B "-D, --definition"
+define properties for gfal2.
+.TP
+.B "-C, --client-info"
+provide custom client-side information
+.TP
+.B "-t, --timeout"
+global timeout for the execution of the command. Command is interrupted if time expires before it finishes.
+.TP
+.B "-E, --cert"
+user certificate
+.TP
+.B "--key"
+user private key
+.TP
+.B FILE
+URI to the file to be evicted
+.TP
+.B TOKEN
+The token from the bring online request. Optional argument for some protocols (For example: xrootd)
+.TP
+
+.SH EXAMPLES
+.TP
+Evict a file from a disk buffer
+.B gfal-evict https://endpoint.cern.ch/path/file
+
+.SH FILES
+.I /etc/gfal2.d/*
+.RS
+All configuration files in this directory affect the behavior of the underlying gfal2.
+
+.SH AUTHORS
+Duarte Meneses <duarte.meneses@cern.ch>
+.br
+Adrien Devresse <adrien.devresse@cern.ch>
+.br
+Alejandro Alvarez Ayllon <alejandro.alvarez.ayllon@cern.ch>
+.br
+Mihai Patrascoiu <mihai.patrascoiu@cern.ch>
+.br
+Joao Lopes <joao.pedro.batista.lopes@cern.ch>
+
+.SH "SEE ALSO"
+.BR gfal-cat (1),
+.BR gfal-chmod (1),
+.BR gfal-copy (1),
+.BR gfal-ls (1),
+.BR gfal-mkdir (1),
+.BR gfal-rename (1),
+.BR gfal-rm (1),
+.BR gfal-save (1),
+.BR gfal-stat (1),
+.BR gfal-sum (1),
+.BR gfal-xattr (1)

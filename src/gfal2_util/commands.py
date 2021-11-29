@@ -194,3 +194,11 @@ class GfalCommands(base.CommandBase):
             token = self.context.token_retrieve(self.params.path, issuer, self.params.validity,
                                                 self.params.write_access)
         sys.stdout.write(token + '\n')
+
+    @base.arg('file', action='store', type=base.surl, help="URI to the file to be evicted")
+    @base.arg('token', type=str, nargs='?', default="", help="The token from the bring online request")
+    def execute_evict(self):
+        """
+        Evict file from a disk buffer
+        """
+        st = self.context.release(self.params.file, self.params.token)
