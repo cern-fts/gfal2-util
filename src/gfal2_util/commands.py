@@ -67,6 +67,7 @@ class GfalCommands(base.CommandBase):
             else:
                 break
 
+    @base.arg('-b', '--bytes', action='store_true', help="handle file contents as bytes (only in Python3)")
     @base.arg('file', action='store', nargs='+', type=base.surl, help="uri of the file to be displayed")
     def execute_cat(self):
         """
@@ -77,8 +78,12 @@ class GfalCommands(base.CommandBase):
             f = self.context.open(fname, 'r')
 
             while True:
-                b = f.read(65000)
-                sys.stdout.write(b)
+                if self.params.bytes and sys.version_info >= (3, 0):
+                    b = f.read_bytes(65000)
+                    sys.stdout.buffer.write(b)
+                else:
+                    b = f.read(65000)
+                    sys.stdout.write(b)
                 if not b:
                     break
 
