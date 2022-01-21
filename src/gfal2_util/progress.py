@@ -22,12 +22,14 @@
 
 from __future__ import division
 
-import subprocess
 import sys
 import datetime
 import math
 import time
 import threading
+import fcntl
+import termios
+import struct
 
 
 class Progress(object):
@@ -218,11 +220,13 @@ class Progress(object):
 
     @staticmethod
     def _get_width():
-        p = subprocess.Popen(['stty', 'size'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        out, err = p.communicate()
-        if p.returncode != 0:
-            return 80  # Asume default
-        return int(out.split()[1])
+        try:
+            data = fcntl.ioctl(sys.stdin.fileno(), termios.TIOCGWINSZ, struct.pack('HHHH', 0, 0, 0, 0))
+            h, w, hp, wp = struct.unpack('HHHH', data)
+        except:
+            # in case of exception just return default value
+            pass
+        return 80
 
     @staticmethod
     def _clean():
