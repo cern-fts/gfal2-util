@@ -223,6 +223,7 @@ class Progress(object):
         try:
             data = fcntl.ioctl(sys.stdin.fileno(), termios.TIOCGWINSZ, struct.pack('HHHH', 0, 0, 0, 0))
             h, w, hp, wp = struct.unpack('HHHH', data)
+            return w
         except:
             # in case of exception just return default value
             pass
