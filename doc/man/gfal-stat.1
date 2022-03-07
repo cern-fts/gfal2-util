@@ -1,29 +1,14 @@
 .\" Manpage for gfal-stat
 .\"
-.TH GFAL-STAT 1 "May 2017" "v1.5.0"
+.TH GFAL-STAT 1 "March 2022" "v1.7.1"
 .SH NAME
 gfal-stat \- display extended information about a file or directory
 .SH SYNOPSIS
 .B gfal-stat
 [
-.B "-h"
-] [
-.B -V
-] [
-.B -v
-] [
-.B -D
-.I DEFINITION
-] [
-.B -C
-.I CLIENT-INFO
-] [
-.B -t
-.I TIMEOUT
-] [
-.B -p
-] \fIURL\f
-
+.I "OPTION"
+]...
+.I URL
 
 .SH DESCRIPTION
 .B gfal-stat
@@ -40,14 +25,29 @@ output version information and exit.
 .B "-v, --verbose"
 verbose mode. Repeat up to 3 times for the most verbose mode.
 .TP
-.B "-D, --definition"
-define properties for gfal2.
+.BI "-D, --definition " DEFINITION
+define properties for gfal2. Definitions have the following syntax: "CONFIG_GROUP:KEY=VALUE"
 .TP
-.B "-C, --client-info"
-provide custom client-side information
+.BI "-t, --timeout " TIMEOUT
+global timeout for the execution of the command. Command is interrupted if time expires before it finishes. Note: A grace period of 30 seconds is given to the global timeout.
 .TP
-.B "-t, --timeout"
-global timeout for the execution of the command. Command is interrupted if time expires before it finishes.
+.BI "-E, --cert " CERT
+user certificate. (This option takes effect only after X509_USER_PROXY environment variable and default /tmp/x509up_u`id -u` location cannot provide a certificate)
+.TP
+.BI "--key " KEY
+user private key.
+.TP
+.B "-4"
+forces Gfal2 to use IPv4 addresses only. (Option valid only for GridFTP protocol)
+.TP
+.B "-6"
+forces Gfal2 to use IPv6 addresses only. (Option valid only for GridFTP protocol)
+.TP
+.BI "-C, --client-info " CLIENT_INFO
+provide custom client-side information.
+.TP
+.BI "--log-file " LOG_FILE
+write Gfal2 library logs to the given file location.
 
 .SH EXAMPLES
 .B gfal-stat
@@ -69,7 +69,6 @@ srm://endpoint.cern.ch/path/directory1
     Modify: 2017-05-10 13:24:04.000000
     Change: 2017-05-10 13:24:04.000000
 
-
 .SH FILES
 .I /etc/gfal2.d/*
 .RS
@@ -81,6 +80,12 @@ Duarte Meneses <duarte.meneses@cern.ch>
 Adrien Devresse <adrien.devresse@cern.ch>
 .br
 Alejandro Alvarez Ayllon <alejandro.alvarez.ayllon@cern.ch>
+.br
+Andrea Manzi <andrea.manzi@cern.ch>
+.br
+Mihai Patrascoiu <mihai.patrascoiu@cern.ch>
+.br
+Joao Lopes <joao.pedro.batista.lopes@cern.ch>
 
 .SH "SEE ALSO"
 .BR gfal-cat (1),
@@ -93,4 +98,5 @@ Alejandro Alvarez Ayllon <alejandro.alvarez.ayllon@cern.ch>
 .BR gfal-save (1),
 .BR gfal-stat (1),
 .BR gfal-sum (1),
+.BR gfal-token (1),
 .BR gfal-xattr (1)

@@ -1,6 +1,6 @@
 .\" Manpage for gfal-copy
 .\"
-.TH GFAL-COPY 1 "May 2017" "v1.5.0"
+.TH GFAL-COPY 1 "March 2022" "v1.7.1"
 .SH NAME
 gfal-copy \- Copy files
 .SH SYNOPSIS
@@ -9,7 +9,10 @@ gfal-copy \- Copy files
 .I OPTION
 ]...
 .I SOURCE
-.I DEST1 [ DEST2 ... ]
+.I DEST1
+[
+.I DEST2
+]...
 
 .SH DESCRIPTION
 .B gfal-copy
@@ -26,61 +29,74 @@ output version information and exit.
 .B "-v, --verbose"
 verbose mode. Repeat up to 3 times for the most verbose mode.
 .TP
-.BI "-D, --definition"
-define properties for gfal2.
-.TP
-.BI "-C, --client-info"
-provide custom client-side information
+.BI "-D, --definition " DEFINITION
+define properties for gfal2. Definitions have the following syntax: "CONFIG_GROUP:KEY=VALUE"
 .TP
 .BI "-t, --timeout " TIMEOUT
-maximum time for the operation to terminate - default is 1800 seconds. This timeout is enforced by gfal2-util, so it
-applies to the overall operation. It should be greater or equal than --transfer-timeout.
+global timeout for the execution of the command. Command is interrupted if time expires before it finishes. Note: A grace period of 30 seconds is given to the global timeout.
 .TP
 .BI "-E, --cert " CERT
-user certificate
+user certificate. (This option takes effect only after X509_USER_PROXY environment variable and default /tmp/x509up_u`id -u` location cannot provide a certificate)
 .TP
 .BI "--key " KEY
-user private key
+user private key.
 .TP
 .B "-4"
-Forces gfal2-util to use IPv4 addresses only (Option valid only for gsiftp endpoints)
+forces Gfal2 to use IPv4 addresses only. (Option valid only for GridFTP protocol)
 .TP
 .B "-6"
-Forces gfal2-util to use IPv6 addresses only (Option valid only for gsiftp endpoints)
+forces Gfal2 to use IPv6 addresses only. (Option valid only for GridFTP protocol)
+.TP
+.BI "-C, --client-info " CLIENT_INFO
+provide custom client-side information.
+.TP
+.BI "--log-file " LOG_FILE
+write Gfal2 library logs to the given file location.
 .TP
 .B "-f, --force"
-if destination file(s) cannot be overwritten, delete it and try again
+if destination file(s) cannot be overwritten, delete it and try again.
 .TP
 .B "-p, --parent"
-if the destination directory does not exist, create it
+if the destination directory does not exist, create it,
 .TP
 .BI "-n, --nbstreams " NBSTREAMS
-specify the maximum number of parallel streams to use for the copy
+specify the maximum number of parallel streams to use for the copy.
 .TP
 .BI "--tcp-buffersize " TCP_BUFFERSIZE
-specify the TCP buffersize
+specify the TCP buffersize.
 .TP
 .BI "-s, --src-spacetoken " SRC_SPACETOKEN
-source spacetoken to use for the transfer
+source spacetoken to use for the transfer.
 .TP
 .BI "-S, --dst-spacetoken " DST_SPACETOKEN
-destination spacetoken to use for the transfer
+destination spacetoken to use for the transfer.
 .TP
 .BI "-T, --transfer-timeout " TRANSFER_TIMEOUT
-timeout for the transfer operation. This timeout is enforced by each plugin, so it applies to the transfer operation
-only.
+timeout for the transfer operation. This timeout is enforced by each plugin, so it applies to the transfer operation only. Ensure it is equal or smaller than "--timeout" setting.
 .TP
 .BI "-K, --checksum " CHECKSUM
-checksum algorithm to use, or algorithm:value
+checksum algorithm to use, or algorithm:value.
 .TP
 .BI "--from-file " FROM_FILE
-read sources from a file
+read sources from a file.
+.TP
+.BI "--copy-mode " COPY_MODE
+select the TPC copy mode: 'pull', 'push' or 'streamed'. (Option valid only for HTTP protocol)
 .TP
 .B "--just-copy"
-just do the copy and skip any preparation (i.e. checksum, overwrite, stats etc.). Warning - use of this switch is incompatible with the presence of directories in the argument list.
+just do the copy and skip any preparation (i.e. checksum, overwrite, stats etc.). Warning: use of this switch is incompatible with the presence of directories in the argument list.
 .TP
-.B "--copy-mode"
-select the TPC copy mode for HTTP transfers. Valid options are 'pull', 'push' and 'streamed'
+.B "--no-delegation"
+disable TPC with proxy delegation.
+.TP
+.B "-r, --recursive"
+copy directories recursively.
+.TP
+.B "--abort-on-failure"
+abort the whole copy as soon as one failure is encountered.
+.TP
+.B "--dry-run"
+print what would have happened without any actual change.
 
 .SH EXAMPLES
 .TP
@@ -113,12 +129,21 @@ Adrien Devresse <adrien.devresse@cern.ch>
 Alejandro Alvarez Ayllon <alejandro.alvarez.ayllon@cern.ch>
 .br
 Andrea Manzi <andrea.manzi@cern.ch>
+.br
+Mihai Patrascoiu <mihai.patrascoiu@cern.ch>
+.br
+Joao Lopes <joao.pedro.batista.lopes@cern.ch>
 
 .SH "SEE ALSO"
-.BR gfal-copy (1),
-.BR gfal-rm (1),
 .BR gfal-cat (1),
-.BR gfal-save (1),
-.BR gfal-mkdir (1),
+.BR gfal-chmod (1),
+.BR gfal-copy (1),
 .BR gfal-ls (1),
+.BR gfal-mkdir (1),
+.BR gfal-rename (1),
+.BR gfal-rm (1),
+.BR gfal-save (1),
+.BR gfal-stat (1),
+.BR gfal-sum (1),
+.BR gfal-token (1),
 .BR gfal-xattr (1)
