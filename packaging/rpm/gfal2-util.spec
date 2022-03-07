@@ -19,17 +19,17 @@
 %endif
 
 Name:           gfal2-util
-Version:        1.7.0
-Release:        2%{?dist}
+Version:        1.7.1
+Release:        1%{?dist}
 Summary:        GFAL2 utility tools
 Group:          Applications/Internet
 License:        GPLv3
 URL:            http://dmc.web.cern.ch/
-# git clone https://gitlab.cern.ch/dmc/gfal2-util.git gfal2-util-1.5.1 --depth=1
-# pushd gfal2-util-1.5.1
-# git checkout v1.5.1
+# git clone https://gitlab.cern.ch/dmc/gfal2-util.git gfal2-util-1.7.0 --depth=1
+# pushd gfal2-util-1.7.0
+# git checkout v1.7.0
 # popd
-# tar czf gfal2-util-1.5.1.tar.gz --exclude-vcs gfal2-util-1.5.1
+# tar czf gfal2-util-1.7.0.tar.gz --exclude-vcs gfal2-util-1.7.0
 Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
@@ -158,6 +158,9 @@ Obsoletes:      gfal2-util < %{version}-%{release}
 %endif
 
 %changelog
+* Mon Mar 07 2022 Mihai Patrascoiu <mipatras@cern.ch> - 1.7.1-1
+- New upstream release
+
 * Thu Oct 07 2021 Mihai Patrascoiu <mipatras@cern.ch> - 1.7.0-2
 - New upstream release
 - Python3 package with Provides and Obsoletes capabilities
