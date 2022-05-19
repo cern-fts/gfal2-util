@@ -51,7 +51,7 @@ Which extended attributes are supported depend on the protocol. For instance use
 This commands exists purely to provide ways to access functionality previously provided by lcg-util.
 We recommend avoiding the usage of these tools if possible.
 
-#### gfal-legacy-bringonline
+#### gfal-bringonline
 Perform a staging operation on the given SURL.
 
 #### gfal-legacy-register

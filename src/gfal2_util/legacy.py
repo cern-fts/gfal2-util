@@ -62,13 +62,14 @@ class CommandLegacy(base.CommandBase):
 
     @base.arg('--pin-lifetime', action='store', type=int, default=0, help='Desired pin lifetime')
     @base.arg('--desired-request-time', action='store', type=int, default=28800, help='Desired total request time')
+    @base.arg('--staging-metadata', action='store', type=str, default="", help='Metadata for the bringonline operation')
     @base.arg('surl', action='store', type=base.surl, help='Site URL')
     def execute_bringonline(self):
         """
         Execute bring online
         """
         (ret, token) = self.context.bring_online(
-            self.params.surl, self.params.pin_lifetime, self.params.desired_request_time, True
+            self.params.surl, self.params.staging_metadata, self.params.pin_lifetime, self.params.desired_request_time, True
         )
         print("Got token %s" % token)
         wait = self.params.timeout
@@ -84,4 +85,4 @@ class CommandLegacy(base.CommandBase):
         if ret > 0:
             print("File brought online with token %s" % token)
         elif wait <= 0:
-            raise Exception("Timeout expired while polling")
+            print("The file is not yet online.")
