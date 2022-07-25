@@ -17,7 +17,6 @@ stages:
     - tree ${CI_JOB_NAME}
   variables:
     BRANCH: ${CI_COMMIT_REF_NAME}
-    DMC_REPO_BRANCH: "tape_rest_api"
   artifacts:
     paths:
       - "$CI_JOB_NAME"
@@ -68,7 +67,6 @@ fedora-rawhide:
     - python test/functional/test_all.py
   variables:
     BRANCH: ${CI_COMMIT_REF_NAME}
-    DMC_REPO_BRANCH: "tape_rest_api"
 
 #--------------------------
 # Test jobs
