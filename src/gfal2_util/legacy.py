@@ -72,7 +72,12 @@ class CommandLegacy(base.CommandBase):
         (ret, token) = self.context.bring_online(
             self.params.surl, self.params.staging_metadata, self.params.pin_lifetime, self.params.desired_request_time, True
         )
-        print("Got token %s" % token)
+        # Check if stage request failed
+        if ret < 0:
+            print("Staging request failed")
+            return
+
+        print("Request queued! Got token %s" % token)
         wait = self.params.polling_timeout
         sleep = 1
         while ret == 0 and wait > 0:
@@ -85,7 +90,7 @@ class CommandLegacy(base.CommandBase):
 
         if ret > 0:
             print("File brought online with token %s" % token)
-        elif wait == 0:
+        elif wait <= 0:
             print("The file is not yet online")
         else:
             print("Bring online failed with an error")
