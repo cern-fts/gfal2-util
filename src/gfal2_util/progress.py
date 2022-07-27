@@ -141,7 +141,9 @@ class Progress(object):
                 sys.stdout.write(' ' * unused_width)
 
             elif self.status.get('curr_size'):
-                str_rate = self._get_rate_str(self.status['rate'])
+                str_rate = ''
+                if self.status.get('rate'):
+                    str_rate = self._get_rate_str(self.status['rate'])
                 str_curr_size = self._get_size_str(self.status['curr_size']) + ' '
 
                 used_width = len(str_label) + len(str_time) + len(str_curr_size) + len(str_rate)
@@ -150,7 +152,7 @@ class Progress(object):
                 #white space
                 sys.stdout.write(' ' * unused_width)
 
-                #write transfered data size
+                #write transferred data size
                 sys.stdout.write(str_curr_size)
 
                 #write average transfer rate
