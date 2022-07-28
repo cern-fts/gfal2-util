@@ -29,6 +29,7 @@ from gfal2_util import ls # @UnusedImport
 from gfal2_util import legacy # @UnusedImport
 from gfal2_util import copy # @UnusedImport
 from gfal2_util import rm # @UnusedImport
+from gfal2_util import tape
 
 
 class CommandFactory(object):
