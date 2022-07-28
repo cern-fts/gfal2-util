@@ -23,8 +23,6 @@
 #from __future__ import absolute_import # not available in python 2.4
 from __future__ import division
 
-import time
-
 from gfal2_util import base
 
 

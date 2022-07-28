@@ -14,6 +14,8 @@
 # limitations under the License.
 #
 
+import time
+
 from gfal2_util import base
 
 
@@ -24,7 +26,7 @@ class CommandTape(base.CommandBase):
     @base.arg('--pin-lifetime', action='store', type=int, default=0, help='Desired pin lifetime')
     @base.arg('--desired-request-time', action='store', type=int, default=28800, help='Desired total request time')
     @base.arg('--staging-metadata', action='store', type=str, default="", help='Metadata for the bringonline operation')
-    @base.arg('--polling-timeout', action='store', type=int, default=-1, help='Timeout for the polling operation')
+    @base.arg('--polling-timeout', action='store', type=int, default=0, help='Timeout for the polling operation')
     @base.arg('surl', action='store', type=base.surl, help='Site URL')
     def execute_bringonline(self):
         """
@@ -42,6 +44,8 @@ class CommandTape(base.CommandBase):
         print("Request queued! Got token %s" % token)
         wait = self.params.polling_timeout
         sleep = 1
+        ret = self.context.bring_online_poll(self.params.surl, token)
+
         while ret == 0 and wait > 0:
             print("Request queued, sleep %d seconds..." % sleep)
             wait -= sleep
@@ -52,10 +56,35 @@ class CommandTape(base.CommandBase):
 
         if ret > 0:
             print("File brought online with token %s" % token)
-        elif wait <= 0:
+        elif ret == 0:
             print("The file is not yet online")
         else:
-            print("Bring online failed with an error")
+            print("An error occurred while polling")
+
+    @base.arg('--polling-timeout', action='store', type=int, default=0, help='Timeout for the polling operation')
+    @base.arg('surl', action='store', type=base.surl, help='Site URL')
+    def execute_archivepoll(self):
+        """
+        Execute bring online
+        """
+        wait = self.params.polling_timeout
+        sleep = 1
+        ret = self.context.archive_poll(self.params.surl)
+
+        while ret == 0 and wait > 0:
+            print("Archiving ongoing, sleep %d seconds..." % sleep)
+            wait -= sleep
+            time.sleep(sleep)
+            ret = self.context.archive_poll(self.params.surl)
+            sleep *= 2
+            sleep = min(sleep, 300)
+
+        if ret > 0:
+            print("Archiving finished")
+        elif ret == 0:
+            print("File is not yet archived")
+        else:
+            print("Archiving polling failed")
 
     @base.arg('file', action='store', type=base.surl, help="URI to the file to be evicted")
     @base.arg('token', type=str, nargs='?', default="", help="The token from the bring online request")
