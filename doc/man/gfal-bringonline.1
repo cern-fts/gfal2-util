@@ -4,7 +4,7 @@
 .SH NAME
 gfal-bringonline \- Perform a staging operation on the given SURL
 .SH SYNOPSIS
-.B gfal-evict
+.B gfal-bringonline
 [
 .I "OPTION"
 ]...
@@ -59,11 +59,16 @@ Desired total request time
 .TP
 .B "--staging-metadata"
 Metadata for the bringonline operation
+.BI "--from-file " FROM_FILE
+read list of surls from a file.
+.TP
+.B "--polling-timeout"
+The timeout for the polling operation. If a polling timeout greater than 0 is provided the command blocks for polling
+the status of the staging request and only returns when the file is on disk or the timeout expires.
 
 .SH EXAMPLES
 .TP
-.B gfal-bringonline
-<qhttp://endpoint.cern.ch/path/file
+.B gfal-bringonline http://endpoint.cern.ch/path/file --polling-timeout=3600
 
 .SH FILES
 .I /etc/gfal2.d/*
