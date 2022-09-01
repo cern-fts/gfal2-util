@@ -47,7 +47,7 @@ class CommandTape(base.CommandBase):
     @base.arg('--desired-request-time', action='store', type=int, default=28800, help='Desired total request time')
     @base.arg('--staging-metadata', action='store', type=str, default="", help='Metadata for the bringonline operation')
     @base.arg('--polling-timeout', action='store', type=int, default=0, help='Timeout for the polling operation')
-    @base.arg('--from-file', type=str, default=None, help="read sources from a file")
+    @base.arg('--from-file', type=str, default=None, help="read surls from a file")
     @base.arg('surl', action='store', type=base.surl, nargs='?', help='Site URL')
     def execute_bringonline(self):
         """
@@ -85,7 +85,7 @@ class CommandTape(base.CommandBase):
         wait = self.params.polling_timeout
         sleep = 1
 
-        while n_terminal != len(surls) and wait > 0:
+        while n_terminal != nbfiles and wait > 0:
             print("Request queued, sleep %d seconds..." % sleep)
             wait -= sleep
             time.sleep(sleep)
@@ -95,29 +95,44 @@ class CommandTape(base.CommandBase):
             sleep = min(sleep, 300)
 
     @base.arg('--polling-timeout', action='store', type=int, default=0, help='Timeout for the polling operation')
-    @base.arg('surl', action='store', type=base.surl, help='Site URL')
+    @base.arg('--from-file', type=str, default=None, help="read surls from a file")
+    @base.arg('surl', action='store', type=base.surl, nargs='?', help='Site URL')
     def execute_archivepoll(self):
         """
         Execute bring online
         """
+        if self.params.from_file and self.params.surl:
+            sys.stderr.write('Could not combine --from-file with a surl in the positional arguments\n'
+                             )
+            return 1
+
+        surls = list()
+        if self.params.from_file:
+            src_file = open(self.params.from_file)
+            for src in map(str.strip, src_file.readlines()):
+                if src:
+                    surls.append(src)
+            src_file.close()
+        elif self.params.surl:
+            surls.append(self.params.surl)
+        else:
+            sys.stderr.write('Missing surl\n')
+            return 1
+
+        nbfiles = len(surls)
         wait = self.params.polling_timeout
         sleep = 1
-        ret = self.context.archive_poll(self.params.surl)
+        errors = self.context.archive_poll(surls)
+        n_terminal = _evaluate_errors(errors, surls, polling=True)
 
-        while ret == 0 and wait > 0:
+        while n_terminal != nbfiles and wait > 0:
             print("Archiving ongoing, sleep %d seconds..." % sleep)
             wait -= sleep
             time.sleep(sleep)
-            ret = self.context.archive_poll(self.params.surl)
+            errors = self.context.archive_poll(surls)
+            n_terminal = _evaluate_errors(errors, surls, polling=True)
             sleep *= 2
             sleep = min(sleep, 300)
-
-        if ret > 0:
-            print("Archiving finished")
-        elif ret == 0:
-            print("File is not yet archived")
-        else:
-            print("Archiving polling failed")
 
     @base.arg('file', action='store', type=base.surl, help="URI to the file to be evicted")
     @base.arg('token', type=str, nargs='?', default="", help="The token from the bring online request")
