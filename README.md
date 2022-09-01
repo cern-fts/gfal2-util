@@ -75,6 +75,9 @@ gfal-xattr [surl] user.replicas=-replica
 ## License
 This software is licensed under the [Apache 2 License](http://www.apache.org/licenses/LICENSE-2.0.html)
 
+Copyright (c) 2013-2022 CERN  
+Copyright (c) 2012-2013 Members of the EMI Collaboration  
+    See http://www.eu-emi.eu/partners for details on the copyright holders.
+
 ## Contact
 You can notify bugs or ask for feature requests via dmc-support@cern.ch or dmc-devel@cern.ch
-

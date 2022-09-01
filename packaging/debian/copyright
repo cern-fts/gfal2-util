@@ -6,8 +6,8 @@ Files: *
 Copyright:
  Copyright (c) Members of the EGEE Collaboration. 2004-2013.
 	 See http://www.eu-egee.org/partners/ for details on the copyright holders.
- Copyright (c) CERN 2013-2015
-License: GPLv3
+ Copyright (c) CERN 2013-2012
+License: Apache-2.0
 
 Files: debian/*
 Copyright:

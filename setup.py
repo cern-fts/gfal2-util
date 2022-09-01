@@ -13,7 +13,7 @@ data_files.append((man_root, man_files))
 
 setup(name=module_name,
       version='1.8.0',
-      license='GPLv3',
+      license='Apache License 2.0',
       description='GFAL2 utility tools',
       long_description='''gfal2-util is a set of basic utility tools for file
 interactions and file copy based on the GFAL 2.0 toolkit.

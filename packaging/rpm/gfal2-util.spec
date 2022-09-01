@@ -23,7 +23,7 @@ Version:        1.8.0
 Release:        1%{?dist}
 Summary:        GFAL2 utility tools
 Group:          Applications/Internet
-License:        GPLv3
+License:        ASL 2.0
 URL:            http://dmc.web.cern.ch/
 # git clone https://gitlab.cern.ch/dmc/gfal2-util.git gfal2-util-1.7.0 --depth=1
 # pushd gfal2-util-1.7.0
