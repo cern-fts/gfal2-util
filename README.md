@@ -20,6 +20,9 @@ To see detailed usage of each one, you can invoke them with --help to show all t
 #### gfal-bringonline
 Perform a staging operation on the given SURL.
 
+#### gfal-archivepoll
+Perform an archive polling operation on a given SURL.
+
 #### gfal-cat
 Equivalent to cat. Print into the standard output the content of the requested file
 

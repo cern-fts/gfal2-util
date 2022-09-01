@@ -1,19 +1,20 @@
-.\" Manpage for gfal-rm
+.\" Manpage for gfal-archivepoll
 .\"
-.TH GFAL-RM 1 "March 2022" "v1.7.1"
+.TH GFAL-ARCHIVEPOLL 1 "Set 2022" "v1.8.0"
 .SH NAME
-gfal-rm \- Remove files or directories
+gfal-archivepoll \- Perform an archive polling operation on the given SURL
 .SH SYNOPSIS
-.B gfal-rm
+.B gfal-archivepoll
 [
 .I "OPTION"
 ]...
-\fIFILE\fR...
+.I FILE
 
 .SH DESCRIPTION
-.B gfal-rm
-Removes each specified file or directory. By default, it does not remove directories. To delete a directory, --recursiv needs to be given, in which case all given directories are removed too along with all their contents.
-
+.B gfal-archivepoll
+This command performs an archive polling operation on a given SURL. If a polling timeout greater than 0 is provided
+the command blocks for polling the status of the archiving request and only returns when the file is on tape
+or the timeout expires.
 .SH OPTIONS
 .TP
 .B "-h, --help"
@@ -49,29 +50,16 @@ provide custom client-side information.
 .BI "--log-file " LOG_FILE
 write Gfal2 library logs to the given file location.
 .TP
-.B "-r, -R, --recursive"
-remove directories and their contents recursively.
-.TP
-.B "--dry-run"
-print what would have happened without any actual change.
-.TP
-.B "--just-delete"
-do not perform any check on the file prior to delete. (Needed to delete HTTP signed URLs)
-.TP
 .BI "--from-file " FROM_FILE
-read SURLs from a file.
+read sources from a file.
 .TP
-.B "--bulk"
-perform bulk deletion.
+.B "--polling-timeout"
+The timeout for the polling operation. If a polling timeout greater than 0 is provided the command blocks for polling
+the status of the archiving request and only returns when the file is on tape or the timeout expires.
 
 .SH EXAMPLES
 .TP
-.B gfal-rm
-file:///tmp/test
-.PP
-.TP
-.B gfal-rm
--r srm://endpoint.cern.ch/path/directory
+.B gfal-archivepoll http://endpoint.cern.ch/path/file --polling-timeout=3600
 
 .SH FILES
 .I /etc/gfal2.d/*
@@ -84,8 +72,6 @@ Duarte Meneses <duarte.meneses@cern.ch>
 Adrien Devresse <adrien.devresse@cern.ch>
 .br
 Alejandro Alvarez Ayllon <alejandro.alvarez.ayllon@cern.ch>
-.br
-Andrea Manzi <andrea.manzi@cern.ch>
 .br
 Mihai Patrascoiu <mihai.patrascoiu@cern.ch>
 .br
@@ -102,7 +88,6 @@ Joao Lopes <joao.pedro.batista.lopes@cern.ch>
 .BR gfal-save (1),
 .BR gfal-stat (1),
 .BR gfal-sum (1),
-.BR gfal-token (1),
+.BR gfal-token (1)
 .BR gfal-xattr (1)
 .BR gfal-bringonline (1)
-.BR gfal-archivepoll (1)
