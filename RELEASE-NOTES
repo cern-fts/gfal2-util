@@ -1,6 +1,22 @@
 gfal2-util release notes
 ========================
 
+## Fri Sep 02 2022 Joao Lopes <batistal@cern.ch> - 1.8.0
+### Bug
+- [DMC-1328] - Exception with gfal-copy progress bar when source size is known and transfer rate is not reported yet
+### New Feature
+- [DMC-1319] - Renew gfal-legacy-bringonline command
+- [DMC-1332] - Create gfal-archivepoll command
+### Task
+- [DMC-1336] - Data Management Clients for Fedora 36
+- [DMC-1341] - Change gfal2-util license to Apache 2.0
+### Improvement
+- [DMC-1208] - Gfal2-util bringonline with "--from-file" option
+### Sub-task
+- [DMC-1333] - Create a single file for tape commands in gfal-util
+- [DMC-1342] - gfal-archivepoll with "--from-file" option
+- [DMC-1343] - Create gfal-evict command
+
 ## Mon Mar 07 2022 Mihai Patrascoiu <mipatras@cern.ch> - 1.7.1
 ### Bug
 - [DMC-1285] - Stuck transfers to XRoot sites with enabled TLS
