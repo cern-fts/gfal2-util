@@ -11,11 +11,11 @@
 %endif
 
 %if 0%{with python2}
-%{!?python2_sitelib: %global python2_sitelib %(%{__python2} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
+%{!?python2_sitelib: %global python2_sitelib %(%{__python2} -c "from sysconfig import get_path; print get_path('purelib')")}
 %endif
 
 %if 0%{with python3}
-%{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
+%{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from sysconfig import get_path; print(get_path('purelib'))")}
 %endif
 
 Name:           gfal2-util
@@ -107,6 +107,7 @@ Summary:        gfal2 clients for python2
 BuildRequires:  python2-gfal2 >= 1.12.0
 BuildRequires:  python2
 BuildRequires:  python2-rpm-macros
+BuildRequires:  python2-setuptools
 BuildRequires:  python2-future
 Requires:       python2-gfal2 >= 1.12.0
 Requires:       gfal2-util-scripts = %{version}-%{release}
@@ -136,6 +137,7 @@ Summary:        gfal2 clients for python3
 BuildRequires:  python3-gfal2 >= 1.12.0
 BuildRequires:  python3
 BuildRequires:  python3-rpm-macros
+BuildRequires:  python3-setuptools
 Requires:       python3-gfal2 >= 1.12.0
 Requires:       gfal2-util-scripts = %{version}-%{release}
 Requires:       gfal2-plugin-file

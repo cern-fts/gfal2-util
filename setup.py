@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from distutils.core import setup
+from setuptools import setup
 from glob import glob
 
 doc_files = ['RELEASE-NOTES', 'VERSION', 'LICENSE', 'readme.html']
