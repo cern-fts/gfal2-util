@@ -222,11 +222,8 @@ class CommandCopy(base.CommandBase):
         if self.params.just_copy:
             t.strict_copy = True
         if self.params.no_delegation:
-            if hasattr(t, 'proxy_delegation'): # available since gfal2-python 1.10.0
-                t.proxy_delegation = False
-            else:
-                sys.stderr.write("[warn] '--no-delegation' flag requires gfal2-python >= 1.10.0\n")
-        if self.params.evict:
+            t.proxy_delegation = False
+        if self.params.evict:  # available since gfal2-python 1.12.0
             if hasattr(t, 'evict'):
                 t.evict = True
             else:
@@ -235,7 +232,7 @@ class CommandCopy(base.CommandBase):
             chk_args = self.params.checksum.split(':')
             if len(chk_args) == 1:
                 chk_args.append('')
-            if hasattr(t, 'set_checksum'): # available since gfal-python 1.9.0
+            if hasattr(t, 'set_checksum'):  # available since gfal2-python 1.9.0
                 mode = dict(
                         source=gfal2.checksum_mode.source,
                         target=gfal2.checksum_mode.target,
