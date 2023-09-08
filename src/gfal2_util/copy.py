@@ -71,6 +71,8 @@ class CommandCopy(base.CommandBase):
               help="disable TPC with proxy delegation")
     @base.arg('--evict', action='store_true',
               help="evict source file from disk buffer when the transfer is finished")
+    @base.arg('--scitag', type=int, default=None,
+              help="SciTag transfer flow identifier (number in [65-65535] range) (available only for HTTP-TPC)")
     @base.arg('-r', '--recursive', action='store_true',
               help="copy directories recursively")
     @base.arg('--abort-on-failure', action='store_true',
@@ -228,6 +230,11 @@ class CommandCopy(base.CommandBase):
                 t.evict = True
             else:
                 sys.stderr.write("[warn] '--evict' flag requires python{}-gfal2 >= 1.12.0\n".format(sys.version_info.major))
+        if self.params.scitag:
+            if hasattr(t, 'scitag'):  # available since gfal2-python 1.12.2
+                t.scitag = self.params.scitag
+            else:
+                sys.stderr.write("[warn] '--scitag' flag requires python{}-gfal2 >= 1.12.2\n".format(sys.version_info.major))
         if self.params.checksum:
             chk_args = self.params.checksum.split(':')
             if len(chk_args) == 1:
