@@ -59,12 +59,12 @@ class CommandCopy(base.CommandBase):
               help="global timeout for the transfer operation")
     @base.arg('-K', "--checksum", type=str, default=None,
               help='checksum algorithm to use, or algorithm:value')
-    @base.arg("--copy-mode", type=str, default='', choices=['pull', 'push', 'streamed',''],
-              help='copy mode. N.B. supported only for HTTP/DAV to HTTP/DAV transfers, if not specified the pull mode will be executed first with fallbacks to other modes in case of errors')
     @base.arg("--checksum-mode", type=str, default='both', choices=['source', 'target', 'both'],
               help='checksum validation mode')
     @base.arg('--from-file', type=str, default=None,
               help="read sources from a file")
+    @base.arg("--copy-mode", type=str, default='', choices=['pull', 'push', 'streamed'],
+              help='copy mode. N.B. supported only for HTTP/DAV to HTTP/DAV transfers, if not specified the pull mode will be executed first with fallbacks to other modes in case of errors')
     @base.arg('--just-copy', action='store_true',
               help="just do the copy and skip any preparation (i.e. checksum, overwrite, etc.)")
     @base.arg('--no-delegation', action='store_true',
@@ -85,7 +85,7 @@ class CommandCopy(base.CommandBase):
         Copy a file or set of files
         """
         if self.params.from_file and self.params.src:
-            sys.stderr.write("Could not combine --from-file with a source in the positional arguments\n")
+            sys.stderr.write("Cannot combine '--from-file' with a source in the positional arguments\n")
             return 1
 
         copy_jobs = list()

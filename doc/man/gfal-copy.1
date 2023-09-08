@@ -57,7 +57,7 @@ write Gfal2 library logs to the given file location.
 if destination file(s) cannot be overwritten, delete it and try again.
 .TP
 .B "-p, --parent"
-if the destination directory does not exist, create it,
+if the destination directory does not exist, create it.
 .TP
 .BI "-n, --nbstreams " NBSTREAMS
 specify the maximum number of parallel streams to use for the copy.
@@ -77,6 +77,9 @@ timeout for the transfer operation. This timeout is enforced by each plugin, so 
 .BI "-K, --checksum " CHECKSUM
 checksum algorithm to use, or algorithm:value.
 .TP
+.BI "--checksum-mode " CHECKSUM_MODE
+checksum validation mode: 'source', 'target' or 'both'.
+.TP
 .BI "--from-file " FROM_FILE
 read sources from a file.
 .TP
@@ -88,6 +91,9 @@ just do the copy and skip any preparation (i.e. checksum, overwrite, stats etc.)
 .TP
 .B "--no-delegation"
 disable TPC with proxy delegation.
+.TP
+.B "--evict"
+evict source file from disk buffer when the transfer is finished.
 .TP
 .B "-r, --recursive"
 copy directories recursively.
