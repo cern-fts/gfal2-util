@@ -227,7 +227,7 @@ class CommandCopy(base.CommandBase):
             if hasattr(t, 'evict'):
                 t.evict = True
             else:
-                sys.stderr.write("[warn] '--evict' flag requires gfal2-python >= 1.12.0\n")
+                sys.stderr.write("[warn] '--evict' flag requires python{}-gfal2 >= 1.12.0\n".format(sys.version_info.major))
         if self.params.checksum:
             chk_args = self.params.checksum.split(':')
             if len(chk_args) == 1:
