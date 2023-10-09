@@ -30,6 +30,7 @@ from gfal2_util import base
 
 class CommandRm(base.CommandBase):
     def __init__(self):
+        super(CommandRm, self).__init__()
         self.return_code = 0
 
     @base.arg("-r", "-R", "--recursive", action='store_true',
