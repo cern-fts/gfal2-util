@@ -96,7 +96,7 @@ class CommandRm(base.CommandBase):
         if self.params.dry_run:
             print("%s\tSKIP" % surl)
             return
-        
+
         try:
             self.context.unlink(surl)
             print("%s\tDELETED" % surl)
@@ -161,7 +161,7 @@ class CommandRm(base.CommandBase):
 
     def _propagate_error_code(self, error_code):
         """
-        Propagate the error code if the return code is empty 
+        Propagate the error code if the return code is empty
         """
         if self.return_code == 0:
             self.return_code = error_code
