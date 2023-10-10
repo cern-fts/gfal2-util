@@ -230,7 +230,7 @@ class CommandCopy(base.CommandBase):
                 t.evict = True
             else:
                 sys.stderr.write("[warn] '--evict' flag requires python{}-gfal2 >= 1.12.0\n".format(sys.version_info.major))
-        if self.params.scitag:
+        if self.params.scitag is not None:
             if hasattr(t, 'scitag'):  # available since gfal2-python 1.12.2
                 t.scitag = self.params.scitag
             else:
