@@ -130,7 +130,7 @@ class CommandBase(object):
         except gfal2.GError:
             e = sys.exc_info()[1]
             sys.stderr.write("%s error: %d (%s) - %s\n" % (self.progr, e.code, os.strerror(e.code), e.message))
-            self.return_code = e.code
+            self.return_code = e.code if 0 <= e.code <= 255 else 255
 
     def execute(self, func):
         def cancel():
