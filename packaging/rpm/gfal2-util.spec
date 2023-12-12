@@ -19,17 +19,17 @@
 %endif
 
 Name:           gfal2-util
-Version:        1.8.0
+Version:        1.8.1
 Release:        1%{?dist}
 Summary:        GFAL2 utility tools
 Group:          Applications/Internet
 License:        ASL 2.0
 URL:            http://dmc.web.cern.ch/
-# git clone https://gitlab.cern.ch/dmc/gfal2-util.git gfal2-util-1.8.0 --depth=1
-# pushd gfal2-util-1.8.0
-# git checkout v1.8.0
+# git clone https://gitlab.cern.ch/dmc/gfal2-util.git gfal2-util-1.8.1 --depth=1
+# pushd gfal2-util-1.8.1
+# git checkout v1.8.1
 # popd
-# tar czf gfal2-util-1.8.0.tar.gz --exclude-vcs gfal2-util-1.8.0
+# tar czf gfal2-util-1.8.1.tar.gz --exclude-vcs gfal2-util-1.8.1
 Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
@@ -160,6 +160,9 @@ Obsoletes:      gfal2-util < %{version}-%{release}
 %endif
 
 %changelog
+* Tue Dec 12 2023 Mihai Patrascoiu <mipatras@cern.ch> - 1.8.1-1
+- New upstream release
+
 * Fri Sep 02 2022 Joao Lopes <batistal@cern.ch> - 1.8.0-1
 - New upstream release
 - Renew gfal-legacy-bringonline command

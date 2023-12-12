@@ -12,7 +12,7 @@ man_files = glob('doc/man/gfal*.1')
 data_files.append((man_root, man_files))
 
 setup(name=module_name,
-      version='1.8.0',
+      version='1.8.1',
       license='Apache License 2.0',
       description='GFAL2 utility tools',
       long_description='''gfal2-util is a set of basic utility tools for file

@@ -1,6 +1,20 @@
 gfal2-util release notes
 ========================
 
+## Tue Dec 12 2023 Mihai Patrascoiu <mipatras@cern.ch> - 1.8.1
+### Bug
+- [DMC-1395] - Gfal2 CLI return code is not within bash return code range
+- [gfal2-util/issues/1] - gfal-copy fails to complete the data transfer but returns exit code 0
+- [cern-fts/gfal2-util/pull/5] - CommandRm should call CommandBase constructor (solve issue #4)
+### New Feature
+- [DMC-1344] - Propagate Scitags during TPC transfers
+### Task
+- [DMC-1327] - DMC packages for Centos Stream 9
+- [DMC-1359] - Data Management Clients for Fedora 37
+- [DMC-1379] - Move DMC projects to Alma8 and Alma9
+- [DMC-1387] - Data Management Clients for Fedora 38
+- [DMC-1389] - Port Gfal2 Python3 projects away from "distutils"
+
 ## Fri Sep 02 2022 Joao Lopes <batistal@cern.ch> - 1.8.0
 ### Bug
 - [DMC-1328] - Exception with gfal-copy progress bar when source size is known and transfer rate is not reported yet
@@ -12,6 +26,7 @@ gfal2-util release notes
 - [DMC-1341] - Change gfal2-util license to Apache 2.0
 ### Improvement
 - [DMC-1208] - Gfal2-util bringonline with "--from-file" option
+- [gfal2-util/pull/7] - Add missing man page section for "gfal-legacy-register"
 ### Sub-task
 - [DMC-1333] - Create a single file for tape commands in gfal-util
 - [DMC-1342] - gfal-archivepoll with "--from-file" option
