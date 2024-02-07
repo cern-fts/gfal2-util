@@ -78,6 +78,8 @@ class CommandTape(base.CommandBase):
                                                     self.params.pin_lifetime,
                                                     self.params.desired_request_time, True)
 
+        if token:
+            print("Bringonline token: %s" % token)
         n_terminal = _evaluate_errors(errors, surls, polling=False)
 
         # Start the polling
