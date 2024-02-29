@@ -92,6 +92,13 @@ Summary:        gfal2 command line scripts
 %description scripts
 Provides a set of command line scripts to call gfal2-util python functions.
 
+%if 0%{with python2}
+Requires: python2-gfal2-util
+%endif
+%if 0%{with python3}
+Requires: python3-gfal2-util
+%endif
+
 %files scripts
 %defattr (-,root,root)
 %{_bindir}/gfal-*
