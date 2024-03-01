@@ -36,7 +36,7 @@ import gfal2
 from gfal2_util.gfal2_utils_parameters import apply_option
 
 
-VERSION = '1.8.1'
+VERSION = '1.8.2'
 
 
 def arg(*args, **kwargs):
