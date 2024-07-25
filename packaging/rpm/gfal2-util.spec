@@ -1,22 +1,5 @@
-#-------------------------------------------------------------------------------
-# Configure python2/3 according to platform and passed-in parameter
-#-------------------------------------------------------------------------------
-
-# Require --without=python3 in order to disable python3 build package
-%bcond_without python3
-
-# Require --without=python2 in order to disable python2 build package on RHEL7
-%if 0%{?rhel} == 7
-%bcond_without python2
-%endif
-
-%if 0%{with python2}
-%{!?python2_sitelib: %global python2_sitelib %(%{__python2} -c "from sysconfig import get_path; print get_path('purelib')")}
-%endif
-
-%if 0%{with python3}
-%{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from sysconfig import get_path; print(get_path('purelib'))")}
-%endif
+# Python sitearch
+%{!?python3_sitearch: %define python3_sitearch %(%{__python3} -c "from sysconfig import get_path; print(get_path('platlib'))")}
 
 Name:           gfal2-util
 Version:        1.8.2
@@ -47,11 +30,6 @@ gridFTP, http(s), SRM, xrootd, etc...
 %description %_description
 
 %prep
-%if 0%{?without python2} && 0%{?without python3}
-  echo "Must either remove --without=python2 or provide --with=python3 switch"
-  exit 1
-%endif
-
 %setup -q
 
 %build
@@ -64,21 +42,11 @@ if [ "$gfal2_util_ver" != "$gfal2_util_spec_ver" ]; then
     exit 1
 fi
 
-%if 0%{with python2}
-  python2 setup.py build
-%endif
-%if 0%{with python3}
-  python3 setup.py build
-%endif
+python3 setup.py build
 
 %install
 rm -rf %{buildroot}
-%if 0%{with python2}
-  python2 setup.py install --root=%{buildroot}
-%endif
-%if 0%{with python3}
-  python3 setup.py install --root=%{buildroot}
-%endif
+python3 setup.py install --root=%{buildroot}
 
 %clean
 rm -rf %{buildroot}
@@ -88,16 +56,10 @@ rm -rf %{buildroot}
 #-------------------------------------------------------------------------------
 %package scripts
 Summary:        gfal2 command line scripts
+Requires:       python3-gfal2-util
 
 %description scripts
 Provides a set of command line scripts to call gfal2-util python functions.
-
-%if 0%{with python2}
-Requires: python2-gfal2-util
-%endif
-%if 0%{with python3}
-Requires: python3-gfal2-util
-%endif
 
 %files scripts
 %defattr (-,root,root)
@@ -105,39 +67,8 @@ Requires: python3-gfal2-util
 %{_mandir}/man1/*
 
 #-------------------------------------------------------------------------------
-# Gfal2-util package for Python2
-#-------------------------------------------------------------------------------
-%if 0%{with python2}
-%package -n python2-gfal2-util
-Summary:        gfal2 clients for python2
-
-BuildRequires:  python2-gfal2 >= 1.12.0
-BuildRequires:  python2
-BuildRequires:  python2-rpm-macros
-BuildRequires:  python2-setuptools
-BuildRequires:  python2-future
-Requires:       python2-gfal2 >= 1.12.0
-Requires:       gfal2-util-scripts = %{version}-%{release}
-Requires:       gfal2-plugin-file
-Requires:       python2
-Requires:       python2-future
-
-# Introduced in v1.6.0 / Remove around FC36
-Provides:       gfal2-util = %{version}-%{release}
-Obsoletes:      gfal2-util < %{version}-%{release}
-
-%description -n python2-gfal2-util %_description
-
-%files -n python2-gfal2-util
-%defattr (-,root,root)
-%{python2_sitelib}/gfal2_util*
-%doc RELEASE-NOTES VERSION LICENSE readme.html
-%endif
-
-#-------------------------------------------------------------------------------
 # Gfal2-util package for Python3
 #-------------------------------------------------------------------------------
-%if 0%{with python3}
 %package -n python3-gfal2-util
 Summary:        gfal2 clients for python3
 
@@ -150,21 +81,12 @@ Requires:       gfal2-util-scripts = %{version}-%{release}
 Requires:       gfal2-plugin-file
 Requires:       python3
 
-# EL7 upgrade path is for python2-gfal2-util
-%if 0%{?rhel} != 7
-Provides:       gfal2-util = %{version}-%{release}
-%endif
-
-# Introduced in v1.6.0 / Remove around FC36
-Obsoletes:      gfal2-util < %{version}-%{release}
-
 %description -n python3-gfal2-util %_description
 
 %files -n python3-gfal2-util
 %defattr (-,root,root)
 %{python3_sitelib}/gfal2_util*
 %doc RELEASE-NOTES VERSION LICENSE readme.html
-%endif
 
 %changelog
 * Tue Dec 12 2023 Mihai Patrascoiu <mipatras@cern.ch> - 1.8.1-1
