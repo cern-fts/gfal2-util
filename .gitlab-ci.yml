@@ -25,10 +25,6 @@ stages:
 # Build jobs
 #--------------------------
 
-cc7:
-  image: gitlab-registry.cern.ch/linuxsupport/cc7-base
-  <<: *build-template_definition
-
 alma8:
   image: gitlab-registry.cern.ch/linuxsupport/alma8-base
   <<: *build-template_definition
@@ -62,23 +58,13 @@ fedora-rawhide:
     - PLATFORM=${CI_JOB_NAME%-*}
     - ci/write-repo-file.sh
     - dnf install -y ${PLATFORM}/RPMS/*/*.rpm
-    - shopt -s expand_aliases
-    - python --version &>/dev/null || alias python=python3
-    - python test/functional/test_all.py
+    - python3 test/functional/test_all.py
   variables:
     BRANCH: ${CI_COMMIT_REF_NAME}
 
 #--------------------------
 # Test jobs
 #--------------------------
-
-cc7-test:
-  image: gitlab-registry.cern.ch/linuxsupport/cc7-base
-  needs:
-    - job: cc7
-  before_script:
-    - yum install -y dnf epel-release
-  <<: *test-template_definition
 
 alma8-test:
   image: gitlab-registry.cern.ch/linuxsupport/alma8-base
@@ -116,7 +102,6 @@ fedora-40-test:
   stage: publish
   image: gitlab-registry.cern.ch/eos/gitlab-eos/alma9:latest
   dependencies:
-    - cc7
     - alma8
     - alma9
     - fedora-39
@@ -126,7 +111,7 @@ fedora-40-test:
     - automount
     - cat "$repo_passwd" | kinit "$repo_user"
     - |
-        for platform in cc7 alma8 alma9 fedora-39 fedora-40 fedora-rawhide; do
+        for platform in alma8 alma9 fedora-39 fedora-40 fedora-rawhide; do
           if [[ "${platform}" == "fedora-rawhide" ]] && [[ ! -d ${platform} ]] ; then
             echo "Skipping ${platform} packages..." ;
             continue ;
