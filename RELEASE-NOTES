@@ -1,6 +1,16 @@
 gfal2-util release notes
 ========================
 
+## Wed Jul 31 2024 Louis Regnier <loregnie@cern.ch> - 1.9.0
+### Bug
+- [DMC-1403] - Installing "gfal2-util-scripts" does not bring needed "python3-gfal2-util" dependency
+### Task
+- [DMC-1414] - Stop building Data Management Clients for CC7
+- [DMC-1413] - Data Management Clients for Fedora 39 and Fedora 40
+### Improvement
+- [DMC-1416] - Disable the automatic clean-up when a copy fails
+- [cern-fts/gfal2-util/pull/7] - Update name of LCG trust anchors
+
 ## Tue Dec 12 2023 Mihai Patrascoiu <mipatras@cern.ch> - 1.8.1
 ### Bug
 - [DMC-1395] - Gfal2 CLI return code is not within bash return code range
