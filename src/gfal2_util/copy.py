@@ -67,6 +67,8 @@ class CommandCopy(base.CommandBase):
               help='copy mode. N.B. supported only for HTTP/DAV to HTTP/DAV transfers, if not specified the pull mode will be executed first with fallbacks to other modes in case of errors')
     @base.arg('--just-copy', action='store_true',
               help="just do the copy and skip any preparation (i.e. checksum, overwrite, etc.)")
+    @base.arg('--disable-cleanup', action='store_true',
+              help="disable the copy clean-up happening when a transfer fails")
     @base.arg('--no-delegation', action='store_true',
               help="disable TPC with proxy delegation")
     @base.arg('--evict', action='store_true',
@@ -223,6 +225,11 @@ class CommandCopy(base.CommandBase):
             t.overwrite = self.params.force
         if self.params.just_copy:
             t.strict_copy = True
+        if self.params.disable_cleanup:  # available since gfal2-python 1.13.0
+            if hasattr(t, 'transfer_cleanup'):
+                t.transfer_cleanup = False
+            else:
+                sys.stderr.write("[warn] '--disable-cleanup' flag requires python{}-gfal2 >= 1.13.0\n".format(sys.version_info.major))
         if self.params.no_delegation:
             t.proxy_delegation = False
         if self.params.evict:  # available since gfal2-python 1.12.0
