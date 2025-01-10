@@ -7,7 +7,7 @@ Release:        1%{?dist}
 Summary:        GFAL2 utility tools
 Group:          Applications/Internet
 License:        ASL 2.0
-URL:            http://dmc.web.cern.ch/
+URL:            https://dmc-docs.web.cern.ch/dmc-docs/gfal2-util.html
 # git clone --depth=1 --branch=v1.9.0 https://gitlab.cern.ch/dmc/gfal2-util.git gfal2-util-1.9.0
 # tar czf gfal2-util-1.9.0.tar.gz --exclude-vcs gfal2-util-1.9.0
 Source0:        %{name}-%{version}.tar.gz
