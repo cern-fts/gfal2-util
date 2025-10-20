@@ -33,6 +33,10 @@ alma9:
   image: gitlab-registry.cern.ch/linuxsupport/alma9-base
   <<: *build-template_definition
 
+alma10:
+  image: gitlab-registry.cern.ch/linuxsupport/alma10-base
+  <<: *build-template_definition
+
 fedora-40:
   image: registry.cern.ch/docker.io/library/fedora:40
   <<: *build-template_definition
@@ -82,6 +86,14 @@ alma9-test:
     - dnf install -y epel-release
   <<: *test-template_definition
 
+alma10-test:
+  image: gitlab-registry.cern.ch/linuxsupport/alma10-base
+  needs:
+    - job: alma10
+  before_script:
+    - dnf install -y epel-release
+  <<: *test-template_definition
+
 fedora-40-test:
   image: registry.cern.ch/docker.io/library/fedora:40
   needs:
@@ -104,6 +116,7 @@ fedora-41-test:
   dependencies:
     - alma8
     - alma9
+    - alma10
     - fedora-40
     - fedora-41
     - fedora-rawhide
@@ -111,7 +124,7 @@ fedora-41-test:
     - automount
     - cat "$repo_passwd" | kinit "$repo_user"
     - |
-        for platform in alma8 alma9 fedora-40 fedora-41 fedora-rawhide; do
+        for platform in alma8 alma9 alma10 fedora-40 fedora-41 fedora-rawhide; do
           if [[ "${platform}" == "fedora-rawhide" ]] && [[ ! -d ${platform} ]] ; then
             echo "Skipping ${platform} packages..." ;
             continue ;
