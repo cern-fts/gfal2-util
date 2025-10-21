@@ -2,14 +2,14 @@
 %{!?python3_sitearch: %define python3_sitearch %(%{__python3} -c "from sysconfig import get_path; print(get_path('platlib'))")}
 
 Name:           gfal2-util
-Version:        1.9.0
+Version:        1.9.1
 Release:        1%{?dist}
 Summary:        GFAL2 utility tools
 Group:          Applications/Internet
 License:        ASL 2.0
 URL:            https://dmc-docs.web.cern.ch/dmc-docs/gfal2-util.html
-# git clone --depth=1 --branch=v1.9.0 https://gitlab.cern.ch/dmc/gfal2-util.git gfal2-util-1.9.0
-# tar czf gfal2-util-1.9.0.tar.gz --exclude-vcs gfal2-util-1.9.0
+# git clone --depth=1 --branch=v1.9.1 https://gitlab.cern.ch/dmc/gfal2-util.git gfal2-util-1.9.1
+# tar czf gfal2-util-1.9.1.tar.gz --exclude-vcs gfal2-util-1.9.1
 Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
@@ -86,6 +86,9 @@ Requires:       python3
 %doc RELEASE-NOTES VERSION LICENSE readme.html
 
 %changelog
+* Tue Oct 21 2025 Mihai Patrascoiu <mipatras@cern.ch> - 1.9.1-1
+- New upstream release (Alma10 build)
+
 * Wed Jul 31 2024 Louis Regnier <loregnie@cern.ch> - 1.9.0-1
 - New upstream release
 
